@@ -23,7 +23,6 @@ namespace nt2 { namespace containers
   template<> struct  extent<_0D> : public ext::facade<tag::extent_,_0D,void>::type
   {
     typedef ext::facade<tag::extent_,_0D,void>      facade_type;
-    typedef tag::extent_                            fusion_tag;
     typedef facade_type::type                       parent;
     typedef boost::mpl::vector_c<std::size_t,1,1>   data_type;
     typedef void*                                   iterator;

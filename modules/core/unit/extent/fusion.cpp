@@ -97,3 +97,35 @@ NT2_TEST_CASE_TPL ( fusion_random_access_sequence, DYN_DIM_LIST )
   boost::fusion::back(x) = 434;
   NT2_TEST_EQUAL( boost::fusion::back(x) , 434 );
 }
+
+
+NT2_TEST_CASE_TPL ( fusion_random_access_sequence_expr, DYN_DIM_LIST )
+{
+  using nt2::extent;
+  extent<T> x;
+  std::size_t dims = T::dimensions;
+
+  //============================================================================
+  // Static sanity check over concept conformance
+  //============================================================================
+  //BOOST_CONCEPT_ASSERT((nt2::FusionRandomAccessSequence< extent<T> >));
+
+  //============================================================================
+  // Actual runtime validation
+  //============================================================================
+  NT2_TEST( !boost::fusion::empty(x+2*x)  );
+  NT2_TEST_EQUAL( int(boost::fusion::size(x+2*x))   , dims );
+
+  boost::fusion::at_c<0>(x) = 17;
+  NT2_TEST_EQUAL( boost::fusion::at_c<0>(x+2*x), 51 );
+
+  x(1)    = 42;
+  NT2_TEST_EQUAL( boost::fusion::deref(boost::fusion::begin(x+2*x)) , 126);
+  NT2_TEST_EQUAL( boost::fusion::front(x+2*x) , 126 );
+  x(dims) = 69;
+
+  NT2_TEST_EQUAL( boost::fusion::deref(boost::
+                          fusion::prior(boost::fusion::end(x+2*x))) , 207 );
+  NT2_TEST_EQUAL( boost::fusion::back(x+2*x)  , 207 );
+
+}

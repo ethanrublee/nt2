@@ -54,6 +54,11 @@ namespace nt2 { namespace containers
     BOOST_PROTO_EXTENDS_USING_ASSIGN(container)
 
     //==========================================================================
+    // Fusion sequence interface
+    //==========================================================================
+    typedef tag::extent_                              fusion_tag;
+
+    //==========================================================================
     /*!
      * \typedef size_type
      * \typedef base_type
@@ -68,11 +73,22 @@ namespace nt2 { namespace containers
     typedef std::ptrdiff_t                          difference_type;
     typedef container                               self_type;
     typedef std::size_t                             value_type;
-    typedef std::size_t const&                      const_reference;
-    typedef typename boost::mpl::if_c < static_dimensions
-                                      , std::size_t&
-                                      , value_type
-                                      >::type       reference;
+
+    //==========================================================================
+    // Only non-0D terminal extent can return actual reference to their value
+    //==========================================================================
+    typedef boost::mpl::bool_ < static_dimensions &&
+                                boost::is_same< tag::extent_
+                                              , typename
+                                                boost::proto::tag_of<AST>::type
+                                              >::value
+                              >           is_mutable;
+
+    typedef typename boost::mpl::
+            if_<is_mutable,value_type const&,value_type>::type  const_reference;
+
+    typedef typename boost::mpl::
+            if_<is_mutable,value_type&,value_type>::type        reference;
 
     //==========================================================================
     /*!

@@ -12,6 +12,7 @@
 #include <boost/fusion/support/is_view.hpp>
 #include <boost/fusion/support/is_sequence.hpp>
 #include <boost/fusion/support/category_of.hpp>
+#include <nt2/core/container/details/extent/fusion_iterator.hpp>
 
 //==============================================================================
 // Extension fo boost::fusion to support extent as a fusion sequence
@@ -56,7 +57,7 @@ namespace boost { namespace fusion
       struct apply
       {
         typedef typename nt2::meta::strip<Sequence>::type             base;
-        typedef typename mpl::if_ < is_const<Sequence>
+        typedef typename  mpl::if_< is_const<Sequence>
                                   , typename base::const_reference
                                   , typename base::reference
                                   >::type                             type;
@@ -70,21 +71,10 @@ namespace boost { namespace fusion
     //==========================================================================
     template<> struct begin_impl<nt2::tag::extent_>
     {
-      template<typename Sequence>
-      struct apply
+      template<typename Sequence> struct apply
       {
-        typedef typename nt2::meta::strip<Sequence>::type             base;
-        typedef typename base::data_type                              data;
-
-        typedef typename mpl::if_ < is_const<Sequence>
-                                  , boost::fusion::result_of::begin<data const>
-                                  , boost::fusion::result_of::begin<data>
-                                  >::type::type                       type;
-
-        static type call(Sequence& seq)
-        {
-          return boost::fusion::begin(seq.data());
-        }
+        typedef typename nt2::containers::extent_iterator<Sequence,0> type;
+        static type call(Sequence& seq) { return type(seq); }
       };
     };
 
@@ -97,17 +87,10 @@ namespace boost { namespace fusion
       struct apply
       {
         typedef typename nt2::meta::strip<Sequence>::type             base;
-        typedef typename base::data_type                              data;
+        typedef typename nt2::containers::
+                    extent_iterator<Sequence,base::static_dimensions> type;
 
-        typedef typename mpl::if_ < is_const<Sequence>
-                                  , boost::fusion::result_of::end<data const>
-                                  , boost::fusion::result_of::end<data>
-                                  >::type::type                       type;
-
-        static type call(Sequence& seq)
-        {
-          return boost::fusion::end(seq.data());
-        }
+        static type call(Sequence& seq) { return type(seq); }
       };
     };
   }

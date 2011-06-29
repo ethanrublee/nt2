@@ -62,7 +62,6 @@ namespace nt2 { namespace containers
     typedef ext::facade<tag::extent_,Dimensions,void> facade_type;
     typedef typename facade_type::type                parent;
     typedef typename facade_type::data_type           data_type;
-    typedef tag::extent_                              fusion_tag;
 
     //==========================================================================
     // Collection interface
