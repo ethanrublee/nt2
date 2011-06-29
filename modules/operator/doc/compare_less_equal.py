@@ -33,7 +33,7 @@
                 },
              'integer_   ' : {
                  'nt2::One<T>()' : {'result' : 'true','ulp_thresh' : '0',},
-                 'nt2::One<T>(),nt2::Zero<T>()' : {'result' : 'true','ulp_thresh' : '0',},
+                 'nt2::One<T>(),nt2::Zero<T>()' : {'result' : 'false','ulp_thresh' : '0',},
                  'nt2::Zero<T>()' : {'result' : 'true','ulp_thresh' : '0',},
                  'nt2::Mone<T>(),nt2::Zero<T>()' : {'result' : 'false','ulp_thresh' : '0',},
                 },
@@ -41,7 +41,7 @@
                  'nt2::Inf<T>()' : {'result' : 'true','ulp_thresh' : '0',},
                  'nt2::Minf<T>()' : {'result' : 'true','ulp_thresh' : '0',},
                  'nt2::Nan<T>()' : {'result' : 'true','ulp_thresh' : '0',},
-                 'nt2::One<T>(),nt2::Zero<T>()' : {'result' : 'true','ulp_thresh' : '0',},
+                 'nt2::One<T>(),nt2::Zero<T>()' : {'result' : 'false','ulp_thresh' : '0',},
                  'nt2::Zero<T>()' : {'result' : 'true','ulp_thresh' : '0',},
                 },
             },
@@ -50,7 +50,7 @@
                  'integer_' : ['nt2::compare_less_equal(a0,a1)'],
                 },
              'property_value' : {
-                 'integer_' : ['nt2::all(nt2::le(a0,a1))'],
+                 'integer_' : ['nt2::le(a0,a1)'],
                 },
              'scalar_simul' :{
                     'default' : [

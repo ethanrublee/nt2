@@ -7,16 +7,17 @@
          'rturn' : {
              'default' : 'typename boost::result_of<nt2::meta::floating(T)>::type',
             },
+         'scalar_ints' : True,  
          'simd_types' : ['real_'],
          'special' : ["polynomials"],
-         'type_defs' : [],
+         'type_defs' : ["  typedef typename nt2::meta::as_integer<T>::type iscalar;"],
          'types' : ['real_', 'unsigned_int_', 'signed_int_'],
         },
      'info' : 'manually modified',
      'unit' : {
          'global_header' : {
              'first_stamp' : 'created  by jt the 06/03/2011',
-             'included' : ['#include <nt2/toolbox/boost_math/include/hermite.hpp>'],
+             'cover_included' : ['#include <nt2/toolbox/boost_math/include/hermite.hpp>'],
              'notes' : [],
              'stamp' : 'modified by jt the 06/03/2011',
             },

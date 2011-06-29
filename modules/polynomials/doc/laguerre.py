@@ -8,6 +8,7 @@
              'default' : 'typename boost::result_of<nt2::meta::floating(T)>::type',
             },
          'simd_types' : ['real_'],
+         'scalar_ints' : True,  
          'special' : ["polynomials"],
          'type_defs' : [],
          'types' : ['real_', 'unsigned_int_', 'signed_int_'],
@@ -16,7 +17,7 @@
      'unit' : {
          'global_header' : {
              'first_stamp' : 'created  by jt the 06/03/2011',
-             'included' : ['#include <nt2/toolbox/boost_math/include/laguerre.hpp>'],
+             'cover_included' : ['#include <nt2/toolbox/boost_math/include/laguerre.hpp>'],
              'notes' : [],
              'stamp' : 'modified by jt the 06/03/2011',
             },

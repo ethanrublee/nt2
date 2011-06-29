@@ -102,7 +102,9 @@ class Global_header_gen() :
         return r
     
     def add_includes(self,r,dl) :
+        print ("part = %s"%self.part)
         include_src = 'included' if self.mode == 'scalar' else "simd_included"
+        if self.part == "cover" : include_src = ['cover_included','included']
         tuple_included = False
         default_includes = True
         for d in dl :
@@ -115,26 +117,40 @@ class Global_header_gen() :
             if not tuple_included and int(df.get("ret_arity","1")) > 1 :
                 tuple_included = True
                 r.append('#include <boost/fusion/tuple.hpp>')
-            includes = dug.get(include_src,False);
-            if includes :
-                if isinstance(includes,str ) :
-                    r.append(includes)
-                if isinstance(includes,list ) :
-                    r.extend(includes)
-                elif isinstance(includes,dict ) :
-                    includes = includes.get(self.part,False)
-                    if includes :
-                        if isinstance(includes,str ) :
-                            r.append(includes)
-                        if isinstance(includes,list ) :
-                            r.extend(includes)
-            r.append('')
-            print("default_includes %s "%default_includes )
+            if isinstance(include_src,str ) : include_src = [include_src]
+            for incl in include_src :
+                includes = dug.get(incl,False);
+                if includes :
+                    if isinstance(includes,str ) :
+                        r.append(includes)
+                    if isinstance(includes,list ) :
+                        r.extend(includes)
+                    elif isinstance(includes,dict ) :
+                        includes = includes.get(self.part,False)
+                        if includes :
+                            if isinstance(includes,str ) :
+                                r.append(includes)
+                            if isinstance(includes,list ) :
+                                r.extend(includes)
+                    r.append('')
             if default_includes : #uses default once
+                default_includes = False
                 r1 = self.bg.create_unit_txt_part( Global_header_gen.Default_template,self.__prepare,d=d)
                 r.extend(r1)
                 if self.mode == "simd" : r.extend(Global_header_gen.Simd_template)
             r.append('')
+        def is_include(st) :
+            st =st.lstrip()
+            return len(st)>5 and( (st[0:6] =="#inclu") or (st[0:6] =="extern"))
+        def uniquer(seq):
+            seen = {}
+            result = []
+            for item in seq:
+                if (item in seen) and is_include(item): continue
+                seen[item] = 1
+                result.append(item)
+            return result
+        if len(dl)>1 : r=uniquer(r)    
         return r    
 
         

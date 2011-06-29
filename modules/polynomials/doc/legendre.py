@@ -7,6 +7,7 @@
          'rturn' : {
              'default' : 'typename boost::result_of<nt2::meta::floating(T)>::type',
             },
+         'scalar_ints' : True,  
          'simd_types' : ['real_'],
          'special' : ["polynomials"],
          'type_defs' : [],
@@ -16,12 +17,12 @@
      'unit' : {
          'global_header' : {
              'first_stamp' : 'created  by jt the 06/03/2011',
-             'included' : ['#include <nt2/toolbox/boost_math/include/legendre_p.hpp>'],
+             'cover_included' : ['#include <nt2/toolbox/boost_math/include/legendre_p.hpp>'],
              'notes' : [],
              'stamp' : 'modified by jt the 06/03/2011',
             },
          'ranges' : {
-             'default' : [['iT(0)', 'T(10)'], ['iT(-1)', 'T(1)']],
+             'default' : [['iT(0)', 'iT(10)'], ['T(-1)', 'T(1)']],
             },
          'specific_values' : {
              'default' : {

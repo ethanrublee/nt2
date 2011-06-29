@@ -40,7 +40,7 @@
              'real_' : {
                  'nt2::Inf<T>()' : {'result' : 'true','ulp_thresh' : '0',},
                  'nt2::Minf<T>()' : {'result' : 'true','ulp_thresh' : '0',},
-                 'nt2::Nan<T>()' : {'result' : 'true','ulp_thresh' : '0',},
+                 'nt2::Nan<T>()' : {'result' : 'false','ulp_thresh' : '0',},
                  'nt2::One<T>(),nt2::Zero<T>()' : {'result' : 'false','ulp_thresh' : '0',},
                  'nt2::Zero<T>()' : {'result' : 'true','ulp_thresh' : '0',},
                 },
@@ -50,7 +50,7 @@
                  'default' : ['nt2::compare_equal(a0,a1)'],
                 },
              'property_value' : {
-                 'default' : ['nt2::all(nt2::eq(a0,a1))'],
+                 'default' : ['nt2::eq(a0,a1)'],
                 },
              'simd' : {
                 },
