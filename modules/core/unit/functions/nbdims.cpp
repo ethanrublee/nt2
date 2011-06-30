@@ -34,3 +34,12 @@ NT2_TEST_CASE_TPL ( nbdims_extents, DYN_DIM_LIST )
   extent<T> x;
   NT2_TEST_EQUAL( nbdims(x), 2 );
 }
+
+NT2_TEST_CASE_TPL ( nbdims_extents_expr, DYN_DIM_LIST )
+{
+  using nt2::nbdims;
+  using nt2::extent;
+
+  extent<T> x;
+  NT2_TEST_EQUAL( nbdims(x/(1.+x)), 2 );
+}

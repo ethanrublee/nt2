@@ -13,6 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
+#include <nt2/toolbox/operator.hpp>
 #include <nt2/core/functions/numel.hpp>
 #include <nt2/core/container/extent.hpp>
 
@@ -44,3 +45,14 @@ NT2_TEST_CASE_TPL ( numel_extents, DYN_DIM_LIST )
   extent<T> x;
   NT2_TEST_EQUAL( numel(x), dims );
 }
+
+NT2_TEST_CASE_TPL ( numel_extents_xpr, DYN_DIM_LIST )
+{
+  using nt2::numel;
+  using nt2::extent;
+  std::size_t dims = T::dimensions > 2 ? T::dimensions : 2;
+
+  extent<T> x;
+  NT2_TEST_EQUAL( numel(x*x+3), dims );
+}
+

@@ -44,3 +44,13 @@ NT2_TEST_CASE_TPL ( length_extents, DYN_DIM_LIST )
   extent<T> x;
   NT2_TEST_EQUAL( length(x), dims );
 }
+
+NT2_TEST_CASE_TPL ( length_extents_expr, DYN_DIM_LIST )
+{
+  using nt2::length;
+  using nt2::extent;
+  std::size_t dims = T::dimensions > 2 ? T::dimensions : 2;
+
+  extent<T> x;
+  NT2_TEST_EQUAL( length(3+x*x), dims );
+}
