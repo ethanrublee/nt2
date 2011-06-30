@@ -31,12 +31,12 @@ namespace nt2 { namespace details
       typedef typename nt2::meta::strip<esize_>::type                   elem_;
 
       typedef typename
-      boost::mpl::if_c< (   (     elem_::static_dimension
-                              <=  state_::static_dimension
+      boost::mpl::if_c< (   (     elem_::static_dimensions
+                              <=  state_::static_dimensions
                             )
-                          ||  !state_::static_dimension
+                          ||  !state_::static_dimensions
                         )
-                        && elem_::static_dimension
+                        && elem_::static_dimensions
                       , esize_
                       , state_
                       >::type type;
@@ -51,12 +51,12 @@ namespace nt2 { namespace details
 
       return eval ( s
                   , nt2::size(e)
-                  , boost::mpl::bool_ < (   (   elem_::static_dimension
-                                            <=  State::static_dimension
+                  , boost::mpl::bool_ < (   (   elem_::static_dimensions
+                                            <=  State::static_dimensions
                                             )
-                                          || !State::static_dimension
+                                          || !State::static_dimensions
                                           )
-                                        && elem_::static_dimension
+                                        && elem_::static_dimensions
                                       >()
                   );
     }
@@ -69,6 +69,7 @@ namespace nt2 { namespace details
 
   //////////////////////////////////////////////////////////////////////////////
   // Recursively explore an expression to return the smallest, non null size
+  // This shoudl be expressed in the proto transform to not have to unwrap the AST
   //////////////////////////////////////////////////////////////////////////////
   struct select_size : boost::proto::callable
   {
@@ -78,7 +79,7 @@ namespace nt2 { namespace details
     struct result<This(Expr)>
     {
       typedef typename boost::fusion::result_of::
-              fold< typename nt2::meta::strip<Expr>::type const
+              fold< typename nt2::meta::strip<Expr>::type::parent const
                   , containers::extent<_0D> const
                   , smallest_non_null
                   >::type                               type;
@@ -89,7 +90,10 @@ namespace nt2 { namespace details
     operator()(Expr const& xpr) const
     {
       containers::extent<_0D> state;
-      return boost::fusion::fold(xpr,state,smallest_non_null());
+      typedef typename Expr::parent base;
+      return boost::fusion::fold( static_cast<base const&>(xpr)
+                                , state,smallest_non_null()
+                                );
     }
   };
 } }
