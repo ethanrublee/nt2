@@ -20,7 +20,7 @@ namespace nt2 { namespace containers
                               , boost::fusion::random_access_traversal_tag
                               >
   {
-    typedef boost::mpl::int_<N> index;
+    BOOST_STATIC_CONSTANT(int index, = N );
     typedef Seq sequence_type;
 
     extent_iterator(Seq& seq) : seq_(seq) {}
@@ -35,7 +35,7 @@ namespace nt2 { namespace containers
     template<typename T> struct deref
     {
       typedef typename
-          boost::mpl::if_ < boost::is_const<T>
+          boost::mpl::if_ < boost::is_const<typename T::sequence_type>
                           , typename T::sequence_type::const_reference
                           , typename T::sequence_type::reference
                           >::type                             type;
@@ -46,7 +46,7 @@ namespace nt2 { namespace containers
     template<typename It> struct next
     {
       typedef extent_iterator < typename It::sequence_type
-                              , It::index::value + 1
+                              , It::index + 1
                               >                                type;
 
       static type call(It const& it) { return type(it.seq_); }
@@ -55,7 +55,7 @@ namespace nt2 { namespace containers
     template<typename It> struct prior
     {
       typedef extent_iterator < typename It::sequence_type
-                              , It::index::value - 1
+                              , It::index - 1
                               >                                type;
 
       static type call(It const& it) { return type(it.seq_); }
@@ -65,8 +65,7 @@ namespace nt2 { namespace containers
     struct distance
     {
       typedef typename
-              boost::mpl::minus < typename It2::index
-                                , typename It1::index>::type type;
+              boost::mpl::int_ < It2::index - It1::index>::type type;
 
       static type call(It1 const& it1, It2 const& it2) { return type(); }
     };
@@ -74,7 +73,7 @@ namespace nt2 { namespace containers
     template<typename It, typename M> struct advance
     {
       typedef extent_iterator < typename It::sequence_type
-                              , It::index::value + M::value
+                              , It::index + M::value
                               >                                type;
 
       static type call(It const& it) { return type(it.seq_); }
