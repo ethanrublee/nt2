@@ -25,6 +25,9 @@ NT2_TEST_CASE_TPL( default_dynamic_ctor, NT2_TYPES )
   NT2_TEST( x.empty() );
   NT2_TEST_EQUAL( x.size()  , 0 );
 
+  NT2_TEST( (2+x).empty() );
+  NT2_TEST_EQUAL( (x+3*x).size()  , 0 );
+
   NT2_TEST_EQUAL( x.lower(1) , 0  );
   NT2_TEST_EQUAL( x.upper(1) , -1 );
   NT2_TEST_EQUAL( x.lower(2) , 0  );
@@ -45,6 +48,9 @@ NT2_TEST_CASE_TPL( default_static_ctor, NT2_TYPES )
 
   NT2_TEST( !x.empty()      );
   NT2_TEST_EQUAL( x.size()  , 120 );
+
+  NT2_TEST( !((3+x)/x).empty()      );
+  NT2_TEST_EQUAL( (x-1.f/x).size()  , 120 );
 
   NT2_TEST_EQUAL( x.lower(1) , 1  );
   NT2_TEST_EQUAL( x.upper(1) , 2 );
