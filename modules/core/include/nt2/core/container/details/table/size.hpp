@@ -35,7 +35,7 @@ namespace nt2 { namespace ext
     template<class This,class A0>
     struct result<This(A0)>
     {
-      typedef typename meta::strip<A0>::type::sizes_type const& type;
+      typedef typename meta::strip<A0>::type::sizes_type type;
     };
 
     NT2_FUNCTOR_CALL(1) { return a0.sizes(); }

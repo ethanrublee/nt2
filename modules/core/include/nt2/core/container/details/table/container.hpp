@@ -15,6 +15,7 @@
  */
 
 #include <boost/fusion/include/make_vector.hpp>
+#include <nt2/core/functions/numel.hpp>
 
 namespace nt2 { namespace containers
 {
@@ -161,12 +162,12 @@ namespace nt2 { namespace containers
     //==========================================================================
     /*! Return the number of dimensions stored in the extent.                 */
     //==========================================================================
-    //inline size_type size() const { return static_dimensions; }
+    inline size_type size() const { return nt2::numel(*this); }
 
     //==========================================================================
     /*! Return if an \ref extent is empty.                                    */
     //==========================================================================
-    //inline bool empty() const { return (size() == 0); }
+    inline bool empty() const { return (size() == 0); }
 
     //==========================================================================
     /*!
