@@ -1,11 +1,11 @@
-/*******************************************************************************
- *         Copyright 2003 & onward LASMEA UMR 6602 CNRS/Univ. Clermont II
- *         Copyright 2009 & onward LRI    UMR 8623 CNRS/Univ Paris Sud XI
- *
- *          Distributed under the Boost Software License, Version 1.0.
- *                 See accompanying file LICENSE.txt or copy at
- *                     http://www.boost.org/LICENSE_1_0.txt
- ******************************************************************************/
+//==============================================================================
+//         Copyright 2003 - 2011   LASMEA UMR 6602 CNRS/Univ. Clermont II
+//         Copyright 2009 - 2011   LRI    UMR 8623 CNRS/Univ Paris Sud XI
+//
+//          Distributed under the Boost Software License, Version 1.0.
+//                 See accompanying file LICENSE.txt or copy at
+//                     http://www.boost.org/LICENSE_1_0.txt
+//==============================================================================
 #ifndef NT2_TOOLBOX_CONSTANT_CONSTANTS_REAL_HPP_INCLUDED
 #define NT2_TOOLBOX_CONSTANT_CONSTANTS_REAL_HPP_INCLUDED
 
@@ -68,7 +68,6 @@ namespace nt2
   //////////////////////////////////////////////////////////////////////////////
   // Basic named constant
   //////////////////////////////////////////////////////////////////////////////
-  //  NT2_CONSTANT_IMPLEMENTATION(tag::nan_         , Nan         )
   NT2_CONSTANT_IMPLEMENTATION(tag::m_half_      , Mhalf       )
   NT2_CONSTANT_IMPLEMENTATION(tag::m_zero_      , Mzero       )
   NT2_CONSTANT_IMPLEMENTATION(tag::half_        , Half        )
@@ -87,7 +86,7 @@ namespace nt2
   // Generic real value splatter from a bit patterns
   //////////////////////////////////////////////////////////////////////////////
   template<class Target, nt2::uint64_t D, nt2::uint32_t F> inline
-  typename meta::enable_call<tag::pattern<D,F>(meta::as_<Target>)>::type
+  typename meta::call<tag::pattern<D,F >(meta::as_<Target>)>::type
   real_constant()
   {
     nt2::functor< tag::pattern<D,F> > callee;
@@ -98,7 +97,7 @@ namespace nt2
   // Generic real value splatter from a bit patterns of float
   //////////////////////////////////////////////////////////////////////////////
   template<class Target, nt2::uint32_t F> inline
-  typename meta::enable_call<tag::pattern<0,F>(meta::as_<Target>)>::type
+  typename meta::call<tag::pattern<0,F >(meta::as_<Target>)>::type
   single_constant()
   {
     nt2::functor< tag::pattern<0,F> > callee;
@@ -109,7 +108,7 @@ namespace nt2
   // Generic real value splatter from a bit patterns of double
   //////////////////////////////////////////////////////////////////////////////
   template<class Target, nt2::uint64_t D> inline
-  typename meta::enable_call<tag::pattern<D,0>(meta::as_<Target>)>::type
+  typename meta::call<tag::pattern<D,0 >(meta::as_<Target>)>::type
   double_constant()
   {
     nt2::functor< tag::pattern<D,0> > callee;
@@ -120,8 +119,7 @@ namespace nt2
   // Generic real value splatter from a bit patterns dependant on target type
   //////////////////////////////////////////////////////////////////////////////
   template<class T, uint64_t V> inline
-  typename  meta
-          ::enable_call<typename details::pattern<T,V>::type(meta::as_<T>)>::type
+  typename meta::call<typename details::pattern<T,V>::type(meta::as_<T>)>::type
   Const()
   {
     nt2::functor< typename details::pattern<T,V>::type > callee;
