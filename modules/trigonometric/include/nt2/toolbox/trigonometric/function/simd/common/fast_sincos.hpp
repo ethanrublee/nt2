@@ -20,17 +20,19 @@
 namespace nt2 { namespace meta
 {
   NT2_FUNCTOR_IMPLEMENTATION_IF(tag::fast_sincos_, tag::cpu_,(A0)(A1)(X),
-                             (boost::mpl::equal_to<cardinal_of<A0>, 
-  			                           cardinal_of<A1> >), 
-                             ( tag::fast_sincos_
-                                          ( simd_<arithmetic_<A0>,X> 
-					  , simd_<real_<A1>,X>
-				          , simd_<real_<A1>,X>
-                                          )
-                             ), 
-			     ((simd_ < arithmetic_<A0>, X > ))
-			     ((simd_ < real_<A1>, X > ))
-			     ((simd_ < real_<A1>, X > ))
+				(boost::mpl::equal_to<meta::cardinal_of<A0>, 
+			                	 meta::cardinal_of<A1>
+				        >
+				), 
+                                ( tag::fast_sincos_
+				  ( simd_<arithmetic_<A0>,X> 
+				    , simd_<real_<A1>,X>
+				    , simd_<real_<A1>,X>
+				    )
+				  ), 
+				((simd_ < arithmetic_<A0>,X > ))
+				((simd_ < real_<A1>,X > ))
+				((simd_ < real_<A1>,X > ))
 			     )
   {
     typedef int result_type;    
