@@ -12,23 +12,17 @@
 /////////////////////////////////////////////////////////////////////////////
 // Implementation when type A0 is fundamental
 /////////////////////////////////////////////////////////////////////////////
-NT2_REGISTER_DISPATCH ( tag::size_, tag::cpu_, (A0), (unspecified_<A0>) )
-
-namespace nt2 { namespace ext
+namespace nt2 { namespace meta
 {
-  template<class Dummy>
-  struct call<tag::size_(tag::unspecified_),tag::cpu_, Dummy> : callable
+  NT2_FUNCTOR_IMPLEMENTATION( tag::size_, tag::cpu_
+                            , (A0), (unspecified_<A0>) 
+                            )
   {
-    template<class Sig> struct result;
-    template<class This,class A0>
-    struct result<This(A0)>
-    {
-      typedef containers::extent<_0D> type ;
-    };
+    typedef containers::extent<_0D> result_type;
 
     NT2_FUNCTOR_CALL(1)
     {
-      typename NT2_RETURN_TYPE(1)::type that;
+      result_type that;
       return that;
     }
   };

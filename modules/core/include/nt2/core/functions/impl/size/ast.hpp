@@ -15,40 +15,34 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Implementation when type A0 is an expression
-///////////////////////////////////////////////////////////////////////////////
-NT2_REGISTER_DISPATCH ( tag::size_, tag::cpu_
-                      , (A0)(Dom)(Tag)(Sema)
-                      , ((expr_<A0,Dom,Tag,Sema>))
-                      )
-
-namespace nt2 { namespace ext
+////////////////////////////////////////////////////////////////////////////////
+namespace nt2 { namespace meta
 {
-  template<class Dom, class Tag, class Sema, class Dummy>
-  struct  call< tag::size_(tag::expr_<Dom,Tag,Sema>)
-              , tag::cpu_, Dummy
-              >
-        : callable
-        , boost::proto::or_
-          <
-          // Terminals node has same size than their value
-            boost::proto::when
-            < boost::proto::nullary_expr<boost::proto::_,boost::proto::_>
-            , boost::proto::call< functor<tag::size_> >(boost::proto::_value)
-            >
-            // Unary node has same size than their child
-          , boost::proto::when
-            < boost::proto::unary_expr<boost::proto::_,boost::proto::_>
-            , boost::proto::call< functor<tag::size_> >(boost::proto::_child0)
-            >
-            // Other node return the size of their children with the smallest
-            // non null extent
-          , boost::proto::when
-            < boost::proto::nary_expr < boost::proto::_
-                                      , boost::proto::vararg<boost::proto::_>
-                                      >
-            , details::select_size(boost::proto::_)
-            >
-          >
+  NT2_FUNCTOR_IMPLEMENTATION( tag::size_, tag::cpu_
+                            , (A0)(Dom)(Tag)(Sema)
+                            , ((expr_<A0,Dom,Tag,Sema>))
+                            )
+  : boost::proto::or_
+    <
+    // Terminals node has same size than their value
+      boost::proto::when
+      < boost::proto::nullary_expr<boost::proto::_,boost::proto::_>
+      , boost::proto::call< functor<tag::size_> >(boost::proto::_value)
+      >
+      // Unary node has same size than their child
+    , boost::proto::when
+      < boost::proto::unary_expr<boost::proto::_,boost::proto::_>
+      , boost::proto::call< functor<tag::size_> >(boost::proto::_child0)
+      >
+      // Other node return the size of their children with the smallest
+      // non null extent
+    , boost::proto::when
+      < boost::proto::nary_expr < boost::proto::_
+                                , boost::proto::vararg<boost::proto::_>
+                                >
+      , details::select_size(boost::proto::_)
+      >
+    >
   {};
 } }
 

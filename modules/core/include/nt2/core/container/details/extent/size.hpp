@@ -15,31 +15,18 @@
 /////////////////////////////////////////////////////////////////////////////
 // Implementation when type A0 is an extent value
 /////////////////////////////////////////////////////////////////////////////
-NT2_REGISTER_DISPATCH_TPL ( tag::size_, tag::cpu_
-                          , (class A0)(std::size_t N)
-                          , ((array_<arithmetic_<A0>,N>))
-                          )
-
-namespace nt2 { namespace ext
+namespace nt2 { namespace meta
 {
-  template<std::size_t N, class Dummy>
-  struct  call< tag::size_(tag::array_<tag::arithmetic_,N>)
-              , tag::cpu_, Dummy
-              >
-        : callable
+  NT2_FUNCTOR_IMPLEMENTATION_TPL( tag::size_, tag::cpu_
+                                , (class A0)(std::size_t N)
+                                , ((array_<arithmetic_<A0>,N>))
+                                )
   {
-    template<class Sig> struct result;
-
-    template<class This,class A0>
-    struct result<This(A0)>
-    {
-      // All extent has at least 2 dimension
-      typedef containers::extent< of_size_<1,(N>=2 ? N : 2)> > type;
-    };
+    typedef containers::extent< of_size_<1,(N>=2 ? N : 2)> > result_type;
 
     NT2_FUNCTOR_CALL(1)
     {
-      typename NT2_RETURN_TYPE(1)::type that;
+      result_type that;
       return that;
     }
   };
