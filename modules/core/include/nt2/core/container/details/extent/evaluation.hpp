@@ -9,7 +9,7 @@
 #ifndef NT2_CORE_CONTAINER_DETAILS_EXTENT_EVALUATION_HPP_INCLUDED
 #define NT2_CORE_CONTAINER_DETAILS_EXTENT_EVALUATION_HPP_INCLUDED
 
-#include <nt2/sdk/dsl/litteral.hpp>
+#include <nt2/sdk/dsl/literal.hpp>
 #include <nt2/sdk/dsl/evaluation.hpp>
 #include <nt2/core/container/details/extent/call.hpp>
 

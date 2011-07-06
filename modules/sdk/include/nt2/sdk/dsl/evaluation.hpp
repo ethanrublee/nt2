@@ -26,7 +26,7 @@ namespace nt2
    */
   //============================================================================
   template<class Target, class Term, class Xpr> inline
-  typename meta::enable_call<tag::evaluate_(Term&, Xpr const&), Target>::type
+  typename meta::call<tag::evaluate_(Term&, Xpr const&), Target>::type
   evaluate( Term& dst, Xpr const& xpr)
   {
     functor<tag::evaluate_,Target> callee;
