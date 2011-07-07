@@ -47,6 +47,8 @@ namespace nt2 { namespace containers
 
     BOOST_STATIC_CONSTANT(std::size_t, static_dimensions = Dims::value );
 
+    typedef boost::array<std::size_t,static_dimensions>  data_type;
+
     //==========================================================================
     // Proto required interface
     //==========================================================================

@@ -58,7 +58,6 @@
     nt2::functor<nt2::tag::value_at_> callee;
     return callee( *this, BOOST_PP_ENUM_PARAMS(N,i) );
   }
-//  #endif
 
   #undef N
 

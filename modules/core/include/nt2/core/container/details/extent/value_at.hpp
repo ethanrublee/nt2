@@ -16,47 +16,41 @@
 //==============================================================================
 // Implementation when type A0 is an extent expression and A1 a sequence
 //==============================================================================
-NT2_REGISTER_DISPATCH ( tag::value_at_, tag::cpu_
-                      , (A0)(D0)(Sema0)(Tag0)(A1)
-                      , ((expr_ < A0
-                                , domain_<containers::domain<tag::extent_,D0> >
-                                , Tag0, Sema0
-                                >
-                        ))
-                        (fusion_sequence_<A1>)
-                      )
-
-namespace nt2 { namespace ext
+namespace nt2 { namespace meta
 {
-  //============================================================================
-  // Const expression case
-  //============================================================================
-  template<class D, class Tag,  class Sema, class Dummy>
-  struct call < tag::value_at_
-                ( tag::expr_< containers::domain < tag::extent_, D >
-                            , Tag, Sema
-                            >
-                , tag::fusion_sequence_
-                )
-              , tag::cpu_, Dummy
-              > : callable
+  NT2_FUNCTOR_IMPLEMENTATION( tag::value_at_, tag::cpu_
+                            , (A0)(Dim)(Sema)(Tag)(A1)
+                            , ((expr_ < A0
+                                      , domain_ < containers::domain< tag::extent_
+                                                                    , Dim
+                                                                    > 
+                                                >
+                                      , Tag, Sema
+                                      >
+                              ))
+                              (fusion_sequence_<A1>)
+                            )
   {
     template<class Sig> struct result;
-    template<class This,class A0,class A1>
-    struct  result<This(A0,A1)>
-          : boost::result_of
-            < meta::compile< meta::compute<boost::mpl::_1,tag::cpu_> >
-              (A0,meta::as_<void>,int)
-            >
-    {};
 
-    NT2_FUNCTOR_CALL(2)
+    template<class This,class X,class Y>
+    struct  result<This(X,Y)>
     {
-      meta::as_<void>                                           target;
+      typedef typename 
+              boost::result_of
+              < meta::compile< meta::compute<boost::mpl::_1,tag::cpu_> >
+                (X,meta::as_<typename A0::data_type>,int)
+              >::type                                         type;
+    };
+          
+    inline typename result<implement(A0 const&,A1 const&)>::type
+    operator()(A0 const& a0, A1 const& a1) const
+    {
+      meta::as_<typename A0::data_type>                         target;
       meta::compile< meta::compute<boost::mpl::_1,tag::cpu_> >  callee;
 
       typedef boost::mpl::size<A1> sz_;
-      nt2::int32_t idx = boost::fusion::at_c<(sz_::value < 2 ? 0 : 1)>(a1) - 1;
+      int idx = boost::fusion::at_c<(sz_::value < 2 ? 0 : 1)>(a1) - 1;
       return callee(a0,target,idx);
     }
   };
@@ -64,31 +58,33 @@ namespace nt2 { namespace ext
   //============================================================================
   // terminal case
   //============================================================================
-  template<class D, class Sema, class Dummy>
-  struct call < tag::value_at_
-                ( tag::expr_< containers::domain < tag::extent_, D >
-                            , tag::extent_, Sema
-                            >
-                , tag::fusion_sequence_
-                )
-              , tag::cpu_, Dummy
-              > : callable
+  NT2_FUNCTOR_IMPLEMENTATION( tag::value_at_, tag::cpu_
+                            , (A0)(Dim)(Sema)(A1)
+                            , ((expr_ < A0
+                                      , domain_ < containers::domain< tag::extent_
+                                                                    , Dim
+                                                                    > 
+                                                >
+                                      , tag::extent_, Sema
+                                      >
+                              ))
+                              (fusion_sequence_<A1>)
+                            )
   {
     template<class Sig> struct result;
 
-    template<class This,class A0,class A1>
-    struct  result<This(A0,A1)>
+    template<class This,class X,class Y>
+    struct  result<This(X,Y)>
     {
-      typedef typename boost::remove_reference<A0>::type  base;
-      typedef typename meta::strip<A0>::type              raw;
+      typedef typename boost::remove_reference<X>::type  base;
+      typedef typename meta::strip<X>::type              raw;
       typedef typename boost::mpl::if_< boost::is_const<base>
                                       , typename raw::const_reference
                                       , typename raw::reference
                                       >::type type;
     };
 
-    template<class A0,class A1> inline
-    typename result<call(A0&,A1 const&)>::type
+    inline typename result<implement(A0&,A1 const&)>::type
     operator()(A0& a0, A1 const& a1) const
     {
       typedef boost::mpl::size<A1> sz_;
@@ -96,7 +92,8 @@ namespace nt2 { namespace ext
       return boost::proto::value(a0)[ idx ];
     }
 
-    NT2_FUNCTOR_CALL(2)
+    inline typename result<implement(A0 const&,A1 const&)>::type
+    operator()(A0 const& a0, A1 const& a1) const
     {
       typedef boost::mpl::size<A1> sz_;
       std::size_t idx = boost::fusion::at_c<(sz_::value < 2 ? 0 : 1)>(a1) - 1;
@@ -107,24 +104,24 @@ namespace nt2 { namespace ext
   //============================================================================
   // terminal case for _0D
   //============================================================================
-  template<class Sema, class Dummy>
-  struct call < tag::value_at_
-                ( tag::expr_< containers::domain< tag::extent_
-                                                , boost::mpl::size_t<0>
+  NT2_FUNCTOR_IMPLEMENTATION( tag::value_at_, tag::cpu_
+                            , (A0)(Sema)(A1)
+                            , ((expr_ < A0
+                                      , domain_ < containers::
+                                                  domain< tag::extent_
+                                                        , boost::mpl::size_t<0>
+                                                        > 
                                                 >
-                            , tag::extent_, Sema
-                            >
-                , tag::fusion_sequence_
-                )
-              , tag::cpu_, Dummy
-              > : callable
+                                      , tag::extent_, Sema
+                                      >
+                              ))
+                              (fusion_sequence_<A1>)
+                            )
   {
     typedef std::size_t result_type;
 
-    template<class A0,class A1> inline result_type
-    operator()(A0& a0, A1 const& a1) const { return 1; }
-
-    NT2_FUNCTOR_CALL(2) { return 1; }
+    inline result_type operator()(A0&, A1 const&)       const { return 1; }
+    inline result_type operator()(A0 const&, A1 const&) const { return 1; }
   };
 } }
 

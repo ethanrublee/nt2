@@ -12,23 +12,26 @@
 #include <nt2/include/functor.hpp>
 #include <boost/preprocessor/repetition/enum_shifted_binary_params.hpp>
 
-#define M0(z,n,t)                                                             \
-NT2_FUNCTION_IMPLEMENTATION(tag::value_at_, value_at, BOOST_PP_INC(n))        \
-                                                                              \
-template<BOOST_PP_ENUM_PARAMS(BOOST_PP_INC(n),class A)> inline                \
-typename nt2::meta::                                                          \
-              enable_call<tag::value_at_( A0&                                 \
-                                        , BOOST_PP_ENUM_SHIFTED_BINARY_PARAMS \
-                                          ( BOOST_PP_INC(n)                   \
-                                          , A                                 \
-                                          , const & BOOST_PP_INTERCEPT        \
-                                          )                                   \
-                                        )>::type                              \
-value_at( A0& a0                                                              \
-        , BOOST_PP_ENUM_SHIFTED_BINARY_PARAMS(BOOST_PP_INC(n),const A,& a))   \
-{                                                                             \
-  NT2_FUNCTION_BODY(tag::value_at_,BOOST_PP_INC(n))                           \
-}                                                                             \
+//==============================================================================
+// Generate all value_at(x, d0, ..., dn) variations
+//==============================================================================
+#define M0(z,n,t)                                                           \
+NT2_FUNCTION_IMPLEMENTATION(tag::value_at_, value_at, BOOST_PP_INC(n))      \
+                                                                            \
+template<BOOST_PP_ENUM_PARAMS(BOOST_PP_INC(n),class A)> inline              \
+typename nt2::meta::                                                        \
+              call<tag::value_at_ ( A0&                                     \
+                                  , BOOST_PP_ENUM_SHIFTED_BINARY_PARAMS     \
+                                    ( BOOST_PP_INC(n)                       \
+                                    , A                                     \
+                                    , const & BOOST_PP_INTERCEPT            \
+                                    )                                       \
+                                  )>::type                                  \
+value_at( A0& a0                                                            \
+        , BOOST_PP_ENUM_SHIFTED_BINARY_PARAMS(BOOST_PP_INC(n),const A,& a)) \
+{                                                                           \
+  NT2_FUNCTION_BODY(tag::value_at_,BOOST_PP_INC(n))                         \
+}                                                                           \
 /**/
 
 namespace nt2
