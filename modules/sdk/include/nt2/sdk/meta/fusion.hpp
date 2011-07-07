@@ -56,7 +56,7 @@ namespace nt2 { namespace meta
   //============================================================================
   template<class T, std::size_t N, class Origin>
   struct  property_of< boost::array<T,N>, Origin >
-        : property_of< T, boost::array<T,N>, Origin >
+        : property_of< T, Origin, Origin > 
   {};
 
   //============================================================================
@@ -66,7 +66,10 @@ namespace nt2 { namespace meta
   struct primitive_of< boost::array<T,N> > : primitive_of<T> {};
 
   template<class T, std::size_t N>
-  struct factory_of< boost::array<T,N> > { typedef boost::array<boost::mpl::_1,N> type; };
+  struct factory_of< boost::array<T,N> > 
+  { 
+    typedef boost::array<boost::mpl::_1,N> type; 
+  };
 } }
 
 namespace nt2 { namespace details
@@ -94,7 +97,7 @@ namespace nt2 { namespace details
                                       >::type
                       >
   {
-    typedef meta::fusion_sequence_<T> type;
+    typedef meta::fusion_sequence_<Origin> type;
   };
   
   template<class T, std::size_t N,class Origin>
