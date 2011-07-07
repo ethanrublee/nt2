@@ -76,14 +76,16 @@ dispatching( Tag const&, Site const&                                      \
  */
 //==============================================================================
 #define NT2_REGISTER_DISPATCH_TO(Tag,Site,Types,Ret,Seq)                  \
-namespace nt2 { namespace meta {                                          \
 template<BOOST_PP_ENUM(BOOST_PP_SEQ_SIZE(Types),NT2_DISPATCH_TYPE,Types)> \
-nt2::ext::call<NT2_PP_STRIP(Ret),Site>                                    \
-dispatching( Tag const&, Site const&                                      \
-        , BOOST_PP_ENUM(BOOST_PP_SEQ_SIZE(Seq),NT2_DISPATCH_ARG,Seq)      \
-        , adl_helper = adl_helper()                                       \
-        );                                                                \
-} }                                                                       \
+nt2::meta::implement<NT2_PP_STRIP(Ret),Site>                              \
+dispatching ( Tag const&, Site const&                                     \
+            , BOOST_PP_ENUM(BOOST_PP_SEQ_SIZE(Seq),NT2_DISPATCH_ARG,Seq)  \
+            , adl_helper = adl_helper()                                   \
+            )                                                             \
+{                                                                         \
+  nt2::meta::implement<NT2_PP_STRIP(Ret),Site> that;                      \
+  return that;                                                            \
+}                                                                         \
 /**/
 
 //==============================================================================
