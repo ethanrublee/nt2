@@ -1,11 +1,11 @@
-/*******************************************************************************
- *         Copyright 2003 & onward LASMEA UMR 6602 CNRS/Univ. Clermont II
- *         Copyright 2009 & onward LRI    UMR 8623 CNRS/Univ Paris Sud XI
- *
- *          Distributed under the Boost Software License, Version 1.0.
- *                 See accompanying file LICENSE.txt or copy at
- *                     http://www.boost.org/LICENSE_1_0.txt
- ******************************************************************************/
+//==============================================================================
+//         Copyright 2003 & onward LASMEA UMR 6602 CNRS/Univ. Clermont II
+//         Copyright 2009 & onward LRI    UMR 8623 CNRS/Univ Paris Sud XI
+//
+//          Distributed under the Boost Software License, Version 1.0.
+//                 See accompanying file LICENSE.txt or copy at
+//                     http://www.boost.org/LICENSE_1_0.txt
+//==============================================================================
 #ifndef NT2_CORE_CONTAINER_DETAILS_EXTENT_CALL_HPP_INCLUDED
 #define NT2_CORE_CONTAINER_DETAILS_EXTENT_CALL_HPP_INCLUDED
 
@@ -15,9 +15,9 @@
 
 namespace nt2 { namespace meta
 {
-  ////////////////////////////////////////////////////////////////////////////////
+  //============================================================================
   // extent terminals computes like terminals
-  ////////////////////////////////////////////////////////////////////////////////
+  //============================================================================
   template<class Target>
   struct  compute<tag::extent_,Target>
         : boost::proto::
@@ -29,61 +29,41 @@ namespace nt2 { namespace meta
                           )
               >
   {};
-}}
 
-////////////////////////////////////////////////////////////////////////////////
-// Register terminal handlers for extent terminals - Same size
-////////////////////////////////////////////////////////////////////////////////
-NT2_REGISTER_DISPATCH_TPL (  tag::extent_,tag::cpu_
-                          , (class A0)(class A1)(class A2)(std::size_t N)
-                          , ((array_<arithmetic_<A0>,N>))
-                            ((target_<unspecified_<A1> >))
-                            (integer_<A2>)
-                          )
-
-namespace nt2 { namespace ext
-{
-  template<class Dummy,std::size_t N>
-  struct call<tag::extent_( tag::array_<tag::arithmetic_,N>
-                          , tag::target_< tag::unspecified_ >
-                          , tag::integer_
-                          ),tag::cpu_,Dummy>
-  : callable
+  //============================================================================
+  // Register terminal handlers for extent terminals
+  //============================================================================
+  NT2_FUNCTOR_IMPLEMENTATION_TPL( tag::extent_,tag::cpu_
+                                , (class A0)(class A1)(class A2)(std::size_t N)
+                                , ((array_<scalar_< arithmetic_<A0> >,N>))
+                                  (target_< unspecified_<A1> >)
+                                  (scalar_< integer_<A2> >)
+                                )
   {
-    template<class Sig> struct result;
-
-    template<class This, class Value, class State, class Data>
-    struct result<This(Value,State,Data)>
-    {
-      typedef typename meta::strip<Value>::type::value_type  type;
-    };
-
-    template<class Value, class State, class Data> inline
-    typename result<call(Value,State,Data)>::type
-    operator()( Value& v, State& , Data& pos) const
+    typedef typename A0::value_type result_type;
+    
+    inline result_type operator()( A0& v, A1&, A2& pos) const
     {
       return v[pos];
     }
   };
-
-  template<class Dummy>
-  struct call<tag::extent_( tag::array_<tag::arithmetic_,0>
-                          , tag::target_< tag::unspecified_ >
-                          , tag::integer_
-                          ),tag::cpu_,Dummy>
-  : callable
+  
+  //============================================================================
+  // Register terminal handlers for extent terminals - _0D cases
+  //============================================================================
+  template<class A0, class A1, class A2, class Dummy>
+  struct implement< tag::extent_
+                    ( array_<scalar_< arithmetic_<A0> >,0>
+                    , target_< unspecified_<A1> >
+                    , scalar_< integer_<A2> >
+                    )
+                  , tag::cpu_,Dummy
+                  >
   {
-    template<class Sig> struct result;
-
-    template<class This, class Value, class State, class Data>
-    struct result<This(Value,State,Data)>
-    {
-      typedef typename meta::strip<Value>::type::value_type  type;
-    };
-
-    template<class Value, class State, class Data> inline
-    typename result<call(Value,State,Data)>::type
-    operator()( Value& v, State& , Data& pos) const
+    typedef typename A0::value_type result_type;
+    
+    template<class Target>
+    inline result_type operator()( A0&, Target&, A2&) const
     {
       return 1;
     }
