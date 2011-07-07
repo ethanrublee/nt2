@@ -14,10 +14,6 @@
 #include <nt2/sdk/dsl/category.hpp>
 #include <nt2/sdk/dsl/evaluation.hpp>
 
-
-#include <iostream>
-#include <nt2/sdk/details/type_id.hpp>
-
 //==============================================================================
 // Evaluation of simd native pack
 //==============================================================================
