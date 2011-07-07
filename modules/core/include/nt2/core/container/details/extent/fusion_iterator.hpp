@@ -40,7 +40,7 @@ namespace nt2 { namespace containers
                           , typename T::sequence_type::reference
                           >::type                             type;
 
-      static type call(T const& iter) { return iter.seq_(N+1); }
+      static type call(T const& iter) { return iter.seq_(T::index+1); }
     };
 
     template<typename It> struct next
