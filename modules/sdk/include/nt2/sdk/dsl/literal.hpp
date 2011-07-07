@@ -63,7 +63,7 @@ namespace nt2 { namespace meta
                                 , (class Value)(class State)
                                   (class Data)(std::size_t N)
                                 , (scalar_< arithmetic_<Value> >)
-                                  ((target_< scalar_< array_<arithmetic_<State>,N> > >))
+                                  ((target_< array_< scalar_< arithmetic_<State> >,N > >))
                                   (scalar_< integer_<Data> >)
                                 )
 {
@@ -82,7 +82,7 @@ namespace nt2 { namespace meta
                                 , (class Id)(class State)
                                   (class Data)(std::size_t N)
                                 , (constant_<Id>)
-                                  ((target_< scalar_< array_<arithmetic_<State>,N> > >))
+                                  ((target_< array_<scalar_< arithmetic_<State> > ,N> >))
                                   (scalar_< integer_<Data> >)
                                 )
 {
