@@ -10,6 +10,7 @@
 #define NT2_CORE_CONTAINER_DETAILS_FORWARD_HPP_INCLUDED
 
 #include <nt2/core/container/details/facade.hpp>
+#include <nt2/core/container/details/descriptor.hpp>
 #include <nt2/core/container/details/block/forward.hpp>
 #include <nt2/core/container/details/table/forward.hpp>
 #include <nt2/core/container/details/extent/forward.hpp>

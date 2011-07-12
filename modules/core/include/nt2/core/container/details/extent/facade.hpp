@@ -14,6 +14,9 @@
 #include <boost/fusion/adapted/mpl.hpp>
 #include <boost/fusion/include/mpl.hpp>
 #include <boost/fusion/adapted/array.hpp>
+#include <nt2/core/settings/index.hpp>
+#include <nt2/core/settings/storage_kind.hpp>
+#include <nt2/core/settings/storage_order.hpp>
 #include <nt2/core/container/details/extent/container.hpp>
 #include <nt2/core/container/details/extent/fusion.hpp>
 #include <nt2/core/container/details/extent/domain.hpp>
@@ -26,13 +29,17 @@ namespace nt2 { namespace ext
   template<class Dimensions,class S>
   struct facade<tag::extent_,Dimensions, S>
   {
+    typedef descriptor< Dimensions
+                      , matlab_index_
+                      , stack_(column_major_)
+                      >                                       descriptor_type;
     typedef boost::array<std::size_t,Dimensions::dimensions>  data_type;
     typedef containers::container
             < typename boost::proto::nullary_expr < tag::extent_
                                                   , data_type
                                                   >::type
             , tag::extent_
-            , boost::mpl::size_t<Dimensions::dimensions>
+            , descriptor_type
             >                                                 type;
   };
 } }

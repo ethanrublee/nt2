@@ -19,9 +19,9 @@
 //==============================================================================
 namespace nt2 { namespace containers
 {
-  template<class D, class Dummy>
-  struct  domain<tag::extent_, D, Dummy>
-        : boost::proto::domain< containers::generator<tag::extent_,D>
+  template<class Descriptor, class Dummy>
+  struct  domain<tag::extent_, Descriptor, Dummy>
+        : boost::proto::domain< containers::generator<tag::extent_,Descriptor>
                               , containers::grammar<tag::extent_>
                               , domain<tag::table_,boost::mpl::size_t<2> >
                               >

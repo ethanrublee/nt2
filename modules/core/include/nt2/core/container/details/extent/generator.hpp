@@ -11,18 +11,13 @@
 
 namespace nt2 { namespace containers
 {
-  //////////////////////////////////////////////////////////////////////////////
-  // Container Expression check if their size are compatible before being built
-  // Depending on tag and types, a static or runtime assertion can be triggered
-  //////////////////////////////////////////////////////////////////////////////
-  template<class Dimension>
-  struct generator<tag::extent_,Dimension>
+  template<class Descriptor> struct generator<tag::extent_,Descriptor>
   {
     template<class Sig> struct result;
     template<class This, class Expr>
     struct result<This(Expr)>
     {
-      typedef container<Expr,tag::extent_,Dimension> type;
+      typedef container<Expr,tag::extent_,Descriptor> type;
     };
 
     template<class Expr>

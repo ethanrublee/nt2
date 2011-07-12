@@ -44,17 +44,17 @@ namespace nt2 { namespace meta
       meta::compile< meta::compute<boost::mpl::_1,tag::cpu_> >  callee;
 
       NT2_STATIC_ASSERT
-      ( (D0::value >= D1::value)
+      ( (A0::static_dimensions >= A1::static_dimensions)
       , NT2_SIZE_MISMATCH_IN_EXTENT_EVALUATION
       , "Size mismatch in extent evaluation"
       );
 
       // Fill the common part of the extent
-      for(std::size_t i=0;i<D1::value;++i)
+      for(std::size_t i=0;i<A1::static_dimensions;++i)
         boost::proto::value(a0)[i] = callee(a1,target,i);
 
       // Fill the remaining with 1
-      for(std::size_t i=D1::value;i<D0::value;++i)
+      for(std::size_t i=A1::static_dimensions;i<A0::static_dimensions;++i)
         boost::proto::value(a0)[i] = 1;
     }
   };

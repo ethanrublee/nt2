@@ -19,10 +19,10 @@
 namespace nt2 { namespace meta
 {
   NT2_FUNCTOR_IMPLEMENTATION( tag::value_at_, tag::cpu_
-                            , (A0)(Dim)(Sema)(Tag)(A1)
+                            , (A0)(D0)(Sema)(Tag)(A1)
                             , ((expr_ < A0
                                       , domain_ < containers::domain< tag::extent_
-                                                                    , Dim
+                                                                    , D0
                                                                     > 
                                                 >
                                       , Tag, Sema
@@ -59,10 +59,10 @@ namespace nt2 { namespace meta
   // terminal case
   //============================================================================
   NT2_FUNCTOR_IMPLEMENTATION( tag::value_at_, tag::cpu_
-                            , (A0)(Dim)(Sema)(A1)
+                            , (A0)(D0)(Sema)(A1)
                             , ((expr_ < A0
                                       , domain_ < containers::domain< tag::extent_
-                                                                    , Dim
+                                                                    , D0
                                                                     > 
                                                 >
                                       , tag::extent_, Sema
@@ -105,11 +105,11 @@ namespace nt2 { namespace meta
   // terminal case for _0D
   //============================================================================
   NT2_FUNCTOR_IMPLEMENTATION( tag::value_at_, tag::cpu_
-                            , (A0)(Sema)(A1)
+                            , (A0)(B)(SK)(Sema)(A1)
                             , ((expr_ < A0
                                       , domain_ < containers::
                                                   domain< tag::extent_
-                                                        , boost::mpl::size_t<0>
+                                                        , descriptor<_0D,B,SK>
                                                         > 
                                                 >
                                       , tag::extent_, Sema

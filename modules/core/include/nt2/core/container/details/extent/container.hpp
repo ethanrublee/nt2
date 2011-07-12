@@ -24,19 +24,19 @@ namespace nt2 { namespace containers
    * This class defines the common behavior of extent classes and expressions
    */
   //============================================================================
-  template<class AST, class Dims>
-  struct  container<AST,tag::extent_,Dims>
+  template<class AST, class Desc>
+  struct  container<AST,tag::extent_,Desc>
         : boost::proto::extends < AST
-                                , container<AST,tag::extent_,Dims>
-                                , domain<tag::extent_,Dims>
+                                , container<AST,tag::extent_,Desc>
+                                , domain<tag::extent_,Desc>
                                 >
   {
     //==========================================================================
     // Internal proto related types
     //==========================================================================
     typedef boost::proto::extends < AST
-                                  , container<AST,tag::extent_,Dims>
-                                  , domain<tag::extent_,Dims>
+                                  , container<AST,tag::extent_,Desc>
+                                  , domain<tag::extent_,Desc>
                                   >                                     parent;
 
     //==========================================================================
@@ -45,7 +45,9 @@ namespace nt2 { namespace containers
     typedef typename
     details::hierarchy_of_expr<container>::type     nt2_hierarchy_tag;
 
-    BOOST_STATIC_CONSTANT(std::size_t, static_dimensions = Dims::value );
+    BOOST_STATIC_CONSTANT ( std::size_t
+                          , static_dimensions= Desc::dimensions_type::dimensions 
+                          );
 
     typedef boost::array<std::size_t,static_dimensions>  data_type;
 
