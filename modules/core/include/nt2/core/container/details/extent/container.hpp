@@ -46,7 +46,7 @@ namespace nt2 { namespace containers
     details::hierarchy_of_expr<container>::type     nt2_hierarchy_tag;
 
     BOOST_STATIC_CONSTANT ( std::size_t
-                          , static_dimensions= Desc::dimensions_type::dimensions 
+                          , static_dimensions= Desc::dimensions_type::value 
                           );
 
     typedef boost::array<std::size_t,static_dimensions>  data_type;

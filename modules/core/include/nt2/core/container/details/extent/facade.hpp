@@ -29,7 +29,7 @@ namespace nt2 { namespace ext
   template<class Dimensions,class S>
   struct facade<tag::extent_,Dimensions, S>
   {
-    typedef descriptor< Dimensions
+    typedef descriptor< boost::mpl::int_<Dimensions::dimensions>
                       , matlab_index_
                       , stack_(column_major_)
                       >                                       descriptor_type;

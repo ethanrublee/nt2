@@ -109,7 +109,11 @@ namespace nt2 { namespace meta
                             , ((expr_ < A0
                                       , domain_ < containers::
                                                   domain< tag::extent_
-                                                        , descriptor<_0D,B,SK>
+                                                        , descriptor
+                                                          < boost::mpl::int_<0>
+                                                          , B
+                                                          , SK
+                                                          >
                                                         > 
                                                 >
                                       , tag::extent_, Sema

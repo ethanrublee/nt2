@@ -56,6 +56,8 @@ namespace nt2 { namespace meta
       // Fill the remaining with 1
       for(std::size_t i=A1::static_dimensions;i<A0::static_dimensions;++i)
         boost::proto::value(a0)[i] = 1;
+        
+      return 0;
     }
   };
 } }
