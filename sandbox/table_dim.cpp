@@ -119,7 +119,7 @@ struct matrix_domain
 : proto::domain<proto::generator<matrix_expression>, _, table_domain<boost::mpl::int_<2> > > {};
 
 struct vector_domain 
-: proto::domain<proto::generator<vector_expression>, _, table_domain<boost::mpl::int_<1> > > {};
+: proto::domain<proto::generator<vector_expression>, _, matrix_domain > {};
 
 
 template<int N>
@@ -127,7 +127,6 @@ typename boost::proto::result_of
 ::make_expr< boost::proto::tag::terminal
 , table_domain<boost::mpl::int_<N> >
 , int const
-
 >::type
 make_table()
 {
@@ -162,14 +161,35 @@ make_vector()
 template<class X> void
 type_from(X const& )
 {
-  std::cout << nt2::type_id<typename boost::proto::domain_of<X>::type >() << "\n";
+  std::cout << nt2::type_id<X >() << "\n";
+    std::cout << "in: " << nt2::type_id<typename boost::proto::domain_of<X>::type >() << "\n\n";
 }
+
+struct mvprod {};
+
+template<class M, class V>
+typename boost::proto::result_of
+::make_expr< mvprod
+, vector_domain
+, matrix_expression<M>
+, vector_expression<V>
+>::type
+operator*(matrix_expression<M> const& m, vector_expression<V> const& v )
+{
+	return	boost::proto::
+	make_expr<mvprod,vector_domain>(m,v);
+}
+
 
 int main()
 {
-	type_from(make_table<1>()+make_table<2>());
-	type_from(make_table<1>() + make_table<1>());
-	type_from(make_vector()+make_vector());
-  type_from(make_matrix()+make_matrix());
-  type_from(make_vector()+make_matrix());
+//	type_from(make_table<1>()+make_table<2>());
+//	type_from(make_table<1>() + make_table<1>());
+//	type_from(make_vector()+make_vector());
+//  type_from(make_matrix()+make_matrix());
+//  type_from(make_vector()+make_matrix());
+  
+  
+  type_from(make_matrix() * make_vector());
+  type_from(make_matrix() * make_matrix() * make_vector());
 }
