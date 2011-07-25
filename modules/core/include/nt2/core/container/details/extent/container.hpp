@@ -54,8 +54,9 @@ namespace nt2 { namespace containers
     //==========================================================================
     // Proto required interface
     //==========================================================================
-    explicit container( AST const& xpr = AST() ): parent(xpr) {}
-    BOOST_PROTO_EXTENDS_USING_ASSIGN(container)
+    explicit  container( AST const& xpr = AST() )
+            : parent(xpr)
+    {}
 
     //==========================================================================
     // Fusion sequence interface
