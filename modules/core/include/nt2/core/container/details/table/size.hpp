@@ -19,7 +19,7 @@
 /////////////////////////////////////////////////////////////////////////////
 NT2_REGISTER_DISPATCH ( tag::size_, tag::cpu_
                       , (A0)(Storage)
-                      , ((block_<arithmetic_<A0>,Storage>))
+                      , ((block_< scalar_< arithmetic_<A0> >,Storage>))
                       )
 
 namespace nt2 { namespace ext

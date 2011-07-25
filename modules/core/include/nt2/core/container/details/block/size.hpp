@@ -9,34 +9,34 @@
 #ifndef NT2_CORE_CONTAINER_DETAILS_BLOCK_SIZE_HPP_INCLUDED
 #define NT2_CORE_CONTAINER_DETAILS_BLOCK_SIZE_HPP_INCLUDED
 
-#include <nt2/core/functions/size.hpp>
+//#include <nt2/core/functions/size.hpp>
 
-/////////////////////////////////////////////////////////////////////////////
-// Implementation when type A0 is a block
-/////////////////////////////////////////////////////////////////////////////
-NT2_REGISTER_DISPATCH ( tag::size_, tag::cpu_
-                      , (A0)(S)
-                      , ((block_< fundamental_<A0>,S>))
-                      )
-
-namespace nt2 { namespace ext
-{
-  template<class S, class Dummy>
-  struct  call< tag::size_(tag::block_<tag::fundamental_,S>)
-              , tag::cpu_, Dummy
-              >
-        : callable
-  {
-    template<class Sig> struct result;
-
-    template<class This,class A0>
-    struct result<This(A0)>
-    {
-      typedef typename meta::strip<A0>::type::sizes_type const& type;
-    };
-
-    NT2_FUNCTOR_CALL(1) { return a0.sizes(); }
-  };
-} }
+// /////////////////////////////////////////////////////////////////////////////
+// // Implementation when type A0 is a block
+// /////////////////////////////////////////////////////////////////////////////
+// NT2_REGISTER_DISPATCH ( tag::size_, tag::cpu_
+//                       , (A0)(S)
+//                       , ((block_< fundamental_<A0>,S>))
+//                       )
+// 
+// namespace nt2 { namespace ext
+// {
+//   template<class S, class Dummy>
+//   struct  call< tag::size_(tag::block_<tag::fundamental_,S>)
+//               , tag::cpu_, Dummy
+//               >
+//         : callable
+//   {
+//     template<class Sig> struct result;
+// 
+//     template<class This,class A0>
+//     struct result<This(A0)>
+//     {
+//       typedef typename meta::strip<A0>::type::sizes_type const& type;
+//     };
+// 
+//     NT2_FUNCTOR_CALL(1) { return a0.sizes(); }
+//   };
+// } }
 
 #endif
