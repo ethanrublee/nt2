@@ -15,29 +15,16 @@
 #include <nt2/core/container/details/block/category.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
-// Implementation when type A0 is an extent value
+// Implementation when type A0 is a block value
 /////////////////////////////////////////////////////////////////////////////
-NT2_REGISTER_DISPATCH ( tag::size_, tag::cpu_
-                      , (A0)(Storage)
-                      , ((block_< scalar_< arithmetic_<A0> >,Storage>))
-                      )
-
-namespace nt2 { namespace ext
+namespace nt2 { namespace meta
 {
-  template<class Storage, class Dummy>
-  struct  call< tag::size_(tag::block_<tag::arithmetic_,Storage>)
-              , tag::cpu_, Dummy
-              >
-        : callable
+  NT2_FUNCTOR_IMPLEMENTATION( tag::size_, tag::cpu_
+                            , (A0)(Storage)
+                            , ((block_< scalar_< arithmetic_<A0> >,Storage>))
+                            )
   {
-    template<class Sig> struct result;
-
-    template<class This,class A0>
-    struct result<This(A0)>
-    {
-      typedef typename meta::strip<A0>::type::sizes_type type;
-    };
-
+    typedef typename A0::sizes_type result_type;
     NT2_FUNCTOR_CALL(1) { return a0.sizes(); }
   };
 } }
