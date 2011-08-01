@@ -23,17 +23,36 @@ namespace nt2
   namespace tag { template<class T,class S> struct block_ {}; }
 
   //////////////////////////////////////////////////////////////////////////////
-  // simd types hierarchy
+  // block types hierarchy
   //////////////////////////////////////////////////////////////////////////////
   namespace meta
   {
     template<class T,class S> struct block_ : block_<typename T::parent,S>
     {
       typedef block_<typename T::parent,S>     parent;
-      typedef tag::block_<typename T::type,S>  type;
     };
 
     template<class T,class S> struct block_< unknown_<T>,S > : unknown_<T> {};
+
+    //==========================================================================
+    // Same property than T
+    //==========================================================================
+    template<class T, class D, class SO, class SK, class P, class Origin>
+    struct  property_of< containers::block<T,D,SO,SK,P>, Origin >
+          : property_of< T, Origin, Origin > 
+    {};
+
+    //==========================================================================
+    // Requirements for Buildable
+    //==========================================================================
+    template<class T, class D, class SO, class SK, class P>
+    struct primitive_of< containers::block<T,D,SO,SK,P> > : primitive_of<T> {};
+
+    template<class T, class D, class SO, class SK, class P>
+    struct factory_of< containers::block<T,D,SO,SK,P> > 
+    { 
+      typedef containers::block<boost::mpl::_1,D,SO,SK,P> type; 
+    };
   }
 }
 

@@ -48,7 +48,7 @@ namespace nt2 { namespace containers
     ////////////////////////////////////////////////////////////////////////////
     // Block hierarchy is made of its base type and its settings
     ////////////////////////////////////////////////////////////////////////////
-    typedef meta::block_< typename meta::hierarchy_of<Type>::type
+    typedef meta::block_< typename meta::hierarchy_of<Type, block>::type
                         , heap_
                         >                                   nt2_hierarchy_tag;
 
