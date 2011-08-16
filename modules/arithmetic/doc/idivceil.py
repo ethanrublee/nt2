@@ -15,7 +15,8 @@
      'unit' : {
          'global_header' : {
              'first_stamp' : 'modified by jt the 01/12/2010',
-             'included' : ['#include<nt2/include/functions/ceil.hpp>'],
+             'included' : ['#include<nt2/include/functions/ceil.hpp>',
+                           '#include<nt2/include/functions/toint.hpp>'],
              'notes' : [],
              'stamp' : 'modified by jt the 13/12/2010',
             },
@@ -29,7 +30,8 @@
              'default' : {
                 },
              'real_' : {
-                 'T(4),T(3)' : 'T(2)',
+                 'nt2::Four<T>(),nt2::Three<T>()' : 'nt2::Two<r_t>()',
+                 'nt2::Four<T>(),nt2::Zero<T>()' : 'nt2::Inf<r_t>()',   
                  'nt2::Inf<T>()' : 'nt2::Zero<r_t>()',
                  'nt2::Minf<T>()' : 'nt2::Zero<r_t>()',
                  'nt2::Mone<T>()' : 'nt2::One<r_t>()',
@@ -40,12 +42,15 @@
                  'nt2::Zero<T>(),nt2::Zero<T>()' : 'nt2::Zero<r_t>()',
                 },
              'signed_int_' : {
-                 'T(4),T(3)' : 'T(2)',
+                 'nt2::Four<T>(),nt2::Three<T>()' : 'nt2::Two<r_t>()',
+                 'nt2::Four<T>(),nt2::Zero<T>()' : 'nt2::Valmax<r_t>()',   
+                 '-nt2::Four<T>(),nt2::Zero<T>()' : 'nt2::Valmin<r_t>()',   
                  'nt2::Mone<T>()' : 'nt2::One<r_t>()',
                  'nt2::One<T>()' : 'nt2::One<r_t>()',
                 },
              'unsigned_int_' : {
-                 'T(4),T(3)' : 'T(2)',
+                 'nt2::Four<T>(),nt2::Three<T>()' : 'nt2::Two<r_t>()',
+                 'nt2::Four<T>(),nt2::Zero<T>()' : 'nt2::Valmax<r_t>()',   
                  'nt2::One<T>()' : 'nt2::One<r_t>()',
                 },
             },
@@ -54,7 +59,7 @@
                  'default' : ['nt2::idivceil(a0,a1)'],
                 },
              'property_value' : {
-                 'default' : ['r_t(nt2::ceil((1.0*a0)/a1))'],
+                 'default' : ['nt2::toint(nt2::ceil((1.0*a0)/a1))'],
                 },
              'ulp_thresh' : {
                  'default' : ['0'],

@@ -19,13 +19,20 @@
 extern "C" {long double cephes_ellikl(long double,long double);}
 #include <nt2/toolbox/trigonometric/include/constants.hpp>
 
-#include <boost/type_traits/is_same.hpp> 
+#include <boost/type_traits/is_same.hpp>
 #include <nt2/sdk/functor/meta/call.hpp>
+#include <nt2/sdk/meta/as_integer.hpp>
+#include <nt2/sdk/meta/as_real.hpp>
+#include <nt2/sdk/meta/as_signed.hpp>
+#include <nt2/sdk/meta/upgrade.hpp>
+#include <nt2/sdk/meta/downgrade.hpp>
+#include <nt2/sdk/meta/scalar_of.hpp>
+#include <nt2/sdk/meta/floating.hpp>
+#include <nt2/sdk/meta/arithmetic.hpp>
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <nt2/sdk/memory/buffer.hpp>
 #include <nt2/include/constants/real.hpp>
-#include <nt2/include/constants/infinites.hpp>
 
 
 
@@ -39,6 +46,7 @@ NT2_TEST_CASE_TPL ( ellipke_real__1_0,  NT2_REAL_TYPES)
   typedef boost::fusion::tuple<etype,etype> rtype;
   typedef typename nt2::meta::as_integer<T>::type iT;
   typedef typename nt2::meta::call<ellipke_(T)>::type r_t;
+  typedef typename nt2::meta::scalar_of<r_t>::type ssr_t;
   typedef typename nt2::meta::upgrade<T>::type u_t;
   typedef rtype wished_r_t;
 
@@ -55,9 +63,20 @@ NT2_TEST_CASE_TPL ( ellipke_real__1_0,  NT2_REAL_TYPES)
   typedef typename nt2::meta::strip<typename boost::fusion::result_of::at_c<r_t,1>::type>::type r_t1;
   {
     r_t res = ellipke(nt2::One<T>());
-    r_t0 aa0;
-    r_t0 aa1;
-    ellipke(nt2::One<T>(), aa0, aa1);
+    NT2_TEST_TUPLE_ULP_EQUAL( boost::fusion::get<0>(res), nt2::Inf<r_t0>(), 0.5);
+    NT2_TEST_TUPLE_ULP_EQUAL( boost::fusion::get<1>(res), nt2::One<r_t1>(), 0.5);
+  }
+  {
+    r_t res = ellipke(nt2::Zero<T>());
+    NT2_TEST_TUPLE_ULP_EQUAL( boost::fusion::get<0>(res), nt2::Pio_2<r_t0>(), 0.5);
+    NT2_TEST_TUPLE_ULP_EQUAL( boost::fusion::get<1>(res), nt2::Pio_2<r_t1>(), 0.5);
+  }
+
+  // specific values tests
+  typedef typename nt2::meta::strip<typename boost::fusion::result_of::at_c<r_t,0>::type>::type r_t0;
+  typedef typename nt2::meta::strip<typename boost::fusion::result_of::at_c<r_t,1>::type>::type r_t1;
+  {
+    r_t res = ellipke(nt2::One<T>());
     NT2_TEST_TUPLE_ULP_EQUAL( boost::fusion::get<0>(res), nt2::Inf<r_t0>(), 0.5);
     NT2_TEST_TUPLE_ULP_EQUAL( boost::fusion::get<1>(res), nt2::One<r_t1>(), 0.5);
   }
@@ -78,6 +97,7 @@ NT2_TEST_CASE_TPL ( ellipke_real__2_1,  NT2_REAL_TYPES)
   typedef boost::fusion::tuple<etype,etype> rtype;
   typedef typename nt2::meta::as_integer<T>::type iT;
   typedef typename nt2::meta::call<ellipke_(T,scalar)>::type r_t;
+  typedef typename nt2::meta::scalar_of<r_t>::type ssr_t;
   typedef typename nt2::meta::upgrade<T>::type u_t;
   typedef rtype wished_r_t;
 
@@ -93,9 +113,20 @@ NT2_TEST_CASE_TPL ( ellipke_real__2_1,  NT2_REAL_TYPES)
   typedef typename nt2::meta::strip<typename boost::fusion::result_of::at_c<r_t,0>::type>::type r_t0;
   typedef typename nt2::meta::strip<typename boost::fusion::result_of::at_c<r_t,1>::type>::type r_t1;
   {
-    r_t0 aa0;
-    r_t0 aa1;
-    ellipke(nt2::One<T>(),nt2::Eps<scalar>(), aa0, aa1);
+    r_t res = ellipke(nt2::One<T>(),nt2::Eps<scalar>());
+    NT2_TEST_TUPLE_ULP_EQUAL( boost::fusion::get<0>(res), nt2::Inf<r_t0>(), 0.5);
+    NT2_TEST_TUPLE_ULP_EQUAL( boost::fusion::get<1>(res), nt2::One<r_t1>(), 0.5);
+  }
+  {
+    r_t res = ellipke(nt2::Zero<T>(),nt2::Eps<scalar>());
+    NT2_TEST_TUPLE_ULP_EQUAL( boost::fusion::get<0>(res), nt2::Pio_2<r_t0>(), 0.5);
+    NT2_TEST_TUPLE_ULP_EQUAL( boost::fusion::get<1>(res), nt2::Pio_2<r_t1>(), 0.5);
+  }
+
+  // specific values tests
+  typedef typename nt2::meta::strip<typename boost::fusion::result_of::at_c<r_t,0>::type>::type r_t0;
+  typedef typename nt2::meta::strip<typename boost::fusion::result_of::at_c<r_t,1>::type>::type r_t1;
+  {
     r_t res = ellipke(nt2::One<T>(),nt2::Eps<scalar>());
     NT2_TEST_TUPLE_ULP_EQUAL( boost::fusion::get<0>(res), nt2::Inf<r_t0>(), 0.5);
     NT2_TEST_TUPLE_ULP_EQUAL( boost::fusion::get<1>(res), nt2::One<r_t1>(), 0.5);

@@ -16,6 +16,7 @@
          'global_header' : {
              'first_stamp' : 'created  by jt the 18/02/2011',
              'included' : ['#include <nt2/include/functions/any.hpp>'],
+             'cover_included' : ['#include <nt2/include/functions/is_not_equal.hpp>'],
              'no_ulp' : 'True',
              'notes' : [],
              'stamp' : 'modified by jt the 18/02/2011',
@@ -31,7 +32,7 @@
                  'nt2::One<T>(),nt2::Zero<T>()' : {'result' : 'true','ulp_thresh' : '0',},
                  'nt2::Zero<T>()' : {'result' : 'false','ulp_thresh' : '0',},
                 },
-             'integer_   ' : {
+             'integer_' : {
                  'nt2::One<T>()' : {'result' : 'false','ulp_thresh' : '0',},
                  'nt2::One<T>(),nt2::Zero<T>()' : {'result' : 'true','ulp_thresh' : '0',},
                  'nt2::Zero<T>()' : {'result' : 'false','ulp_thresh' : '0',},

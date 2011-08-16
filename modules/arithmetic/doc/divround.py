@@ -17,6 +17,7 @@
              'first_stamp' : 'modified by jt the 01/12/2010',
              'included' : ['#include<nt2/include/functions/iround.hpp>',
                            '#include<nt2/include/functions/tofloat.hpp>'],
+             'cover_included' : ['#include<nt2/include/functions/round.hpp>'],  
              'notes' : [],
              'stamp' : 'modified by jt the 13/12/2010',
             },
@@ -30,6 +31,9 @@
              'default' : {
                 },
              'real_' : {
+                 'nt2::Four<T>(),nt2::Three<T>()' : 'nt2::One<r_t>()',
+                 'nt2::Five<T>(),nt2::Three<T>()' : 'nt2::Two<r_t>()',
+                 'nt2::Four<T>(),nt2::Zero<T>()' : 'nt2::Inf<r_t>()',   
                  'nt2::Inf<T>()' : 'nt2::Nan<r_t>()',
                  'nt2::Minf<T>()' : 'nt2::Nan<r_t>()',
                  'nt2::Mone<T>()' : 'nt2::One<r_t>()',
@@ -37,10 +41,17 @@
                  'nt2::One<T>()' : 'nt2::One<r_t>()',
                 },
              'signed_int_' : {
+                 'nt2::Four<T>(),nt2::Three<T>()' : 'nt2::One<r_t>()',
+                 'nt2::Five<T>(),nt2::Three<T>()' : 'nt2::Two<r_t>()',
+                 'nt2::Four<T>(),nt2::Zero<T>()' : 'nt2::Valmax<r_t>()',   
+                 '-nt2::Four<T>(),nt2::Zero<T>()' : 'nt2::Valmin<r_t>()',   
                  'nt2::Mone<T>()' : 'nt2::One<r_t>()',
                  'nt2::One<T>()' : 'nt2::One<r_t>()',
                 },
              'unsigned_int_' : {
+                 'nt2::Four<T>(),nt2::Three<T>()' : 'nt2::One<r_t>()',
+                 'nt2::Five<T>(),nt2::Three<T>()' : 'nt2::Two<r_t>()',
+                 'nt2::Four<T>(),nt2::Zero<T>()' : 'nt2::Valmax<r_t>()',   
                  'nt2::One<T>()' : 'nt2::One<r_t>()',
                 },
             },
@@ -49,7 +60,9 @@
                  'default' : ['nt2::divround(a0,a1)'],
                 },
              'property_value' : {
-                 'default' : ['nt2::round(nt2::tofloat(a0)/nt2::tofloat(a1))'],
+                 'unsigned_int_' : ['a1 ? r_t(nt2::round(double(a0)/double(a1))) : (a0 ? nt2::Valmax<r_t>() : 0)'],
+                 'signed_int_' : ['a1 ? r_t(nt2::round(double(a0)/double(a1))) : (a0<0 ? nt2::Valmin<r_t>() : (a0 ? nt2::Valmax<r_t>() : 0))'],
+                 'real_' : ['nt2::round(double(a0)/double(a1))'],
                 },
              'ulp_thresh' : {
                  'default' : ['0'],

@@ -7,56 +7,60 @@
 #                     http://www.boost.org/LICENSE_1_0.txt
 ################################################################################
 
-include(CPack)
-
 macro(nt2_module_install_setup)
   if(NOT UNIX)
     set( NT2_INSTALL_SHARE_DIR .
-         CACHE PATH "The directory where we install the extra files that are not headers nor libraries"
-         FORCE
+         CACHE PATH "Directory where to install extra files"
        )
   else()
     set( NT2_INSTALL_SHARE_DIR share/nt2
-         CACHE PATH "The directory where we install the extra files that are not headers nor libraries"
-         FORCE
+         CACHE PATH "Directory where to install extra files"
        )
   endif()
 
 endmacro()
 
 macro(nt2_module_source_setup module)
-  nt2_module_install_setup()
-  string(TOUPPER ${module} module_U)
+  string(TOUPPER ${module} NT2_CURRENT_MODULE_U)
   
   set(NT2_CURRENT_MODULE ${module})
   set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
   
-  include_directories(${NT2_${module_U}_INCLUDE_DIR})
-  link_directories(${NT2_${module_U}_DEPENDENCIES_LIBRARY_DIR})
-  link_libraries(${NT2_${module_U}_DEPENDENCIES_LIBRARIES})
-  set(NT2_CURRENT_FLAGS "${NT2_CURRENT_FLAGS} ${NT2_${module_U}_FLAGS}")
+  include_directories(${NT2_${NT2_CURRENT_MODULE_U}_INCLUDE_DIR})
+  link_directories(${NT2_${NT2_CURRENT_MODULE_U}_DEPENDENCIES_LIBRARY_DIR})
+  link_libraries(${NT2_${NT2_CURRENT_MODULE_U}_DEPENDENCIES_LIBRARIES})
+  set(NT2_CURRENT_FLAGS "${NT2_CURRENT_FLAGS} ${NT2_${NT2_CURRENT_MODULE_U}_FLAGS}")
   
-  # set up component
-  cpack_add_component(${module}
-                      DEPENDS ${NT2_${module_U}_DEPENDENCIES_EXTRA}
-                     )
-  
-  # install headers, cmake modules and manifest
-  install( DIRECTORY ${NT2_${module_U}_ROOT}/include/
-           DESTINATION include
-           COMPONENT ${module}
-           FILES_MATCHING PATTERN "*.hpp"
-         )
   file(WRITE ${PROJECT_BINARY_DIR}/modules/${module}.manifest)
-  install( FILES ${PROJECT_BINARY_DIR}/modules/${module}.manifest
-           DESTINATION ${NT2_INSTALL_SHARE_DIR}/modules
-           COMPONENT ${module}
-         )
-  install( DIRECTORY ${NT2_${module_U}_ROOT}/cmake
-           DESTINATION ${NT2_INSTALL_SHARE_DIR}
-           COMPONENT ${module}
-           FILES_MATCHING PATTERN "*.cmake"
-         )
+  
+  # installation is only done when current project is NT2
+  # or same as current module
+  if(PROJECT_NAME STREQUAL NT2 OR PROJECT_NAME STREQUAL "NT2_${NT2_CURRENT_MODULE_U}")
+
+    nt2_module_install_setup()
+
+    # set up component
+    cpack_add_component(${module}
+                        DEPENDS ${NT2_${NT2_CURRENT_MODULE_U}_DEPENDENCIES_EXTRA}
+                       )
+  
+    # install headers, cmake modules and manifest
+    install( DIRECTORY ${NT2_${NT2_CURRENT_MODULE_U}_ROOT}/include/
+             DESTINATION include
+             COMPONENT ${module}
+             FILES_MATCHING PATTERN "*.hpp"
+           )
+    install( FILES ${PROJECT_BINARY_DIR}/modules/${module}.manifest
+             DESTINATION ${NT2_INSTALL_SHARE_DIR}/modules
+             COMPONENT ${module}
+           )
+    install( DIRECTORY ${NT2_${NT2_CURRENT_MODULE_U}_ROOT}/cmake
+             DESTINATION ${NT2_INSTALL_SHARE_DIR}
+             COMPONENT ${module}
+             FILES_MATCHING PATTERN "*.cmake"
+                            PATTERN "*.cpp"
+           )
+  endif()
   
 endmacro()
 
@@ -69,32 +73,52 @@ macro(nt2_setup_variant)
   endif()
 endmacro()
 
+function(nt2_module_target_parent target)
+  string(REGEX REPLACE "[^.]+\\.([^.]+)$" "\\1" parent_target ${target})
+
+  if(NOT parent_target STREQUAL ${target})
+    get_target_property(${parent_target}_exists ${parent_target} EXCLUDE_FROM_ALL)
+    if(${parent_target}_exists MATCHES "NOTFOUND$")
+      add_custom_target(${parent_target})
+    endif()
+    add_dependencies(${parent_target} ${target})
+  
+    nt2_module_target_parent(${parent_target})
+  endif()
+  
+endfunction()
+
 macro(nt2_module_dir dir)
   if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${dir})
-      get_target_property(${dir}_exists ${dir} EXCLUDE_FROM_ALL)
-      if(${dir}_exists MATCHES "NOTFOUND$")
-        add_custom_target(${dir})
-      endif()
-      add_custom_target(${module}.${dir})
-      add_dependencies(${dir} ${module}.${dir})
+      add_custom_target(${NT2_CURRENT_MODULE}.${dir})
+      nt2_module_target_parent(${NT2_CURRENT_MODULE}.${dir})
       add_subdirectory(${dir})
     endif()
 endmacro()
 
 macro(nt2_module_main module)
-  string(TOUPPER ${module} module_U)
-  
+  string(TOUPPER ${module} NT2_CURRENT_MODULE_U)
+    
+  if(CMAKE_CURRENT_SOURCE_DIR STREQUAL ${PROJECT_SOURCE_DIR})
+    project(NT2_${NT2_CURRENT_MODULE_U})
+    nt2_postconfigure_init()
+  endif()
+
   nt2_setup_variant()
   
   set(NT2_CURRENT_MODULE ${module})
   nt2_module_use_modules(${module})
   
-  nt2_module_install_setup()
+  if(CMAKE_GENERATOR MATCHES "Make")
+    set(NT2_WITH_TESTS_ 1)
+  else()
+    set(NT2_WITH_TESTS_ 0)
+  endif()
+  option(NT2_WITH_TESTS "Enable benchmarks and unit tests" ${NT2_WITH_TESTS_})
+  option(NT2_WITH_TESTS_COVER "Enable cover tests" OFF)
   
-  if(CMAKE_GENERATOR MATCHES "Make" AND NOT DEFINED NT2_WITH_TESTS)
-    set(NT2_WITH_TESTS 1)
-  elseif(NOT DEFINED NT2_WITH_TESTS)
-    set(NT2_WITH_TESTS 0)
+  if(NT2_WITH_TESTS_COVER AND NOT NT2_WITH_TESTS)
+    set(NT2_WITH_TESTS 1 CACHE BOOL "Enable benchmarks and unit tests" FORCE)
   endif()
 
   if(NT2_WITH_TESTS)
@@ -109,7 +133,9 @@ macro(nt2_module_main module)
     endif()
   endif()
   
-  nt2_find_transfer_parent()
+  if(PROJECT_NAME STREQUAL "NT2_${NT2_CURRENT_MODULE_U}")
+    nt2_postconfigure_run()
+  endif()
 endmacro()
 
 macro(nt2_module_add_library libname)
@@ -133,18 +159,24 @@ macro(nt2_module_add_library libname)
 
   set_target_properties(${libname} PROPERTIES VERSION 3.0.0 SOVERSION 3)
   
-  set(FLAGS "${NT2_CURRENT_FLAGS} -DNT2_${NT2_CURRENT_MODULE_U}_SOURCE")
+  if(${NT2_CURRENT_MODULE} MATCHES "^boost\\.")
+    string(REPLACE "." "_" macro_name ${NT2_CURRENT_MODULE_U})
+  else()
+    string(REPLACE "." "__" macro_name "NT2_${NT2_CURRENT_MODULE_U}")
+  endif()
+  set(FLAGS "${NT2_CURRENT_FLAGS} -D${macro_name}_SOURCE")
   if(NT2_${NT2_CURRENT_MODULE_U}_DYN_LINK)
-    set(FLAGS "${FLAGS} -DNT2_${NT2_CURRENT_MODULE_U}_DYN_LINK")
+    set(FLAGS "${FLAGS} -D${macro_name}_DYN_LINK")
   endif()
   set_property(TARGET ${libname} PROPERTY COMPILE_FLAGS ${FLAGS})
   
-  
-  install( TARGETS ${libname}
-           LIBRARY DESTINATION lib
-           ARCHIVE DESTINATION lib
-           COMPONENT ${NT2_CURRENT_MODULE}
-         )
+  if(PROJECT_NAME STREQUAL NT2 OR PROJECT_NAME STREQUAL "NT2_${NT2_CURRENT_MODULE_U}")
+    install( TARGETS ${libname}
+             LIBRARY DESTINATION lib COMPONENT ${NT2_CURRENT_MODULE} CONFIGURATIONS Release
+             ARCHIVE DESTINATION lib COMPONENT ${NT2_CURRENT_MODULE} CONFIGURATIONS Release
+             RUNTIME DESTINATION lib COMPONENT ${NT2_CURRENT_MODULE} CONFIGURATIONS Release
+           )
+  endif()
   
 endmacro()
 
@@ -160,7 +192,6 @@ macro(nt2_module_use_modules)
   find_package(NT2 COMPONENTS ${ARGN})
   if(NOT NT2_FOUND)
     message(STATUS "[nt2.${NT2_CURRENT_MODULE}] warning:${component_} dependencies not met, skipping")
-    nt2_find_transfer_parent()
     return()
   endif()
 
@@ -169,8 +200,6 @@ macro(nt2_module_use_modules)
   link_libraries(${NT2_LIBRARIES})
   
   set(NT2_CURRENT_FLAGS "${NT2_CURRENT_FLAGS} ${NT2_FLAGS}")
-  
-  nt2_find_transfer_parent()
 endmacro()
 
 macro(nt2_module_add_exe DIRECTORY EXECUTABLE)
@@ -224,11 +253,15 @@ macro(nt2_module_add_example EXECUTABLE)
 endmacro()
 
 macro(nt2_module_install_file header)
-  string(REGEX REPLACE "^(.*)/[^/]+$" "\\1" ${header}_path ${header})
-  install(FILES ${PROJECT_BINARY_DIR}/include/${header}
-          DESTINATION include/${${header}_path}
-          COMPONENT ${NT2_CURRENT_MODULE}
-         )
+  string(TOUPPER ${NT2_CURRENT_MODULE} NT2_CURRENT_MODULE_U)
+
+  if(PROJECT_NAME STREQUAL NT2 OR PROJECT_NAME STREQUAL "NT2_${NT2_CURRENT_MODULE_U}")
+    string(REGEX REPLACE "^(.*)/[^/]+$" "\\1" ${header}_path ${header})
+    install(FILES ${PROJECT_BINARY_DIR}/include/${header}
+            DESTINATION include/${${header}_path}
+            COMPONENT ${NT2_CURRENT_MODULE}
+           )
+  endif()
 endmacro()
 
 macro(nt2_module_configure_py pyfile)
@@ -243,6 +276,7 @@ macro(nt2_module_configure_py pyfile)
   endif()
 
   find_file(_${pyfile}_PY ${pyfile} ${CMAKE_MODULE_PATH} NO_DEFAULT_PATH)
+  set(_${pyfile}_PY ${_${pyfile}_PY} CACHE INTERNAL "" FORCE)
   execute_process( COMMAND ${PYTHON_EXECUTABLE}
                    ${_${pyfile}_PY} --display
                    ${NT2_${NT2_CURRENT_MODULE_U}_ROOT}/include ${PROJECT_BINARY_DIR}/include
@@ -250,15 +284,13 @@ macro(nt2_module_configure_py pyfile)
                    OUTPUT_VARIABLE ${pyfile}_result
                    OUTPUT_STRIP_TRAILING_WHITESPACE
                  )
-                 
-   string(REPLACE "\n" ";" ${pyfile}_files ${${pyfile}_result})
-   foreach(gen_file ${${pyfile}_files})
-     nt2_module_install_file(${gen_file})
-   endforeach()
-endmacro()
-
-macro(nt2_module_configure_simd)
-  nt2_module_configure_py(simd_fwd.py ${ARGN})
+   
+  if(PROJECT_NAME STREQUAL NT2 OR PROJECT_NAME STREQUAL "NT2_${NT2_CURRENT_MODULE_U}" AND ${pyfile}_result)
+    string(REPLACE "\n" ";" ${pyfile}_files ${${pyfile}_result})
+    foreach(gen_file ${${pyfile}_files})
+      nt2_module_install_file(${gen_file})
+    endforeach()
+  endif()
 endmacro()
 
 macro(nt2_module_configure_include)
@@ -266,15 +298,249 @@ macro(nt2_module_configure_include)
 endmacro()
 
 macro(nt2_module_configure_toolbox toolbox is_sys)
-  if(${is_sys})
-    nt2_module_configure_include(nt2/toolbox/${toolbox}/function -o nt2/toolbox/${toolbox}/include -o nt2/include/functions)
-    nt2_module_configure_simd(nt2/toolbox/${toolbox}/function)
+  if(NT2_CURRENT_MODULE MATCHES "^boost[.]")
+    set(prefix "boost/simd")
   else()
-    nt2_module_configure_include(nt2/toolbox/${toolbox}/function -o nt2/toolbox/${toolbox}/include)
+    set(prefix "nt2")
+  endif()
+  
+  if(${is_sys})
+    nt2_module_postconfigure(gather_includes --ignore impl --ignore details --ignore preprocessed
+                                             ${prefix}/toolbox/${toolbox}/functions ${prefix}/toolbox/${toolbox}/include
+                                             --all ${prefix}/toolbox/${toolbox}/${toolbox}.hpp
+                                             ${prefix}/include/functions
+                            )
+  else()
+    nt2_module_postconfigure(gather_includes --ignore impl --ignore details --ignore preprocessed
+                                             ${prefix}/toolbox/${toolbox}/functions ${prefix}/toolbox/${toolbox}/include
+                                             --all ${prefix}/toolbox/${toolbox}/${toolbox}.hpp
+                            )
   endif()
 endmacro()
 
 macro(nt2_module_configure_file cmake_file header)
   configure_file(${cmake_file} ${PROJECT_BINARY_DIR}/include/${header})
   nt2_module_install_file(${header})
+endmacro()
+
+macro(nt2_module_simd_toolbox name)
+  string(TOUPPER ${name} name_U)
+  get_directory_property(INCLUDE_DIRECTORIES INCLUDE_DIRECTORIES)
+  foreach(dir ${INCLUDE_DIRECTORIES})
+    file(GLOB function_files RELATIVE ${dir}/boost/simd/toolbox/${name}/functions ${dir}/boost/simd/toolbox/${name}/functions/*.hpp)
+    foreach(file ${function_files})
+      string(REGEX REPLACE ".hpp" "" file ${file})
+      string(TOUPPER ${file} file_U)
+      file(WRITE ${PROJECT_BINARY_DIR}/include/nt2/toolbox/${name}/include/${file}.hpp
+                "//==============================================================================\n"
+                "//         Copyright 2003 - 2011   LASMEA UMR 6602 CNRS/Univ. Clermont II       \n"
+                "//         Copyright 2009 - 2011   LRI    UMR 8623 CNRS/Univ Paris Sud XI       \n"
+                "//                                                                              \n"
+                "//          Distributed under the Boost Software License, Version 1.0.          \n"
+                "//                 See accompanying file LICENSE.txt or copy at                 \n"
+                "//                     http://www.boost.org/LICENSE_1_0.txt                     \n"
+                "//==============================================================================\n"
+                "#ifndef NT2_TOOLBOX_${name_U}_INCLUDE_${file_U}_HPP_INCLUDED\n"
+                "#define NT2_TOOLBOX_${name_U}_INCLUDE_${file_U}_HPP_INCLUDED\n"
+                "\n"
+                "#include <boost/simd/toolbox/${name}/include/${file}.hpp>\n"
+                "\n"
+                "namespace nt2\n"
+                "{\n"
+                "  namespace tag\n"
+                "  {\n"
+                "    using boost::simd::tag::${file}_;\n"
+                "  }\n"
+                "\n"
+                "  using boost::simd::${file};\n"
+                "}\n"
+                "\n"
+                "#endif\n"
+          )
+    endforeach()
+    
+    file(GLOB constant_files RELATIVE ${dir}/boost/simd/toolbox/${name}/constants ${dir}/boost/simd/toolbox/${name}/constants/*.hpp)
+    foreach(file ${constant_files})
+      string(REGEX REPLACE ".hpp" "" file ${file})
+      string(TOUPPER ${file} file_U)
+      file(WRITE ${PROJECT_BINARY_DIR}/include/nt2/toolbox/${name}/include/${file}.hpp
+                "//==============================================================================\n"
+                "//         Copyright 2003 - 2011   LASMEA UMR 6602 CNRS/Univ. Clermont II       \n"
+                "//         Copyright 2009 - 2011   LRI    UMR 8623 CNRS/Univ Paris Sud XI       \n"
+                "//                                                                              \n"
+                "//          Distributed under the Boost Software License, Version 1.0.          \n"
+                "//                 See accompanying file LICENSE.txt or copy at                 \n"
+                "//                     http://www.boost.org/LICENSE_1_0.txt                     \n"
+                "//==============================================================================\n"
+                "#ifndef NT2_TOOLBOX_${name_U}_INCLUDE_${file_U}_HPP_INCLUDED\n"
+                "#define NT2_TOOLBOX_${name_U}_INCLUDE_${file_U}_HPP_INCLUDED\n"
+                "\n"
+                "#include <nt2/toolbox/${name}/${name}.hpp>\n" # Workaround
+                "\n"
+                "#endif\n"
+          )
+    endforeach()
+    
+    file(GLOB include_files RELATIVE ${dir}/boost/simd/toolbox/${name}/include ${dir}/boost/simd/toolbox/${name}/include/*.hpp)
+    foreach(file ${include_files})
+      file(READ ${dir}/boost/simd/toolbox/${name}/include/${file} file_content)
+      string(REPLACE "boost/simd/" "nt2/" file_content ${file_content})
+      string(REPLACE "BOOST_SIMD_" "NT2_" file_content ${file_content})
+      file(WRITE ${PROJECT_BINARY_DIR}/include/nt2/toolbox/${name}/include/${file} ${file_content})
+    endforeach()
+  endforeach()
+    
+  if(${name} STREQUAL constant)
+    nt2_module_configure_include(nt2/toolbox/${name}/include -o nt2/include/constants)
+  else()
+    nt2_module_configure_include(nt2/toolbox/${name}/include -o nt2/include/functions)
+  endif()
+endmacro()
+
+macro(nt2_module_tool_setup tool)
+
+  get_property(NT2_TOOL_${tool}_BUILT GLOBAL PROPERTY NT2_TOOL_${tool}_BUILT)
+  if(NOT NT2_TOOL_${tool}_BUILT)
+
+    define_property(GLOBAL PROPERTY NT2_TOOL_${tool}_BUILT
+                    BRIEF_DOCS "Whether nt2 tool ${tool} has already been built"
+                    FULL_DOCS "Global flag to avoid building nt2 tool ${tool} multiple times"
+                   )
+    set_property(GLOBAL PROPERTY NT2_TOOL_${tool}_BUILT 1)
+
+    message(STATUS "[nt2] building tool ${tool}")
+    file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/tools/${tool})
+  
+    if(DEFINED NT2_TOOL_BOOST_STUB)
+      set(NT2_TOOL_BOOST_STUB_DEFINE -DNT2_TOOL_BOOST_STUB=${NT2_TOOL_BOOST_STUB})
+    endif()
+  
+    execute_process(COMMAND ${CMAKE_COMMAND}
+                            -DCMAKE_BUILD_TYPE=Release ${NT2_TOOL_BOOST_STUB_DEFINE}
+                            ${NT2_SOURCE_ROOT}/tools/${tool}
+                    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/tools/${tool}
+                    OUTPUT_QUIET
+                    RESULT_VARIABLE tool_configure
+                   )
+
+    if(tool_configure)
+      message(FATAL_ERROR "[nt2] configuring tool ${tool} failed")
+    endif()
+
+    execute_process(COMMAND ${CMAKE_COMMAND} --build . --config Release
+                    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/tools/${tool}
+                    OUTPUT_QUIET
+                    RESULT_VARIABLE tool_build
+                   )
+                 
+    if(tool_build)
+      message(FATAL_ERROR "[nt2] building tool ${tool} failed")
+    endif()
+
+    if(PROJECT_NAME STREQUAL NT2 OR PROJECT_NAME STREQUAL "NT2_${NT2_CURRENT_MODULE_U}")
+      install( FILES ${PROJECT_BINARY_DIR}/tools/${tool}/${tool}${CMAKE_EXECUTABLE_SUFFIX}
+               DESTINATION tools/${tool}
+               COMPONENT tools
+             )
+    endif()
+
+  endif()
+
+endmacro()
+
+macro(nt2_module_tool tool)
+
+  nt2_module_tool_setup(${tool})
+  execute_process(COMMAND ${PROJECT_BINARY_DIR}/tools/${tool}/${tool} ${ARGN})
+
+endmacro()
+
+macro(nt2_module_postconfigure)
+
+  string(REPLACE ";" " " args "${ARGN}")
+  file(APPEND ${PROJECT_BINARY_DIR}/modules/${NT2_CURRENT_MODULE}.manifest "${args}\n")
+
+endmacro()
+
+macro(nt2_postconfigure_init)
+
+  define_property(GLOBAL PROPERTY NT2_POSTCONFIGURE_INITED
+                  BRIEF_DOCS "Whether nt2_postconfigure_init has already been called"
+                  FULL_DOCS "Global flag to avoid running postconfigure multiple times"
+                 )
+  set_property(GLOBAL PROPERTY NT2_POSTCONFIGURE_INITED 1)
+  set(NT2_FOUND_COMPONENTS "" CACHE INTERNAL "" FORCE)
+
+  # remove all generated include files at the beginning of configure.
+  file(REMOVE_RECURSE ${PROJECT_BINARY_DIR}/include)
+
+  if(PROJECT_NAME STREQUAL NT2 OR PROJECT_NAME STREQUAL "NT2_${NT2_CURRENT_MODULE_U}")
+    set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "ExecWait '\\\"$INSTDIR\\\\tools\\\\postconfigure\\\\postconfigure.exe\\\" \\\"$INSTDIR\\\"'")
+    include(CPack)
+    cpack_add_component(tools REQUIRED)
+
+    # postconfigure is a target because it's only required to install, not to configure
+    file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/tools/postconfigure)
+    install( FILES ${PROJECT_BINARY_DIR}/tools/postconfigure/postconfigure${CMAKE_EXECUTABLE_SUFFIX}
+             DESTINATION tools/postconfigure
+             COMPONENT tools
+           )
+             
+    if(DEFINED NT2_TOOL_BOOST_STUB)
+      set(NT2_TOOL_BOOST_STUB_DEFINE -DNT2_TOOL_BOOST_STUB=${NT2_TOOL_BOOST_STUB})
+    endif()
+             
+    add_custom_target(postconfigure
+                      COMMAND ${CMAKE_COMMAND}
+                              -DCMAKE_BUILD_TYPE=Release ${NT2_TOOL_BOOST_STUB_DEFINE}
+                              ${NT2_SOURCE_ROOT}/tools/postconfigure
+                           && ${CMAKE_COMMAND} --build . --config Release
+                      WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/tools/postconfigure
+                     )
+  endif()
+
+endmacro()
+
+macro(nt2_postconfigure_run)
+
+  foreach(module ${NT2_FOUND_COMPONENTS})
+    string(TOUPPER ${module} module_U)
+    if(NT2_${module_U}_ROOT)
+      list(APPEND postconfigure_prefix "-I${NT2_${module_U}_ROOT}/include")
+    endif()
+  endforeach()
+  list(APPEND postconfigure_prefix "${PROJECT_BINARY_DIR}/include")
+
+  foreach(module ${NT2_FOUND_COMPONENTS})
+    if(EXISTS ${PROJECT_BINARY_DIR}/modules/${module}.manifest)
+      set(file "${PROJECT_BINARY_DIR}/modules/${module}.manifest")
+    else()
+      set(file "${NT2_ROOT}/modules/${module}.manifest")
+    endif()
+  
+    file(STRINGS ${file} commands)
+    foreach(command ${commands})
+      string(REGEX REPLACE "^([^ ]+) (.*)$" "\\1" tool ${command})
+      string(REGEX REPLACE "^([^ ]+) (.*)$" "\\2" args ${command})
+      string(REPLACE " " ";" args ${args})
+
+      nt2_module_tool(${tool} ${postconfigure_prefix} ${args})
+
+    endforeach()
+  endforeach()
+
+  if(PROJECT_NAME STREQUAL NT2 OR PROJECT_NAME STREQUAL "NT2_${NT2_CURRENT_MODULE_U}")
+
+    cpack_add_component(postconfigured
+                        HIDDEN DISABLED
+                       )
+  
+    install( DIRECTORY ${PROJECT_BINARY_DIR}/include/
+             DESTINATION include
+             COMPONENT postconfigured
+             FILES_MATCHING PATTERN "*.hpp"
+           )
+
+  endif()
+
 endmacro()

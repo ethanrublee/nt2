@@ -15,12 +15,12 @@
      'unit' : {
          'global_header' : {
              'first_stamp' : 'modified by jt the 28/11/2010',
-             'included' : [],
-             'notes' : ['for integer values average does not,coincide with (a0+a1)/2 by at most one unit.'],
+             'included' : ['#include<nt2/include/functions/round.hpp>'],
+             'cover_included' : ['#include<nt2/include/functions/iround.hpp>'],
+             'notes' : ['for integer values average does not coincide with (a0+a1)/2 by at most one unit.'],
              'stamp' : 'modified by jt the 13/12/2010',
             },
          'ranges' : {
-             'default' : [['nt2::Valmin<T>()', 'nt2::Valmax<T>()'], ['nt2::Valmin<T>()', 'nt2::Valmax<T>()']],
              'real_' : [['T(-100)', 'T(100)'], ['T(-100)', 'T(100)']],
              'signed_int_' : [['T(-100)', 'T(100)'], ['T(-100)', 'T(100)']],
              'unsigned_int_' : [['T(0)', 'T(100)'], ['T(0)', 'T(100)']],
@@ -35,15 +35,18 @@
                  'nt2::Nan<T>()' : 'nt2::Nan<T>()',
                  'nt2::One<T>()' : 'nt2::One<T>()',
                  'nt2::Zero<T>()' : 'nt2::Zero<T>()',
+                 'nt2::Zero<T>(),nt2::One<T>()' : 'nt2::Half<T>()',   
                 },
              'signed_int_' : {
                  'nt2::Mone<T>()' : 'nt2::Mone<T>()',
                  'nt2::One<T>()' : 'nt2::One<T>()',
                  'nt2::Zero<T>()' : 'nt2::Zero<T>()',
+                 'nt2::Zero<T>(),nt2::One<T>()' : 'nt2::Zero<T>()',   
                 },
              'unsigned_int_' : {
                  'nt2::One<T>()' : 'nt2::One<T>()',
                  'nt2::Zero<T>()' : 'nt2::Zero<T>()',
+                 'nt2::Zero<T>(),nt2::One<T>()' : 'nt2::Zero<T>()',   
                 },
             },
          'verif_test' : {
@@ -51,7 +54,8 @@
                  'default' : ['nt2::average(a0,a1)'],
                 },
              'property_value' : {
-                 'default' : ['(a0+a1)/2'],
+                 'default' : ['nt2::iround((a0+a1)/2)'],
+                 'real_'   : ['(a0+a1)/2'],   
                 },
              'ulp_thresh' : {
                  'default' : ['1'],

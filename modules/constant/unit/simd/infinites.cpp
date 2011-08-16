@@ -9,8 +9,8 @@
 #define NT2_UNIT_MODULE "nt2::constants infinites"
 
 #include <limits>
-#include <nt2/include/constants/infinites.hpp>
-#include <nt2/include/constants/properties.hpp>
+#include <nt2/include/constants/real.hpp>
+#include <nt2/include/constants/real.hpp>
 
 #include <nt2/sdk/unit/module.hpp>
 #include <nt2/sdk/unit/tests/relation.hpp>
@@ -18,7 +18,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Test value of infinites for every base real types
 ////////////////////////////////////////////////////////////////////////////////
-NT2_TEST_CASE_TPL( real_inf, NT2_REAL )
+NT2_TEST_CASE_TPL( real_inf, NT2_REAL_TYPES )
 {
   NT2_TEST_EQUAL( nt2::Inf<T>() , std::numeric_limits<T>::infinity()  );
   NT2_TEST_EQUAL( nt2::Minf<T>(), -std::numeric_limits<T>::infinity() );

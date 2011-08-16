@@ -35,7 +35,6 @@ class Base_gen(Nt2_fct_props) :
          'rturn' : {
              'default' : 'typename boost::result_of<nt2::meta::floating(T)>::type',
             },
-         'simd_types' : ['real_'],
          'type_defs' : [],
          'types' : ['real_'],
         }
@@ -59,6 +58,8 @@ class Base_gen(Nt2_fct_props) :
         "int8_" :        ["int8","uint8"],
         "float":         ["float"],
         "double":        ["double"],
+        "float_":        ["float"],
+        "double_":       ["double"],
         "groupable_":    ["int16","uint16","int32","uint32","int64","uint64","double"],
         "splitable_":    ["int8","uint8","int16","uint16","int32","uint32","float"],
         "gt_8_":         ["int16","uint16","int32","uint32","int64","uint64"],
@@ -88,6 +89,8 @@ class Base_gen(Nt2_fct_props) :
         "int8_" :        ["int8","uint8"],
         "float":         ["float"],
         "double":        ["double"],
+        "float_":        ["float"],
+        "double_":       ["double"],
         "groupable_":    ["int16","uint16","int32","uint32","int64","uint64","double"],
         "splitable_":    ["int8","uint8","int16","uint16","int32","uint32","float"],
         "gt_8_":         ["int16","uint16","int32","uint32","int64","uint64"],

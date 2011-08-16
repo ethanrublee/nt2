@@ -5,12 +5,12 @@
          'call_types' : [],
          'ret_arity' : '2',
          'rturn' : {
-             'default' : 'boost::fusion::vector<T,typename nt2::meta::as_integer<T,signed>::type>',
+             'default' : 'boost::fusion::vector<T,nt2::int32_t>',
             },
          'simd_types' : [],
          'special' : ['standard'],
          'type_defs' : [],
-         'types' : ['real_'],
+         'types' : ['float','double'],
         },
      'info' : 'manually modified',
      'unit' : {
@@ -35,7 +35,7 @@
                  'default' : ['nt2::standard::frexp(a0)'],
                 },
              'property_value' : {
-                 'default' : [['nt2::mantissa(a0)/2', 'nt2::exponent(a0)+1']],
+                 'default' : ['nt2::mantissa(a0)/2', 'nt2::exponent(a0)+1'],
                 },
              'simd' : {
                 },

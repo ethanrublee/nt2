@@ -15,7 +15,7 @@
      'unit' : {
          'global_header' : {
              'first_stamp' : 'modified by jt the 01/12/2010',
-             'included' : ['#include<nt2/include/functions/trunc.hpp>'],
+             'included' : ['#include<nt2/include/functions/toint.hpp>'],
              'notes' : [],
              'stamp' : 'modified by jt the 13/12/2010',
             },
@@ -29,7 +29,9 @@
              'default' : {
                 },
              'real_' : {
-                 'T(4),T(3)' : 'T(1)',
+                 'nt2::Four<T>(),nt2::Three<T>()' : 'nt2::One<r_t>()',
+                 'nt2::Four<T>(),nt2::Zero<T>()' : 'nt2::Inf<r_t>()',   
+                 '-nt2::Four<T>(),nt2::Zero<T>()' : 'nt2::Minf<r_t>()',   
                  'nt2::Inf<T>()' : 'nt2::Nan<T>()',
                  'nt2::Minf<T>()' : 'nt2::Nan<T>()',
                  'nt2::Mone<T>()' : 'nt2::One<T>()',
@@ -38,13 +40,14 @@
                  'nt2::Zero<T>()' : 'nt2::Nan<T>()',
                 },
              'signed_int_' : {
-                 'T(4),T(3)' : 'T(1)',
+                 'nt2::Four<T>(),nt2::Three<T>()' : 'nt2::One<r_t>()',
+                 '-nt2::Four<T>(),nt2::Three<T>()' : 'nt2::Mone<r_t>()',
                  'nt2::Mone<T>()' : 'nt2::One<T>()',
                  'nt2::One<T>()' : 'nt2::One<T>()',
                  'nt2::Zero<T>()' : 'nt2::Zero<T>()',
                 },
              'unsigned_int_' : {
-                 'T(4),T(3)' : 'T(1)',
+                 'nt2::Four<T>(),nt2::Three<T>()' : 'nt2::One<r_t>()',
                  'nt2::One<T>()' : 'nt2::One<T>()',
                  'nt2::Zero<T>()' : 'nt2::Zero<T>()',
                 },
@@ -54,7 +57,7 @@
                  'default' : ['nt2::divfix(a0,a1)'],
                 },
              'property_value' : {
-                 'default' : ['r_t(nt2::trunc((1.0*a0)/a1))'],
+                 'default' : ['r_t(nt2::toint((1.0*a0)/a1))'],
                 },
              'ulp_thresh' : {
                  'default' : ['0'],

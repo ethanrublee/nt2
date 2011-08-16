@@ -9,10 +9,13 @@
 
 # only available since 2.8.3
 include(CMakeParseArguments OPTIONAL RESULT_VARIABLE CMakeParseArguments_FOUND)
+find_program(WAVE_EXECUTABLE wave $ENV{BOOST_ROOT}/dist/bin)
 
 macro(nt2_preprocess target)
-  find_file(WAVE_EXECUTABLE wave $ENV{BOOST_ROOT}/dist/bin)
-  if(NOT WAVE_EXECUTABLE MATCHES "NOTFOUND$" AND (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX) AND CMakeParseArguments_FOUND)
+  string(TOUPPER ${NT2_CURRENT_MODULE} NT2_CURRENT_MODULE_U)
+  if(NOT WAVE_EXECUTABLE MATCHES "NOTFOUND$" AND (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX) AND CMakeParseArguments_FOUND AND (PROJECT_NAME STREQUAL NT2 OR PROJECT_NAME STREQUAL "NT2_${NT2_CURRENT_MODULE_U}"))     
+    set(NT2_PREPROCESS_ENABLED 1)
+
     get_directory_property(INCLUDES INCLUDE_DIRECTORIES)
   
     file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/tmpfile "")
@@ -39,9 +42,7 @@ macro(nt2_preprocess target)
     foreach(src ${ARG_UNPARSED_ARGUMENTS})
       math(EXPR n "${prev} + 1")
       add_custom_target(${target}.${n}
-                        COMMAND echo "wave ${src}" && ${WAVE_EXECUTABLE} -DNT2_DONT_USE_PREPROCESSED_FILES -DNT2_CREATE_PREPROCESSED_FILES
-                        --c++0x --timer ${ARG_OPTIONS}
-                        ${INCLUDE_DIRECTORIES} -o - ${src}
+                        COMMAND echo "wave ${src}" && ${WAVE_EXECUTABLE}  --c++0x --timer ${ARG_OPTIONS} ${INCLUDE_DIRECTORIES} -o - ${src}
                         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/include
                        )
       add_dependencies(${target} ${target}.${n})
