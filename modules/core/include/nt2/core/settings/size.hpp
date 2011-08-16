@@ -18,7 +18,7 @@
 #include <boost/array.hpp>
 #include <boost/mpl/vector_c.hpp>
 #include <boost/dispatch/extension/parameters.hpp>
-#include <nt2/sdk/details/preprocessor.hpp>
+#include <boost/dispatch/details/preprocessor.hpp>
 #include <nt2/core/settings/meta/option.hpp>
 
 //==============================================================================

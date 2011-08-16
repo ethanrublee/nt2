@@ -11,8 +11,8 @@
 
 #include <cstddef>
 #include <boost/mpl/vector_c.hpp>
-#include <nt2/extension/parameters.hpp>
-#include <nt2/sdk/details/preprocessor.hpp>
+#include <boost/dispatch/extension/parameters.hpp>
+#include <boost/dispatch/details/preprocessor.hpp>
 #include <nt2/core/settings/meta/option.hpp>
 #include <boost/preprocessor/repetition/enum.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>

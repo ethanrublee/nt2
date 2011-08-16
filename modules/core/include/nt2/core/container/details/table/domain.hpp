@@ -9,7 +9,7 @@
 #ifndef NT2_CORE_CONTAINER_DETAILS_TABLE_DOMAIN_HPP_INCLUDED
 #define NT2_CORE_CONTAINER_DETAILS_TABLE_DOMAIN_HPP_INCLUDED
 
-#include <nt2/extension/parameters.hpp>
+#include <boost/dispatch/extension/parameters.hpp>
 #include <nt2/core/container/dsl/grammar.hpp>
 #include <nt2/core/container/details/table/generator.hpp>
 

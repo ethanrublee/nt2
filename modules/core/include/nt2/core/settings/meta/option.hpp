@@ -9,7 +9,7 @@
 #ifndef NT2_CORE_SETTINGS_META_OPTION_HPP_INCLUDED
 #define NT2_CORE_SETTINGS_META_OPTION_HPP_INCLUDED
 
-#include <nt2/sdk/error/static_assert.hpp>
+#include <boost/dispatch/error/static_assert.hpp>
 
 namespace nt2 { namespace meta
 {

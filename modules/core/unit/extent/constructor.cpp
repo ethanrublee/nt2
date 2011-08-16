@@ -13,7 +13,7 @@
 //==============================================================================
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
-#include <nt2/toolbox/operator.hpp>
+#include <nt2/toolbox/operator/operator.hpp>
 #include <nt2/core/container/extent.hpp>
 #include <nt2/toolbox/constant/constants/dsl/digits.hpp>
 

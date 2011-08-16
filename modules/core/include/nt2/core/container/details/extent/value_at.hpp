@@ -9,7 +9,7 @@
 #ifndef NT2_CORE_CONTAINER_DETAILS_EXTENT_VALUE_AT_HPP_INCLUDED
 #define NT2_CORE_CONTAINER_DETAILS_EXTENT_VALUE_AT_HPP_INCLUDED
 
-#include <nt2/sdk/dsl/compute.hpp>
+#include <boost/dispatch/dsl/compute.hpp>
 #include <boost/fusion/include/front.hpp>
 #include <nt2/core/functions/value_at.hpp>
 

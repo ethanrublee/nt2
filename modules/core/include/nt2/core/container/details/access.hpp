@@ -13,7 +13,7 @@
  * \brief Define a macro-file to generate operator() overloads in Containers
  */
 
-#include <nt2/extension/parameters.hpp>
+#include <boost/dispatch/extension/parameters.hpp>
 #include <boost/preprocessor/iteration/iterate.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
 

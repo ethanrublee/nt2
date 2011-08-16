@@ -14,7 +14,7 @@
  * \brief Implements grammar for containers expression matching
  */
 
-#include <nt2/sdk/constant/category.hpp>
+#include <boost/simd/sdk/constant/category.hpp>
 #include <nt2/sdk/meta/is_hierarchized.hpp>
 #include <nt2/core/container/dsl/forward.hpp>
 #include <nt2/core/container/meta/is_container.hpp>

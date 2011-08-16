@@ -10,8 +10,7 @@
 #define NT2_CORE_FUNCTIONS_IMPL_VALUE_AT_AST_HPP_INCLUDED
 
 #include <nt2/sdk/details/type_id.hpp>
-#include <iostream>
-#include <nt2/sdk/dsl/call.hpp>
+#include <boost/dispatch/dsl/call.hpp>
 
 //==============================================================================
 // Implementation when type A0 is fundamental and the other are integral
