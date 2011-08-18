@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created by jt the 01/12/2010
 /// 
-#include <boost/simd/toolbox/arithmetic/include/two_prod.hpp>
+#include <boost/simd/toolbox/arithmetic/include/functions/two_prod.hpp>
 #include <boost/simd/include/functions/ulpdist.hpp>
 #include <boost/fusion/tuple.hpp>
 #include <boost/type_traits/is_same.hpp>
@@ -21,7 +21,7 @@
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <boost/simd/sdk/memory/buffer.hpp>
-#include <boost/simd/include/constants/real.hpp>
+#include <boost/simd/toolbox/constant/constant.hpp>
 #include <boost/simd/sdk/memory/is_aligned.hpp>
 #include <boost/simd/sdk/memory/aligned_type.hpp>
 #include <boost/simd/include/functions/load.hpp>

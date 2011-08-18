@@ -18,8 +18,10 @@
 #include <nt2/include/functions/is_greater.hpp>
 #include <nt2/include/functions/is_equal.hpp>
 #include <nt2/include/functions/is_ltz.hpp>
-#include <nt2/toolbox/trigonometric/include/constants.hpp>
+#include <nt2/toolbox/trigonometric/constants.hpp>
 #include <nt2/include/constants/real.hpp>
+#include <nt2/include/constants/digits.hpp>
+#include <nt2/include/constants/eps.hpp>
 /////////////////////////////////////////////////////////////////////////////
 // Implementation when type A0 is arithmetic_
 /////////////////////////////////////////////////////////////////////////////

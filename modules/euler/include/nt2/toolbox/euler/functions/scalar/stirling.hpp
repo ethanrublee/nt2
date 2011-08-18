@@ -17,8 +17,9 @@
 #include <nt2/include/functions/fma.hpp>
 #include <nt2/include/functions/rec.hpp>
 #include <nt2/include/functions/exp.hpp>
-#include <nt2/toolbox/euler/functions/scalar/constants.hpp>
-#include <nt2/toolbox/trigonometric/functions/scalar/impl/constants.hpp>
+#include <nt2/toolbox/euler/constants/stirlinglargelim.hpp>
+#include <nt2/toolbox/euler/constants/stirlingsplitlim.hpp>
+#include <nt2/toolbox/trigonometric/constants.hpp>
 
 
 /////////////////////////////////////////////////////////////////////////////

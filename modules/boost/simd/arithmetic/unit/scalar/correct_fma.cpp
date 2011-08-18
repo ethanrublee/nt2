@@ -14,14 +14,14 @@
 /// created by jt the 28/11/2010
 /// 
 /// 
-#include <boost/simd/toolbox/arithmetic/include/correct_fma.hpp>
+#include <boost/simd/toolbox/arithmetic/include/functions/correct_fma.hpp>
 #include <boost/simd/include/functions/ulpdist.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/dispatch/functor/meta/call.hpp>
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <boost/simd/sdk/memory/buffer.hpp>
-#include <boost/simd/include/constants/real.hpp>
+#include <boost/simd/toolbox/constant/constant.hpp>
 
 
 NT2_TEST_CASE_TPL ( correct_fma_real__3_0,  BOOST_SIMD_REAL_TYPES)

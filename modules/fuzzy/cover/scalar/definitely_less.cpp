@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created  by jt the 04/03/2011
 /// 
-#include <nt2/toolbox/fuzzy/include/definitely_less.hpp>
+#include <nt2/toolbox/fuzzy/include/functions/definitely_less.hpp>
 #include <nt2/include/functions/ulpdist.hpp>
 #include <nt2/include/functions/max.hpp>
 #include <nt2/sdk/meta/logical.hpp>
@@ -31,7 +31,7 @@
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <nt2/sdk/memory/buffer.hpp>
-#include <nt2/include/constants/real.hpp>
+#include <nt2/toolbox/constant/constant.hpp>
 
 
 NT2_TEST_CASE_TPL ( definitely_less_real__3_0,  NT2_REAL_TYPES)

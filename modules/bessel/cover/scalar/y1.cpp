@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created  by jt the 16/02/2011
 /// 
-#include <nt2/toolbox/bessel/include/y1.hpp>
+#include <nt2/toolbox/bessel/include/functions/y1.hpp>
 #include <nt2/include/functions/ulpdist.hpp>
 #include <nt2/include/functions/max.hpp>
 extern "C" {long double cephes_y1l(long double);}
@@ -31,7 +31,7 @@ extern "C" {long double cephes_y1l(long double);}
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <nt2/sdk/memory/buffer.hpp>
-#include <nt2/include/constants/real.hpp>
+#include <nt2/toolbox/constant/constant.hpp>
 
 
 NT2_TEST_CASE_TPL ( y1_real__1_0,  NT2_REAL_TYPES)

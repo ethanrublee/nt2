@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created  by jt the 24/02/2011
 /// 
-#include <boost/simd/toolbox/reduction/include/hmsb.hpp>
+#include <boost/simd/toolbox/reduction/include/functions/hmsb.hpp>
 #include <boost/simd/include/functions/ulpdist.hpp>
 #include <boost/simd/include/functions/bits.hpp>
 #include <boost/simd/include/functions/shri.hpp>
@@ -23,7 +23,7 @@
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <boost/simd/sdk/memory/buffer.hpp>
-#include <boost/simd/include/constants/real.hpp>
+#include <boost/simd/toolbox/constant/constant.hpp>
 #include <boost/simd/sdk/memory/is_aligned.hpp>
 #include <boost/simd/sdk/memory/aligned_type.hpp>
 #include <boost/simd/include/functions/load.hpp>

@@ -9,14 +9,14 @@
             },
          'simd_types' : ['real_','int_convert_','uint_convert_'],
          'special' : ['trigonometric'],
-         'type_defs' : [],
+         'type_defs' : ['static const long double long_pi = 3.141592653589793238462643383279502884197l;'],
          'types' : ['real_', 'unsigned_int_', 'signed_int_'],
         },
      'info' : 'manually modified',
      'unit' : {
          'global_header' : {
              'first_stamp' : 'created  by jt the 11/02/2011',
-             'included' : ['#include <nt2/toolbox/trigonometric/include/constants.hpp>',
+             'included' : ['#include <nt2/toolbox/trigonometric/constants.hpp>',
                            'extern "C" {extern long double cephes_atanl(long double);}'],
             'notes' : [],
              'stamp' : 'modified by jt the 11/02/2011',
@@ -50,7 +50,7 @@
                  'real_' : ['nt2::atanpi(a0)'],
                 },
              'property_value' : {
-                 'real_' : ['::cephes_atanl(a0)/nt2::long_pi'],
+                 'real_' : ['::cephes_atanl(a0)/long_pi'],
                 },
              'ulp_thresh' : {
                  'real_' : '1.0',

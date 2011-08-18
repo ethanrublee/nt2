@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created  by jt the 04/03/2011
 /// 
-#include <nt2/toolbox/fuzzy/include/fuzzy_less_or_equal.hpp>
+#include <nt2/toolbox/fuzzy/include/functions/fuzzy_less_or_equal.hpp>
 #include <nt2/include/functions/ulpdist.hpp>
 #include <nt2/include/functions/max.hpp>
 #include <nt2/sdk/meta/logical.hpp>
@@ -31,7 +31,7 @@
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <nt2/sdk/memory/buffer.hpp>
-#include <nt2/include/constants/real.hpp>
+#include <nt2/toolbox/constant/constant.hpp>
 
 
 NT2_TEST_CASE_TPL ( fuzzy_less_or_equal_real__3_0,  NT2_REAL_TYPES)

@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created  by jt the 21/02/2011
 /// 
-#include <boost/simd/toolbox/predicates/include/is_negative.hpp>
+#include <boost/simd/toolbox/predicates/include/functions/is_negative.hpp>
 #include <boost/simd/include/functions/ulpdist.hpp>
 #include <boost/simd/sdk/meta/logical.hpp>
 #include <boost/simd/include/functions/bitofsign.hpp>
@@ -23,7 +23,7 @@
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <boost/simd/sdk/memory/buffer.hpp>
-#include <boost/simd/include/constants/real.hpp>
+#include <boost/simd/toolbox/constant/constant.hpp>
 
 
 NT2_TEST_CASE_TPL ( is_negative_real__1_0,  BOOST_SIMD_REAL_TYPES)

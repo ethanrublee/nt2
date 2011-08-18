@@ -9,8 +9,8 @@
 #ifndef BOOST_SIMD_TOOLBOX_REDUCTION_FUNCTIONS_SIMD_SSE_SSE2_NONE_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_REDUCTION_FUNCTIONS_SIMD_SSE_SSE2_NONE_HPP_INCLUDED
 #ifdef BOOST_SIMD_HAS_SSE2_SUPPORT
-#include <boost/simd/sdk/meta/cardinal_of.hpp>
 
+#include <boost/simd/include/functions/any.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
 // Implementation when type A0 is arithmetic_
@@ -19,7 +19,7 @@ namespace boost { namespace simd { namespace ext
 {
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION( boost::simd::tag::none_, boost::simd::tag::sse2_
                             , (A0)
-                            , ((simd_<arithmetic_<A0>,boost::simd::tag::sse2_>))
+                            , ((simd_<arithmetic_<A0>,boost::simd::tag::sse_>))
                             )
   {
 

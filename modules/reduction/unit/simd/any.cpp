@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created  by jt the 24/02/2011
 /// 
-#include <nt2/toolbox/reduction/include/any.hpp>
+#include <nt2/toolbox/reduction/include/functions/any.hpp>
 #include <nt2/include/functions/ulpdist.hpp>
 
 #include <boost/type_traits/is_same.hpp>
@@ -30,6 +30,7 @@
 #include <nt2/sdk/unit/module.hpp>
 #include <nt2/sdk/memory/buffer.hpp>
 #include <nt2/include/constants/real.hpp>
+#include <nt2/include/constants/digits.hpp>
 #include <nt2/include/constants/infinites.hpp>
 #include <nt2/sdk/meta/cardinal_of.hpp>
 #include <nt2/include/functions/splat.hpp>

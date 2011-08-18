@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created  by jt the 20/03/2011
 /// 
-#include <boost/simd/toolbox/ieee/include/saturate_at.hpp>
+#include <boost/simd/toolbox/ieee/include/functions/saturate_at.hpp>
 #include <boost/simd/include/functions/ulpdist.hpp>
 #include <boost/simd/include/functions/max.hpp>
 #include <boost/type_traits/is_same.hpp>
@@ -21,7 +21,7 @@
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <boost/simd/sdk/memory/buffer.hpp>
-#include <boost/simd/include/constants/real.hpp>
+#include <boost/simd/toolbox/constant/constant.hpp>
 
 
 NT2_TEST_CASE_TPL ( saturate_at_real__1_0,  BOOST_SIMD_REAL_TYPES)

@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created by jt the 08/12/2010
 /// 
-#include <nt2/toolbox/exponential/include/cbrt.hpp>
+#include <nt2/toolbox/exponential/include/functions/cbrt.hpp>
 #include <nt2/include/functions/ulpdist.hpp>
 #include <nt2/include/functions/max.hpp>
 #include <nt2/include/functions/sqr.hpp>
@@ -32,7 +32,7 @@ extern "C" { long double cephes_cbrtl(long double);}
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <nt2/sdk/memory/buffer.hpp>
-#include <nt2/include/constants/real.hpp>
+#include <nt2/toolbox/constant/constant.hpp>
 
 
 NT2_TEST_CASE_TPL ( cbrt_real__1_0,  NT2_REAL_TYPES)

@@ -13,16 +13,16 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created  by jt the 18/02/2011
 /// 
-#include <boost/simd/toolbox/bitwise/include/selsub.hpp>
+#include <boost/simd/toolbox/bitwise/include/functions/selsub.hpp>
 #include <boost/simd/include/functions/ulpdist.hpp>
-#include <boost/simd/toolbox/predicates/include/is_nez.hpp>
+#include <boost/simd/toolbox/predicates/include/functions/is_nez.hpp>
 
 #include <boost/type_traits/is_same.hpp>
 #include <boost/dispatch/functor/meta/call.hpp>
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <boost/simd/sdk/memory/buffer.hpp>
-#include <boost/simd/include/constants/real.hpp>
+#include <boost/simd/toolbox/constant/constant.hpp>
 
 
 NT2_TEST_CASE_TPL ( selsub_real__3_0,  BOOST_SIMD_REAL_TYPES)

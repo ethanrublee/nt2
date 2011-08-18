@@ -63,7 +63,7 @@ class Global_header_gen() :
             "#include <nt2/sdk/unit/$no_ulp$tests.hpp>",
             "#include <nt2/sdk/unit/module.hpp>",
             "#include <nt2/sdk/memory/buffer.hpp>",
-            "#include <nt2/include/constants/real.hpp>",
+            "#include <nt2/toolbox/constant/constant.hpp>"
             ],
         'boost' : [
             "#include <boost/type_traits/is_same.hpp>",
@@ -71,7 +71,7 @@ class Global_header_gen() :
             "#include <nt2/sdk/unit/$no_ulp$tests.hpp>",
             "#include <nt2/sdk/unit/module.hpp>",
             "#include <boost/simd/sdk/memory/buffer.hpp>",
-            "#include <boost/simd/include/constants/real.hpp>",
+            "#include <boost/simd/toolbox/constant/constant.hpp>"
             ]
         }
     
@@ -81,12 +81,14 @@ class Global_header_gen() :
             "#include <nt2/include/functions/splat.hpp>",
             "#include <nt2/sdk/memory/is_aligned.hpp>",
             "#include <nt2/sdk/memory/aligned_type.hpp>",
-            "#include <nt2/include/functions/load.hpp>",           
+            "#include <nt2/include/functions/load.hpp>",
+            "#include <nt2/toolbox/constant/constant.hpp>",
             ],
         'boost' : [
             "#include <boost/simd/sdk/memory/is_aligned.hpp>",
             "#include <boost/simd/sdk/memory/aligned_type.hpp>",
             "#include <boost/simd/include/functions/load.hpp>",           
+            "#include <boost/simd/toolbox/constant/constant.hpp>"
             ]
         }
     Cover_Template = {
@@ -124,7 +126,7 @@ class Global_header_gen() :
                                               self.__prepare,d=dug)
             if os.path.exists(self.bg.get_fct_doc_path()) :
                 pos = 1 if self.__module == 'default' else 2
-                l = os.path.join(self.bg.demangle(self.bg.get_tb_name(),'toolbox',pos),"include",self.bg.get_fct_name()+".hpp")
+                l = os.path.join(self.bg.demangle(self.bg.get_tb_name(),'toolbox',pos),"include/functions",self.bg.get_fct_name()+".hpp")
                 r.append("#include <"+l+">")
 ##                r.append("#include <nt2/toolbox/"+bg.demangle(self.bg.get_tb_name())+"/include/"+self.bg.get_fct_name()+".hpp>")
                 print(r[-1])

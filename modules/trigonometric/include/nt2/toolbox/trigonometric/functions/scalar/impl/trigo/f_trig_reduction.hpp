@@ -16,7 +16,7 @@
 #include <nt2/include/functions/rem_pio2_cephes.hpp>
 #include <nt2/include/functions/rem_pio2_straight.hpp>
 #include <nt2/include/functions/rem_pio2.hpp>
-#include <nt2/toolbox/arithmetic/include/toint.hpp>
+#include <nt2/toolbox/arithmetic/include/functions/toint.hpp>
 #include <nt2/include/functions/inrad.hpp>
 #include <nt2/include/functions/round2even.hpp>
 #include <nt2/include/functions/is_odd.hpp>
@@ -31,6 +31,8 @@
 #include <nt2/include/functions/all.hpp>
 #include <nt2/include/constants/digits.hpp>
 #include <nt2/include/constants/real.hpp>
+#include <nt2/include/constants/false.hpp>
+#include <nt2/include/constants/true.hpp>
 #include <boost/mpl/not.hpp>
 #include <boost/type_traits/is_same.hpp>
 
@@ -229,13 +231,13 @@ namespace nt2
         typedef typename meta::as_integer<A0, signed>::type int_type;
         typedef typename meta::logical<A0>::type            logic;
 
-        static inline logic cot_invalid(const A0& x) { return (is_nez(x)&is_flint(x/C_180<A0>())); }
-        static inline logic tan_invalid(const A0& x) { return is_flint((x-Ninety<A0>())/C_180<A0>()); }
+        static inline logic cot_invalid(const A0& x) { return (is_nez(x)&is_flint(x/_180<A0>())); }
+        static inline logic tan_invalid(const A0& x) { return is_flint((x-_90<A0>())/_180<A0>()); }
 
         static inline int_type reduce(const A0& x, A0& xr, A0& xc)
         {
           A0 xi = round2even(x*single_constant<A0,0x3c360b61>()); //  1.111111111111111e-02f
-          A0 x2 = x - xi * Ninety<A0>();//90.0f
+          A0 x2 = x - xi * _90<A0>();
 	  
           xr =  x2*single_constant<A0,0x3c8efa35>(); //0.0174532925199432957692f
           xc = Zero<A0>();

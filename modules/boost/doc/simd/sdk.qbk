@@ -1,0 +1,191 @@
+[section SDK]
+
+[section Considerations on SIMD programming and library rationale]
+
+When one use SIMD instructions to speed up his programs , he is confronted to two main points:
+
+* first he must deal with small vectors instead of scalar: the Multiple Data part
+* second he has to do the same thing to all the elements of these vectors: the Single Instruction part
+
+This has some main practical issues.
+
+Considerations about sizes and types:
+
+Generally (and totally in our current implementation) SIMD vectors have a common bit size (64, 128 or 256 bits up to now)
+in which on can put a small number of datas. This number is rightly computed as being the ratio of this size by the size of the individual element
+
+For example an SSE2 vector of 128 bits can hold 16 char 8 short, 4 int or float etc. 
+
+SIMD API generally provide operation acting on SIMD vector for given element type: it is senseless to add a vector of 16 char to one of 8 int.
+This operation are done in place, and that mean that:
+
+   * for integer values there is no intermediate promotion as in C. (char(100)+char(100))-char(80) will not produce the same result if they are part of 3 vectors of char or merely scalars, because in C the computation is done in int and the clipped if we put the result back in a char.
+
+   * for floating on intel cpus this also implies no passing through 80bits extended registers...
+
+
+Considerations  about logic and branching:
+
+Consider the simple piece of code:
+
+  if (a>=0) b = 1 else b = -1;
+
+This can of course be writen with scalar oeperands, but what if they are SIMD vectors ?
+
+  first we cannot write a>=0 because this operator (it exist see ...) compare vector in lexicographical order to 
+  preserve STL compatibility when iterating on arrays, so we can use something like:
+
+             ge(a,Zero)
+
+  But the ge function that takes two SIMD vectors of same size and element types will return a
+  vector of N results, one for each element, and two problems are at sight, what is the type of
+  the resulting elements and what can be done with then in a SIMDish fashion ?
+
+  In fact the second part with be of great infuence on the first:
+
+  * the returned elements are not boolean stricto sensu. They are of the common type of a and Zero and to not hold vector of 0 and 1 but of 0 and -1 for integers (0 and -Nan for real)
+  * why: because -Nan and -1 share the property of having an identical bit representation ~0, meaning all bits are at one.
+  * what is the interest of this oddity ? The answer is that such values provide bit mask for bitwise operations.
+
+  then the if...else story can be rewritten:
+
+  b = select(ge(a,Zero),One,Mone)
+
+  in fact using  & and | and ~ the preceding line can be formally rewritten
+
+  b = (One & ge(a,Zero)) | (Mone & ~ge(a,Zero))
+
+  because the predicate returns a bunch of 1 for True and 0 for False.
+
+All this of course has a cost : In each test both branches have to be evaluated and the rigth results selected.
+
+[endsect]
+
+[section pack]
+`pack` is the basic building brick of the boost.simd framework. It provides an abstraction of a 
+SIMD register and provides software emulation in case no such registers exist on the machine.
+
+Here is the forward declaration of the `pack<>` class template :
+
+  template< class Type
+          , std::size_t Cardinal  = meta::native_cardinal<Type>::value
+          >
+  struct pack;
+
+The template parameters are described bellow :
+
+[variablelist
+  [[`Type`] [The type of the data to store in the pack]]
+  [[`Cardinal`] [The cardinal (optional), that is the number of elements, to be stored in the pack]]
+]
+
+In case the cardinal is not specified, the best fit is automatically choosen depending on the size of
+the SIMD registers and the size of the type stored, that is following the formula :
+
+   BOOST_SIMD_BYTES / sizeof(Type);
+
+`BOOST_SIMD_BYTES` being the size of the SIMD registers in bytes.
+
+In case the specified cardinal doesn't fit in a SIMD register, `pack<>` falls back to a software 
+implementation based on a `boost::array<Type, Cardinal>`.
+
+As a convenience the `pack<>` class can be constructed from a `Type` value, so we can write :
+
+    boost::simd::pack<int> p(4);
+
+This will effectively load the value 4 into the register using the appropriate intrinsic.
+
+[h3 Element Access]
+`pack<>` exposes an iterator interface, with `begin()` and `end()` member functions returning random access
+iterators respectively pointing to the first element and to the past-the-end element of the `pack` :
+
+    iterator        begin();
+    iterator        end();
+    const_iterator  begin()  const;
+    const_iterator  end()    const;
+
+The pack class also overloads the subscript operator to give random access to its elements (with write support) :
+
+    reference        operator[](int i);
+    const_reference  operator[](int i) const;
+
+[caution Accessing one element of a SIMD register is a relatively slow operation.]
+
+[h3 Streaming support]
+boost.simd overloads the shift left (insertion to stream) operator, giving you the ability to print the inner
+state of a `pack` :
+
+   boost::simd::pack<int> p(4);
+   std::cout << p;
+
+prints (assuming a 128 bits size SIMD register) :
+
+[pre
+{4,4,4,4}
+]
+
+These overload is accessible by including :
+
+   #include <boost/simd/sdk/simd/pack/io.hpp>
+
+
+[endsect]
+
+[section SIMD Iterator]
+The library provides SIMD iterators :
+
+    template<class T, std::size_t C = meta::native_cardinal<T>::value >
+    struct  iterator
+
+referencing pack of C elements of type T. Those iterators are read only and support
+random access operations.
+
+In addition to these iterators, two functions are provided, namely `begin` and `end` constructing
+SIMD iterators from a contiguous range.
+The `begin` function takes a range and returns a `boost::simd::iterator<>` pointing to the first aligned
+address after the start of the range. Another version of this function exists, taking a cardinal as a template
+parameter. (By default it uses the native cardinal of the range value_type).
+The `end` function also takes a range and returns a `boost::simd::iterator<>` pointing to the first aligned address
+before the end of the range. Similarly another version of this function exists taking a cardinal.
+
+Those functions are accessible by including :
+   
+   #include <boost/simd/sdk/simd/begin.hpp>
+   #include <boost/simd/sdk/simd/end.hpp>
+
+Finally boost.simd provides a function to create a range (cleverly named `range`), composed of the begin and end iterators,
+from a contiguous range.
+This range covers the inner part of the original range that supports SIMD operation. Similarly to the `begin` and `end` functions
+two versions exist, and are defined in :
+
+   #include <boost/simd/sdk/simd/range.hpp>
+[endsect]
+
+[section Memory]
+When dealing with SIMD registers, the memory needs to be aligned in order to achieve good performances. To achieve this goal, boost.simd
+provides a set of tool to allocate aligned memory.
+First the `allocate` function, defined in boost/simd/sdk/memory/allocate.hpp :
+
+   byte* allocate( std::size_t nbytes );
+
+allocates a buffer of nbytes bytes starting at an aligned address.
+
+Obviously `deallocate` and `reallocate` counterparts are also available :
+
+   void deallocate( byte* ptr, std::size_t nbytes = 0);
+   byte* reallocate( byte* ptr, std::size_t nbytes, std::size_t obytes);
+
+All this functions live in the boost::simd::memory namespace.
+
+Lastly, an allocator, `boost::simd::memory::allocator<>` is provided, which uses internally the above memory handling related functions.
+This means that you can use it with an STL container to get automatically aligned ranges :
+
+   std::vector<int, simd::allocator<int> > vec(9, 9);
+
+`vec` will start at an aligned address meaning that you can immediately applicate SIMD operations on it without using boost::simd::begin
+function.
+This allocator is defined in boost/simd/sdk/memory/allocator.hpp.
+
+An allocator adaptator is also available for you to adapt an allocator to be aligned, it is named `allocator_adaptor`.
+[endsect]
+[endsect]

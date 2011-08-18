@@ -13,12 +13,12 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created  by jt the 20/02/2011
 /// 
-#include <nt2/toolbox/hyperbolic/include/acsch.hpp>
+#include <nt2/toolbox/hyperbolic/include/functions/acsch.hpp>
 #include <nt2/include/functions/ulpdist.hpp>
 #include <nt2/include/functions/max.hpp>
-#include <nt2/toolbox/exponential/include/constants.hpp>
+#include <nt2/toolbox/exponential/constants.hpp>
 
-#include <nt2/toolbox/boost_math/include/asinh.hpp>
+#include <nt2/toolbox/boost_math/include/functions/asinh.hpp>
 extern "C" { long double cephes_asinhl(long double); }
 #include <nt2/include/functions/rec.hpp>
 
@@ -35,7 +35,7 @@ extern "C" { long double cephes_asinhl(long double); }
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <nt2/sdk/memory/buffer.hpp>
-#include <nt2/include/constants/real.hpp>
+#include <nt2/toolbox/constant/constant.hpp>
 
 
 NT2_TEST_CASE_TPL ( acsch_real__1_0,  NT2_REAL_TYPES)

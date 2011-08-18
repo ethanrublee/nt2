@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created  by jt the 18/02/2011
 /// 
-#include <boost/simd/toolbox/operator/include/logical_or.hpp>
+#include <boost/simd/toolbox/operator/include/functions/logical_or.hpp>
 #include <boost/simd/include/functions/ulpdist.hpp>
 #include <boost/simd/sdk/meta/logical.hpp>
 
@@ -22,7 +22,7 @@
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <boost/simd/sdk/memory/buffer.hpp>
-#include <boost/simd/include/constants/real.hpp>
+#include <boost/simd/toolbox/constant/constant.hpp>
 
 
 NT2_TEST_CASE_TPL ( logical_or_integer__2_0,  BOOST_SIMD_INTEGRAL_TYPES)

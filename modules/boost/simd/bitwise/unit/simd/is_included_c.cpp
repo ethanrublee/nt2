@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created  by jt the 18/02/2011
 /// 
-#include <boost/simd/toolbox/bitwise/include/is_included_c.hpp>
+#include <boost/simd/toolbox/bitwise/include/functions/is_included_c.hpp>
 #include <boost/simd/include/functions/ulpdist.hpp>
 #include <boost/simd/include/functions/complement.hpp>
 
@@ -22,7 +22,7 @@
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <boost/simd/sdk/memory/buffer.hpp>
-#include <boost/simd/include/constants/real.hpp>
+#include <boost/simd/toolbox/constant/constant.hpp>
 #include <boost/simd/sdk/memory/is_aligned.hpp>
 #include <boost/simd/sdk/memory/aligned_type.hpp>
 #include <boost/simd/include/functions/load.hpp>
@@ -49,11 +49,11 @@ NT2_TEST_CASE_TPL ( is_included_c_integer__2_0,  BOOST_SIMD_SIMD_INTEGRAL_TYPES)
 
 
   // specific values tests
-  NT2_TEST_EQUAL(is_included_c(boost::simd::Mone<vT>(),boost::simd::complement(boost::simd::Zero<vT>())), false);
+  NT2_TEST_EQUAL(is_included_c(boost::simd::Mone<vT>(),boost::simd::Zero<vT>()), true);
   NT2_TEST_EQUAL(is_included_c(boost::simd::One<vT>(), boost::simd::One<vT>()), false);
-  NT2_TEST_EQUAL(is_included_c(boost::simd::One<vT>(),boost::simd::complement(boost::simd::Mone<vT>())), true);
-  NT2_TEST_EQUAL(is_included_c(boost::simd::One<vT>(),boost::simd::complement(boost::simd::Three<vT>())), true);
-  NT2_TEST_EQUAL(is_included_c(boost::simd::One<vT>(),boost::simd::complement(boost::simd::Two<vT>())), false);
-  NT2_TEST_EQUAL(is_included_c(boost::simd::One<vT>(),boost::simd::complement(boost::simd::Zero<vT>())), false);
+  NT2_TEST_EQUAL(is_included_c(boost::simd::One<vT>(),boost::simd::Mone<vT>()), false);
+  NT2_TEST_EQUAL(is_included_c(boost::simd::One<vT>(),boost::simd::Three<vT>()), false);
+  NT2_TEST_EQUAL(is_included_c(boost::simd::One<vT>(),boost::simd::Two<vT>()), true);
+  NT2_TEST_EQUAL(is_included_c(boost::simd::One<vT>(),boost::simd::Zero<vT>()), true);
   NT2_TEST_EQUAL(is_included_c(boost::simd::Zero<vT>(), boost::simd::Zero<vT>()), true);
 } // end of test for integer_

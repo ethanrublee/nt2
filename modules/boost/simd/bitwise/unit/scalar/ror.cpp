@@ -13,14 +13,14 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created  by jt the 18/02/2011
 /// 
-#include <boost/simd/toolbox/bitwise/include/ror.hpp>
+#include <boost/simd/toolbox/bitwise/include/functions/ror.hpp>
 #include <boost/simd/include/functions/ulpdist.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <boost/dispatch/functor/meta/call.hpp>
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <boost/simd/sdk/memory/buffer.hpp>
-#include <boost/simd/include/constants/real.hpp>
+#include <boost/simd/toolbox/constant/constant.hpp>
 
 
 NT2_TEST_CASE_TPL ( ror_integer__2_0,  BOOST_SIMD_INTEGRAL_TYPES)

@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created  by jt the 24/02/2011
 /// 
-#include <nt2/toolbox/swar/include/lookup.hpp>
+#include <nt2/toolbox/swar/include/functions/lookup.hpp>
 #include <nt2/include/functions/ulpdist.hpp>
 
 #include <boost/type_traits/is_same.hpp>
@@ -36,6 +36,7 @@
 #include <nt2/sdk/memory/is_aligned.hpp>
 #include <nt2/sdk/memory/aligned_type.hpp>
 #include <nt2/include/functions/load.hpp>
+#include <nt2/toolbox/constant/constant.hpp>
 //COMMENTED
 
 NT2_TEST_CASE_TPL ( lookup_real__2_0,  NT2_REAL_TYPES)

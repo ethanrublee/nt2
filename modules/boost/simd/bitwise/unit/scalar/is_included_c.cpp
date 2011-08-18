@@ -13,7 +13,7 @@
 //////////////////////////////////////////////////////////////////////////////
 /// created  by jt the 18/02/2011
 /// 
-#include <boost/simd/toolbox/bitwise/include/is_included_c.hpp>
+#include <boost/simd/toolbox/bitwise/include/functions/is_included_c.hpp>
 #include <boost/simd/include/functions/ulpdist.hpp>
 #include <boost/simd/include/functions/complement.hpp>
 
@@ -22,7 +22,7 @@
 #include <nt2/sdk/unit/tests.hpp>
 #include <nt2/sdk/unit/module.hpp>
 #include <boost/simd/sdk/memory/buffer.hpp>
-#include <boost/simd/include/constants/real.hpp>
+#include <boost/simd/toolbox/constant/constant.hpp>
 
 
 NT2_TEST_CASE_TPL ( is_included_c_integer__2_0,  BOOST_SIMD_INTEGRAL_TYPES)
@@ -46,11 +46,11 @@ NT2_TEST_CASE_TPL ( is_included_c_integer__2_0,  BOOST_SIMD_INTEGRAL_TYPES)
 
 
   // specific values tests
-  NT2_TEST_EQUAL(is_included_c(boost::simd::Mone<T>(),boost::simd::complement(boost::simd::Zero<T>())), false);
+  NT2_TEST_EQUAL(is_included_c(boost::simd::Mone<T>(),boost::simd::Zero<T>()), true);
   NT2_TEST_EQUAL(is_included_c(boost::simd::One<T>(), boost::simd::One<T>()), false);
-  NT2_TEST_EQUAL(is_included_c(boost::simd::One<T>(),boost::simd::complement(boost::simd::Mone<T>())), true);
-  NT2_TEST_EQUAL(is_included_c(boost::simd::One<T>(),boost::simd::complement(boost::simd::Three<T>())), true);
-  NT2_TEST_EQUAL(is_included_c(boost::simd::One<T>(),boost::simd::complement(boost::simd::Two<T>())), false);
-  NT2_TEST_EQUAL(is_included_c(boost::simd::One<T>(),boost::simd::complement(boost::simd::Zero<T>())), false);
+  NT2_TEST_EQUAL(is_included_c(boost::simd::One<T>(),boost::simd::Mone<T>()), false);
+  NT2_TEST_EQUAL(is_included_c(boost::simd::One<T>(),boost::simd::Three<T>()), false);
+  NT2_TEST_EQUAL(is_included_c(boost::simd::One<T>(),boost::simd::Two<T>()), true);
+  NT2_TEST_EQUAL(is_included_c(boost::simd::One<T>(),boost::simd::Zero<T>()), true);
   NT2_TEST_EQUAL(is_included_c(boost::simd::Zero<T>(), boost::simd::Zero<T>()), true);
 } // end of test for integer_
