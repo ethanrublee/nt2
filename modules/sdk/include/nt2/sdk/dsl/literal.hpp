@@ -9,8 +9,8 @@
 #ifndef NT2_SDK_DSL_LITTERAL_HPP_INCLUDED
 #define NT2_SDK_DSL_LITTERAL_HPP_INCLUDED
 
-#include <nt2/sdk/dsl/category.hpp>
-#include <nt2/sdk/constant/category.hpp>
+#include <boost/dispatch/dsl/category.hpp>
+#include <boost/simd/sdk/constant/category.hpp>
 #include <nt2/include/functions/splat.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -9,7 +9,7 @@
 #ifndef NT2_SDK_DSL_EVALUATION_HPP_INCLUDED
 #define NT2_SDK_DSL_EVALUATION_HPP_INCLUDED
 
-#include <nt2/sdk/functor/functor.hpp>
+#include <boost/dispatch/functor/functor.hpp>
 
 namespace nt2
 {

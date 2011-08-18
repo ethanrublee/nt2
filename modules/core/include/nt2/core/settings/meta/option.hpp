@@ -19,7 +19,7 @@ namespace nt2 { namespace meta
   template<class Type, class Option, class Default, class Enable = void>
   struct option
   {
-    NT2_STATIC_ASSERT ( sizeof(Enable*) == 0
+    BOOST_DISPATCH_STATIC_ASSERT ( sizeof(Enable*) == 0
                       , NT2_UNKNOWN_OPTION_TAG
                       , "An attempt has been made to recover a container setting "
                         "using an unregistered option tag. Check your option<> "

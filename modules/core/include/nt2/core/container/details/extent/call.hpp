@@ -10,8 +10,8 @@
 #define NT2_CORE_CONTAINER_DETAILS_EXTENT_CALL_HPP_INCLUDED
 
 #include <nt2/sdk/meta/as.hpp>
-#include <nt2/sdk/dsl/compute.hpp>
-#include <nt2/sdk/dsl/category.hpp>
+#include <boost/dispatch/dsl/compute.hpp>
+#include <boost/dispatch/dsl/category.hpp>
 
 namespace nt2 { namespace meta
 {
