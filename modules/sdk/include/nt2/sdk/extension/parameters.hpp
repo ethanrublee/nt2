@@ -6,8 +6,8 @@
  *                 See accompanying file LICENSE.txt or copy at
  *                     http://www.boost.org/LICENSE_1_0.txt
  ******************************************************************************/
-#ifndef BOOST_DISPATCH_EXTENSION_PARAMETERS_HPP_INCLUDED
-#define BOOST_DISPATCH_EXTENSION_PARAMETERS_HPP_INCLUDED
+#ifndef NT2_EXTENSION_PARAMETERS_HPP_INCLUDED
+#define NT2_EXTENSION_PARAMETERS_HPP_INCLUDED
 
 ////////////////////////////////////////////////////////////////////////////////
 // Global parameters for nt2 code generator
@@ -15,17 +15,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-// Maximum arity for meta-function
+// Maximum number of dimensions for all container
 ////////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_DISPATCH_MAX_META_ARITY
-#define BOOST_DISPATCH_MAX_META_ARITY 12
+#ifndef NT2_MAX_DIMENSIONS
+#define NT2_MAX_DIMENSIONS 4
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-// Maximum arity for function calls
+// Default base index for container
 ////////////////////////////////////////////////////////////////////////////////
-#ifndef BOOST_DISPATCH_MAX_ARITY
-#define BOOST_DISPATCH_MAX_ARITY 5
+#ifndef NT2_DEFAULT_INDEX
+#define NT2_DEFAULT_INDEX 1
 #endif
 
 #endif

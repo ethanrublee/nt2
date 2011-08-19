@@ -1,10 +1,16 @@
 [section copysign]
 
 [h5 Description]
+This functor produce a value with the magnitude of 
+the first parameter and the sign of second. 
 
-[h5 Synonyms]
+If parameter contains  floating point values, cases negative Zero is treated consistently.
 
 [h5 Synopsis]
+    namespace boost { namespace simd
+    {
+      template <class A0, class A1> A0 copysign(A0 const& a0, A1 const& a1);
+    } }
 
 [table Template Parameters
     [[Parameter] [Requirement] [Description]]
