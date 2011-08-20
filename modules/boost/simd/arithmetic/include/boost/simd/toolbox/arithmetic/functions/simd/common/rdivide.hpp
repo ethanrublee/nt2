@@ -8,16 +8,25 @@
 //==============================================================================
 #ifndef BOOST_SIMD_TOOLBOX_ARITHMETIC_FUNCTIONS_SIMD_COMMON_RDIVIDE_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_ARITHMETIC_FUNCTIONS_SIMD_COMMON_RDIVIDE_HPP_INCLUDED
-#include <boost/dispatch/meta/upgrade.hpp>
-#include <boost/simd/include/constants/digits.hpp>
-#include <boost/fusion/tuple.hpp>
-#include <boost/dispatch/meta/strip.hpp>
+
+#include <boost/simd/toolbox/arithmetic/functions/rdivide.hpp>
 #include <boost/simd/include/functions/is_eqz.hpp>
+#include <boost/simd/include/functions/minus.hpp>
+#include <boost/simd/include/functions/plus.hpp>
+#include <boost/simd/include/functions/bitwise_and.hpp>
+#include <boost/simd/include/functions/bitwise_or.hpp>
+#include <boost/simd/include/functions/divides.hpp>
 #include <boost/simd/include/functions/group.hpp>
 #include <boost/simd/include/functions/split.hpp>
+#include <boost/simd/include/functions/select.hpp>
 #include <boost/simd/include/functions/toint.hpp>
 #include <boost/simd/include/functions/tofloat.hpp>
-#include <boost/simd/include/functions/select.hpp>
+#include <boost/simd/include/constants/one.hpp>
+#include <boost/simd/include/constants/zero.hpp>
+#include <boost/simd/sdk/simd/native_cast.hpp>
+#include <boost/simd/sdk/meta/scalar_of.hpp>
+#include <boost/dispatch/meta/upgrade.hpp>
+#include <boost/fusion/tuple.hpp>
 
 namespace boost { namespace simd { namespace ext
 {
@@ -31,7 +40,8 @@ namespace boost { namespace simd { namespace ext
     BOOST_SIMD_FUNCTOR_CALL_REPEAT(2)
     {
       const A0 iseqza1 = is_eqz(a1);
-      return (a0-(iseqza1&a0))/(a1+(iseqza1&One<A0>()));
+      const A0 c = b_and(eq(a0, Valmin<A0>()), eq(a1, Mone<A0>())); 
+      return ((a0-c)-(iseqza1&a0))/(a1+(iseqza1&One<A0>()));
     }
   };
 

@@ -8,9 +8,15 @@
 //==============================================================================
 #ifndef BOOST_SIMD_TOOLBOX_ARITHMETIC_FUNCTIONS_SIMD_COMMON_DIVS_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_ARITHMETIC_FUNCTIONS_SIMD_COMMON_DIVS_HPP_INCLUDED
-#include <boost/dispatch/meta/as_real.hpp>
+
+#include <boost/simd/toolbox/arithmetic/functions/divs.hpp>
 #include <boost/simd/include/functions/rdivide.hpp>
-#ifdef BOOST_SIMD_DETECTED
+#include <boost/simd/include/functions/bitwise_and.hpp>
+#include <boost/simd/include/functions/is_equal.hpp>
+#include <boost/simd/include/functions/minus.hpp>
+#include <boost/simd/include/constants/mone.hpp>
+#include <boost/simd/include/constants/valmin.hpp>
+#include <boost/dispatch/meta/as_integer.hpp>
 
 /////////////////////////////////////////////////////////////////////////////
 // Implementation when type A0 is unsigned_
@@ -47,12 +53,10 @@ namespace boost { namespace simd { namespace ext
 
     BOOST_SIMD_FUNCTOR_CALL_REPEAT(2)
     {
-      typedef typename dispatch::meta::as_integer<A0, unsigned>::type utype;
-      A0 c = b_and(eq(a0, Valmin<A0>()), eq(a1, Mone<A0>())); 
-      return rdivide( a0-c, a1); 
+      //      A0 c = b_and(eq(a0, Valmin<A0>()), eq(a1, Mone<A0>())); 
+      return rdivide( a0, a1); 
     }
   };
 } } }
 
-#endif
 #endif

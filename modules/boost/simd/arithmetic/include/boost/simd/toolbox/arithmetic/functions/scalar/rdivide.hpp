@@ -8,7 +8,12 @@
 //==============================================================================
 #ifndef BOOST_SIMD_TOOLBOX_ARITHMETIC_FUNCTIONS_SCALAR_RDIVIDE_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_ARITHMETIC_FUNCTIONS_SCALAR_RDIVIDE_HPP_INCLUDED
-#include <boost/simd/include/constants/digits.hpp>
+
+#include <boost/simd/toolbox/arithmetic/functions/rdivide.hpp>
+#include <boost/simd/include/constants/zero.hpp>
+#include <boost/simd/include/constants/valmin.hpp>
+#include <boost/simd/include/constants/valmax.hpp>
+#include <boost/simd/include/constants/mone.hpp>
 
 namespace boost { namespace simd { namespace ext
 {
@@ -21,7 +26,8 @@ namespace boost { namespace simd { namespace ext
 
     BOOST_SIMD_FUNCTOR_CALL(2)
     {
-      if (a1) return a0/a1;
+      if ((a0 == Valmin<result_type>()) && (a1 == Mone<result_type>())) return Valmax<result_type>(); 
+      else if (a1) return a0/a1;
       else if (a0 > 0) return Valmax<result_type>();
       else if (a0 < 0) return Valmin<result_type>();
       else return Zero<result_type>();
