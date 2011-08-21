@@ -16,9 +16,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Implementation when type A0 is an expression
 ////////////////////////////////////////////////////////////////////////////////
-namespace nt2 { namespace meta
+namespace nt2 { namespace ext
 {
-  NT2_FUNCTOR_IMPLEMENTATION( tag::size_, tag::cpu_
+  NT2_FUNCTOR_IMPLEMENTATION( nt2::tag::size_, tag::cpu_
                             , (A0)(Dom)(Tag)(Sema)
                             , ((expr_<A0,Dom,Tag,Sema>))
                             )
