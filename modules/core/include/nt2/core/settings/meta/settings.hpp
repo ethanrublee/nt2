@@ -62,7 +62,7 @@ namespace nt2 { namespace meta
   };                                                                      \
   /**/
 
-  BOOST_PP_REPEAT_FROM_TO(2,NT2_MAX_META_ARITY,M0,~)
+  BOOST_PP_REPEAT_FROM_TO(2,BOOST_DISPATCH_MAX_META_ARITY,M0,~)
 } }
 
 ////////////////////////////////////////////////////////////////////////////////

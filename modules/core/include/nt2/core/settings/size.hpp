@@ -18,6 +18,7 @@
 #include <boost/array.hpp>
 #include <boost/mpl/vector_c.hpp>
 #include <boost/dispatch/extension/parameters.hpp>
+#include <nt2/sdk/extension/parameters.hpp>
 #include <boost/dispatch/details/preprocessor.hpp>
 #include <nt2/core/settings/meta/option.hpp>
 
@@ -43,12 +44,12 @@ struct  of_size_<BOOST_PP_ENUM_PARAMS(n,D)>                       \
           type;                                                   \
 };                                                                \
                                                                   \
-template<> struct of_size_<NT2_PP_ENUM_VALUE(n,-1)>               \
+template<> struct of_size_<BOOST_DISPATCH_PP_ENUM_VALUE(n,-1)>               \
 {                                                                 \
   static const std::size_t      dimensions = n;                   \
   typedef boost::mpl::false_    is_static;                        \
   typedef BOOST_PP_CAT(BOOST_PP_CAT(boost::mpl::vector,n),_c)     \
-      <std::ptrdiff_t, 0, BOOST_PP_ENUM_SHIFTED(n,NT2_PP_TEXT,1)> \
+      <std::ptrdiff_t, 0, BOOST_PP_ENUM_SHIFTED(n,BOOST_DISPATCH_PP_TEXT,1)> \
       type;                                                       \
 };                                                                \
 /**/
@@ -81,12 +82,12 @@ namespace nt2
   };
 
   template<>
-  struct of_size_<NT2_PP_ENUM_VALUE(NT2_MAX_DIMENSIONS,-1)>
+  struct of_size_<BOOST_DISPATCH_PP_ENUM_VALUE(NT2_MAX_DIMENSIONS,-1)>
   {
     static const std::size_t  dimensions = NT2_MAX_DIMENSIONS;
     typedef boost::mpl::false_    is_static;
     typedef BOOST_PP_CAT(BOOST_PP_CAT(boost::mpl::vector,NT2_MAX_DIMENSIONS),_c)
-        <std::ptrdiff_t,0,BOOST_PP_ENUM_SHIFTED(NT2_MAX_DIMENSIONS,NT2_PP_TEXT,1)>
+        <std::ptrdiff_t,0,BOOST_PP_ENUM_SHIFTED(NT2_MAX_DIMENSIONS,BOOST_DISPATCH_PP_TEXT,1)>
         type;
   };
 
@@ -109,7 +110,7 @@ namespace nt2
   // Total specialization for 0D elements
   //////////////////////////////////////////////////////////////////////////////
   template<>
-  struct  of_size_<NT2_PP_ENUM_VALUE(NT2_MAX_DIMENSIONS,-2)>
+  struct  of_size_<BOOST_DISPATCH_PP_ENUM_VALUE(NT2_MAX_DIMENSIONS,-2)>
   {
     static const std::size_t                      dimensions = 0;
     typedef boost::mpl::true_    is_static;
@@ -144,7 +145,7 @@ namespace nt2 { namespace meta
 // Defines some usual short-cut for runtime of_size_
 //==============================================================================
 #define M1(z,n,t)                                                             \
-typedef of_size_<NT2_PP_ENUM_VALUE(n,-1)> BOOST_PP_CAT(BOOST_PP_CAT(_,n),D);  \
+typedef of_size_<BOOST_DISPATCH_PP_ENUM_VALUE(n,-1)> BOOST_PP_CAT(BOOST_PP_CAT(_,n),D);  \
 /**/
 
 #if defined(DOXYGEN_ONLY)
