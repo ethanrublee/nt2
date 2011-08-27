@@ -17,13 +17,13 @@
 /////////////////////////////////////////////////////////////////////////////
 namespace boost { namespace simd { namespace ext
 {
+  //TODO ref implementation
   BOOST_SIMD_FUNCTOR_IMPLEMENTATION(boost::simd::tag::two_split_, tag::cpu_,
                              (A0),
                              (scalar_< real_<A0> >)
                             )
   {
-    typedef A0           stA0;
-    typedef typename boost::fusion::tuple<stA0,stA0> result_type;
+    typedef typename boost::fusion::tuple<A0,A0> result_type;
 
     BOOST_SIMD_FUNCTOR_CALL(1)
     {
@@ -35,10 +35,8 @@ namespace boost { namespace simd { namespace ext
     template<class R0,class R1> inline void
     eval(A0 const& a,R0& r0, R1& r1)const
     {
-      using boost::simd::Nbmantissabits;
-
       // TODO: make local constant ?
-      static const int N = (Nbmantissabits<A0>()-(Nbmantissabits<A0>()>>1))+1;
+      static const int N = int(Nbmantissabits<A0>())-int((Nbmantissabits<A0>())>>1)+1;
       static const A0 fac = (1<<N)+1;
       A0 c = fac*a;
       r0 =  c-(c-a);

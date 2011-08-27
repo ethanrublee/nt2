@@ -8,8 +8,11 @@
 //==============================================================================
 #ifndef BOOST_SIMD_TOOLBOX_REDUCTION_FUNCTIONS_SIMD_COMMON_HMSB_HPP_INCLUDED
 #define BOOST_SIMD_TOOLBOX_REDUCTION_FUNCTIONS_SIMD_COMMON_HMSB_HPP_INCLUDED
-#include <boost/dispatch/meta/strip.hpp>
+
 #include <boost/simd/include/functions/bits.hpp>
+#include <boost/simd/sdk/meta/cardinal_of.hpp>
+#include <climits>
+
 /////////////////////////////////////////////////////////////////////////////
 // Implementation when type  is arithmetic_
 /////////////////////////////////////////////////////////////////////////////
@@ -22,12 +25,15 @@ namespace boost { namespace simd { namespace ext
   {
       
     typedef boost::simd::int32_t result_type; 
-    BOOST_SIMD_FUNCTOR_CALL_REPEAT(1)
+    BOOST_SIMD_FUNCTOR_CALL(1)
     {
-      result_type z = boost::simd::bits(a0[0])&1;
-      for(int i = 0; i< boost::simd::meta::cardinal_of<A0>::value; ++i)
+      typedef typename meta::scalar_of<A0>::type stype;
+      
+      result_type z = 0;
+      const result_type N = meta::cardinal_of<A0>::value;
+      for(result_type i = 0; i != N; ++i)
       {
-        z |= boost::simd::bits(a0[i])&1<<i;
+        z |= bits(a0[i]) >> (sizeof(stype)*CHAR_BIT - 1) << (N-i-1);
       }
       return z;
     }

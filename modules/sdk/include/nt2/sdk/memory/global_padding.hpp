@@ -1,5 +1,5 @@
 /*******************************************************************************
- *         Copyright 2003 & onward LASMEA UMR 6602 CNRS/Univ. Clermont II
+ *         Copyright 2002 & onward LASMEA UMR 6602 CNRS/Univ. Clermont II
  *         Copyright 2009 & onward LRI    UMR 8623 CNRS/Univ Paris Sud XI
  *
  *          Distributed under the Boost Software License, Version 1.0.
@@ -25,7 +25,7 @@ namespace nt2 { namespace memory
   //////////////////////////////////////////////////////////////////////////////
   struct global_padding
   {
-    typedef ext::padding_<global_padding>                  nt2_hierarchy_tag;
+    typedef ext::padding_<global_padding>                  dispatch_hierarchy_tag;
   };
 } }
 

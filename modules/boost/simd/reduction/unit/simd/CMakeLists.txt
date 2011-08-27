@@ -8,7 +8,10 @@
 ##############################################################################
 
 SET( SOURCES
-    none.cpp
+  bitwise_any.cpp
+  bitwise_all.cpp
+  is_simd_logical.cpp
+  none.cpp
   at_i.cpp
   hmsb.cpp
   sum.cpp

@@ -27,9 +27,7 @@ namespace boost { namespace simd { namespace ext
                             , (scalar_< fundamental_<A0> >)
                             )
   {
-
     typedef A0 result_type;
-
     BOOST_SIMD_FUNCTOR_CALL(1)
     {
       return a0;
@@ -59,7 +57,7 @@ namespace boost { namespace simd { namespace ext
 	    return Valmax<rtype>();
 	}
       if (boost::simd::is_nan(a0)) return Zero<rtype>(); 
-      return round(a0);
+      return result_type(round(a0));
     }
   };
 } } }
