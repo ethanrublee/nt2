@@ -17,7 +17,7 @@ namespace boost { namespace simd { namespace details
 {
   bool detect(tag::neon_ const&)
   {
-    return linux_::hwcap() & HWCAP_NEON;
+    return config::linux_::hwcap() & HWCAP_NEON;
   }
 } } }
 

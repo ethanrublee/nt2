@@ -10,12 +10,8 @@
 #define BOOST_SIMD_TOOLBOX_OPERATOR_FUNCTIONS_SIMD_VMX_ALTIVEC_SHIFT_LEFT_HPP_INCLUDED
 #ifdef BOOST_SIMD_HAS_VMX_SUPPORT
 
-////////////////////////////////////////////////////////////////////////////////
-// operator binary shift left
-////////////////////////////////////////////////////////////////////////////////
-#include <boost/dispatch/meta/strip.hpp>
+#include <boost/simd/toolbox/operator/functions/shift_left.hpp>
 #include <boost/dispatch/meta/as_unsigned.hpp>
-#include <boost/dispatch/functor/preprocessor/call.hpp>
 #include <boost/simd/sdk/simd/native_cast.hpp>
 
 namespace boost { namespace simd { namespace ext
@@ -29,7 +25,7 @@ namespace boost { namespace simd { namespace ext
 
     BOOST_SIMD_FUNCTOR_CALL(2)  
     { 
-      typedef typename meta::as_unsigned<A1>::type type;
+      typedef typename dispatch::meta::as_unsigned<A1>::type type;
       type shift = simd::native_cast<type>(a1);
       A0 that  = { vec_sl(a0(), shift()) };
       return that;
@@ -45,7 +41,7 @@ namespace boost { namespace simd { namespace ext
 
     BOOST_SIMD_FUNCTOR_CALL(2) 
    { 
-     typedef typename meta::as_unsigned<A1>::type type;
+     typedef typename dispatch::meta::as_unsigned<A1>::type type;
      type shift = simd::native_cast<type>(a1);
      type value = simd::native_cast<type>(a0);
      A0 that  = simd::native_cast<A0>( vec_sl(value(), shift()) ); 

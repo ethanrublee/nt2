@@ -17,7 +17,7 @@ namespace boost { namespace simd { namespace details
 {
   bool detect(tag::altivec_ const&)
   {
-    return linux_::hwcap() & PPC_FEATURE_HAS_ALTIVEC;
+    return config::linux_::hwcap() & PPC_FEATURE_HAS_ALTIVEC;
   }
 } } }
 
