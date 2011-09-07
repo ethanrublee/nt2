@@ -6,18 +6,14 @@
 //                 See accompanying file LICENSE.txt or copy at
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
-#ifndef BOOST_SIMD_SDK_CONFIG_DETAILS_DETECT_HPP_INCLUDED
-#define BOOST_SIMD_SDK_CONFIG_DETAILS_DETECT_HPP_INCLUDED
-
-/*!
- *\file detect.hpp
-*/
+#ifndef BOOST_SIMD_SDK_SIMD_DETAILS_DETECT_HPP_INCLUDED
+#define BOOST_SIMD_SDK_SIMD_DETAILS_DETECT_HPP_INCLUDED
 
 #include <boost/simd/sdk/config/arch.hpp>
 #include <boost/simd/sdk/simd/extensions/meta/tags.hpp>
 
-namespace boost{ namespace simd{ namespace config{ namespace details{
-
+namespace boost { namespace simd { namespace details
+{
   inline bool detect(dispatch::tag::cpu_ const&)
   {
     return false;
@@ -41,6 +37,6 @@ namespace boost{ namespace simd{ namespace config{ namespace details{
   bool detect(tag::neon_ const&);
 #endif
 
-} } } }  
+} } }
 
 #endif

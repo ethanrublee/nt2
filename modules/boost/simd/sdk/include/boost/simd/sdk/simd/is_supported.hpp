@@ -6,8 +6,8 @@
 //                 See accompanying file LICENSE.txt or copy at
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
-#ifndef BOOST_SIMD_SDK_CONFIG_IS_SUPPORTED_HPP_INCLUDED
-#define BOOST_SIMD_SDK_CONFIG_IS_SUPPORTED_HPP_INCLUDED
+#ifndef BOOST_SIMD_SDK_SIMD_IS_SUPPORTED_HPP_INCLUDED
+#define BOOST_SIMD_SDK_SIMD_IS_SUPPORTED_HPP_INCLUDED
 
 /*!
  *\file is_supported.hpp
@@ -15,16 +15,15 @@
  * For detecting a new extenion from a new vendor you need to add a 
  * vendor case and provide the right specialization of cpuid_mask.  
 */
-#include <boost/simd/sdk/config/details/detect.hpp>
+#include <boost/simd/sdk/simd/details/detect.hpp>
 
-namespace boost{ namespace simd{
-
+namespace boost { namespace simd
+{
   template<class Tag>
   bool is_supported()
   {
-    return config::details::detect(Tag());
+    return details::detect(Tag());
   }
-
-} } 
+} }
 
 #endif

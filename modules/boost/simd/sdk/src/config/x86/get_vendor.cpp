@@ -11,26 +11,29 @@
 #ifdef BOOST_SIMD_ARCH_X86
 #include <boost/simd/sdk/config/details/get_vendor.hpp>
 #include <boost/simd/sdk/config/arch/x86/cpuid.hpp>
+#include <cstring>
 
 #define INTEL "GenuineIntel"
 #define AMD   "AuthenticAMD"
 
-namespace boost { namespace simd { namespace config { namespace details
+namespace boost { namespace simd { namespace details
 {  
   static bool str_match(const int abcd[4], const char* vendor)
   {
-    return (abcd[1] == ((int*)(vendor))[0] && abcd[2] == ((int*)(vendor))[2] && abcd[3] == ((int*)(vendor))[1]);
+    return ( !std::memcmp(abcd + 1, vendor,     4)
+          && !std::memcmp(abcd + 2, vendor + 8, 4)
+          && !std::memcmp(abcd + 3, vendor + 4, 4) );
   }
 
   int get_vendor()
   {
     static const int function = 0x00000000;
     int regs_x86[4]; 
-    x86::cpuid(regs_x86, function);
+    config::x86::cpuid(regs_x86, function);
     if( str_match(regs_x86, INTEL) ) return intel;
     else if( str_match(regs_x86, AMD) ) return amd;
     else return -1;
   }
-} } } }
+} } }
 
 #endif

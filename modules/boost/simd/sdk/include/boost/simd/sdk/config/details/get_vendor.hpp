@@ -14,11 +14,10 @@
  *\brief Runtime function to get the Vendor Processor. 
 */
 
-namespace boost { namespace simd { namespace config{ namespace details {
-
+namespace boost { namespace simd { namespace details
+{
   enum{intel, amd, ibm};
   int get_vendor();
-
-} } } } 
+} } }
 
 #endif

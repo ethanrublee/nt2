@@ -11,12 +11,12 @@
 #ifdef BOOST_SIMD_ARCH_POWERPC
 #include <boost/simd/sdk/config/details/get_vendor.hpp>
 
-namespace boost { namespace simd { namespace config { namespace details
+namespace boost { namespace simd { namespace details
 {
     int get_vendor()
     {
         return ibm;
     }
-} } } }
+} } }
 
 #endif

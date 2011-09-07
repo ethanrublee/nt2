@@ -6,7 +6,7 @@
 //                 See accompanying file LICENSE.txt or copy at
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
-#include <boost/simd/sdk/config/os/linux/hwcap.hpp>
+#include <boost/simd/sdk/config/os/linux/auxv.hpp>
 
 #ifdef BOOST_SIMD_OS_LINUX
 #include <linux/auxvec.h>
@@ -16,7 +16,7 @@
 
 namespace boost { namespace simd { namespace config { namespace linux_
 {
-  unsigned int hwcap()
+  uintptr_t auxv(int type)
   {
     int fd;
     Elf32_auxv_t auxv;
@@ -26,7 +26,7 @@ namespace boost { namespace simd { namespace config { namespace linux_
     {
       while(read(fd, &auxv, sizeof(Elf32_auxv_t)) == sizeof(Elf32_auxv_t))
       {
-        if (auxv.a_type == AT_HWCAP)
+        if (auxv.a_type == type)
         {
           close(fd);
           return auxv.a_un.a_val;
@@ -36,6 +36,12 @@ namespace boost { namespace simd { namespace config { namespace linux_
     }
     return 0;
   }
+  
+  unsigned int hwcap()
+  {
+      return auxv(AT_HWCAP);
+  }
+  
 } } } }
 
 #endif

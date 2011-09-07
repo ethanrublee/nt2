@@ -7,18 +7,18 @@
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
 #include <boost/simd/sdk/config/arch/powerpc.hpp>
-#include <boost/simd/sdk/config/os/linux/hwcap.hpp>
+#include <boost/simd/sdk/config/os/linux/auxv.hpp>
 
 #if defined(BOOST_SIMD_ARCH_POWERPC) && defined(BOOST_SIMD_OS_LINUX)
-#include <boost/simd/sdk/config/details/detect.hpp>
+#include <boost/simd/sdk/simd/details/detect.hpp>
 #include <asm/cputable.h>
 
-namespace boost { namespace simd { namespace config { namespace details
+namespace boost { namespace simd { namespace details
 {
   bool detect(tag::altivec_ const&)
   {
     return linux_::hwcap() & PPC_FEATURE_HAS_ALTIVEC;
   }
-} } } }
+} } }
 
 #endif

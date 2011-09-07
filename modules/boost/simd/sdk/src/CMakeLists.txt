@@ -22,6 +22,6 @@ set(SOURCES
     config/x86/cpuid.cpp
     config/x86/detect.cpp
     config/x86/get_vendor.cpp
-    config/hwcap-linux.cpp
+    config/linux_auxv.cpp
    )
 nt2_module_add_library(boost_simd ${SOURCES})

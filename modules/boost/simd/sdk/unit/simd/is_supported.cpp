@@ -6,9 +6,9 @@
 //                 See accompanying file LICENSE.txt or copy at
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
-#define NT2_UNIT_MODULE "boost::simd::memory::is_supported"
+#define NT2_UNIT_MODULE "boost::simd::is_supported"
 
-#include <boost/simd/sdk/config/is_supported.hpp>
+#include <boost/simd/sdk/simd/is_supported.hpp>
 #include <nt2/sdk/unit/module.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////

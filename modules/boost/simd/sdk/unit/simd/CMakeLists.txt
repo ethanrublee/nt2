@@ -25,6 +25,7 @@ SET( SOURCES
     sign_of.cpp
     terminal_of.cpp
     upgrade.cpp
+    is_supported.cpp
    )
 
 nt2_module_add_tests(boost.simd.sdk.simd.unit ${SOURCES})

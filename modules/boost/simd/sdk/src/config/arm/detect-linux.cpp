@@ -7,18 +7,18 @@
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
 #include <boost/simd/sdk/config/arch/arm.hpp>
-#include <boost/simd/sdk/config/os/linux/hwcap.hpp>
+#include <boost/simd/sdk/config/os/linux/auxv.hpp>
 
 #if defined(BOOST_SIMD_ARCH_ARM) && defined(BOOST_SIMD_OS_LINUX)
-#include <boost/simd/sdk/config/details/detect.hpp>
+#include <boost/simd/sdk/simd/details/detect.hpp>
 #include <asm/hwcap.h>
 
-namespace boost { namespace simd { namespace config { namespace details
+namespace boost { namespace simd { namespace details
 {
   bool detect(tag::neon_ const&)
   {
     return linux_::hwcap() & HWCAP_NEON;
   }
-} } } }
+} } }
 
 #endif

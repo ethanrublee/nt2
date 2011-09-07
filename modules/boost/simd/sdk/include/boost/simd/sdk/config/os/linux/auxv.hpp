@@ -6,14 +6,17 @@
 //                 See accompanying file LICENSE.txt or copy at
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
-#ifndef BOOST_SIMD_SDK_CONFIG_OS_LINUX_HWCAP_HPP_INCLUDED
-#define BOOST_SIMD_SDK_CONFIG_OS_LINUX_HWCAP_HPP_INCLUDED
+#ifndef BOOST_SIMD_SDK_CONFIG_OS_LINUX_AUXV_HPP_INCLUDED
+#define BOOST_SIMD_SDK_CONFIG_OS_LINUX_AUXV_HPP_INCLUDED
 
 #include <boost/simd/sdk/config/os/linux.hpp>
 #ifdef BOOST_SIMD_OS_LINUX
 
+#include <boost/cstdint.hpp>
+
 namespace boost { namespace simd { namespace config { namespace linux_
 {
+  uintptr_t auxv(int type);
   unsigned int hwcap();
 } } } }
 
