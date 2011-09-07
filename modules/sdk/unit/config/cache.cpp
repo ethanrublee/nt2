@@ -6,28 +6,31 @@
 //                 See accompanying file LICENSE.txt or copy at
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
-#ifndef BOOST_SIMD_SDK_CONFIG_DETAILS_CPUID_HPP_INCLUDED
-#define BOOST_SIMD_SDK_CONFIG_DETAILS_CPUID_HPP_INCLUDED
+#define NT2_UNIT_MODULE "nt2::config::cache"
 
-/*!
- *\file cpuid.hpp
- *\brief cpuid function to get x86 processor infos
-*/
+#include <nt2/sdk/config/cache.hpp>
+#include <iostream>
 
-#include <boost/simd/sdk/config/compiler.hpp>
-#include <boost/simd/sdk/config/arch.hpp>
+#include <nt2/sdk/unit/module.hpp>
+#include <nt2/sdk/unit/tests/relation.hpp>
 
-namespace boost{ namespace simd{ namespace config{ namespace details{
-  
-  bool has_bit_set(int value, int bit);
+using namespace nt2::config;
 
 ////////////////////////////////////////////////////////////////////////////////
-// Case of x86 processor. 
+// Show the result of cache infos detected at runtime
 ////////////////////////////////////////////////////////////////////////////////
+NT2_TEST_CASE(cache_sizes)
+{
+  for (int i = 1; i < 4; ++i)
+  {
+    std::cout << "Cache L" << i << " size : " << cache_size(i) << " KBytes" << std::endl;
+  }
+}
 
-  void cpuid(int CPUInfo[4],int InfoType);
-  void cpuidex(int CPUInfo[4],int InfoType, int ECXValue);
-
-} } } }
-
-#endif
+NT2_TEST_CASE(cache_line_sizes)
+{
+  for (int i = 1; i < 4; ++i)
+  {
+    std::cout << "Cache L" << i << " line size : " << cache_line_size(i) << " Bytes" << std::endl;
+  }
+}

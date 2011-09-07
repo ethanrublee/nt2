@@ -7,16 +7,8 @@
 #                     http://www.boost.org/LICENSE_1_0.txt
 ################################################################################
 
-include(NT2Module)
-nt2_module_source_setup(sdk)
+SET( SOURCES
+     cache.cpp
+  )
 
-set(SOURCES
-    error/assert_exception.cpp
-    error/exception.cpp
-    timing/now.cpp
-    timing/timers.cpp
-    config/version.cpp
-    config/cache/cache.cpp
-    config/cache.cpp
-   )
-nt2_module_add_library(nt2 ${SOURCES})
+nt2_module_add_tests(sdk.config.unit ${SOURCES})
