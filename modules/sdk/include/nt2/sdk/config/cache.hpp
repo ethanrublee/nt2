@@ -16,6 +16,7 @@
 
 namespace nt2{ namespace config{
 
+  enum{L1cache=1, L2cache=2, L3cache=3 };
   int cache_line_size(int const& cache_level);
   int cache_size(int const& cache_level);
 

@@ -19,31 +19,13 @@ namespace nt2{ namespace config{
   int cache_size(int const& cache_level)
   {
     details::cache_infos::init();
-    switch(cache_level) 
-    {
-    case 1 : return details::cache_infos::cache_size(1); 
-      break;
-    case 2 : return details::cache_infos::cache_size(2); 
-      break;
-    case 3 : return details::cache_infos::cache_size(3); 
-      break;
-    default : return 0; break;
-    }
+    return details::cache_infos::cache_size(cache_level);
   }
 
   int cache_line_size(int const& cache_level)
   {
     details::cache_infos::init();
-    switch(cache_level) 
-    {
-    case 1 : return details::cache_infos::cache_line_size(1); 
-      break;
-    case 2 : return details::cache_infos::cache_line_size(2); 
-      break;
-    case 3 : return details::cache_infos::cache_line_size(3); 
-      break;
-    default : return 0; break;
-    }
+    return details::cache_infos::cache_line_size(cache_level);
   }
 
 } }

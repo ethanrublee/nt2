@@ -21,12 +21,13 @@ namespace nt2{ namespace config{ namespace details{
 
   struct cache_infos
   {
+    typedef int result_type;
     // Initialize the static members with the expected values
     static void init();
     // Return the cache size according to the level in KBytes
-    static int  cache_size(int const& level);
+    static result_type cache_size(int const& level);
     // Return the cache line size according to the level in Bytes
-    static int  cache_line_size(int const& level);
+    static result_type cache_line_size(int const& level);
 
   private:
     static bool is_init_;

@@ -6,9 +6,10 @@
 //                 See accompanying file LICENSE.txt or copy at
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
-#include <nt2/sdk/config/details/cache.hpp>
 #include <boost/simd/sdk/config/details/get_vendor.hpp>
 #include <boost/simd/sdk/config/details/cpuid.hpp>
+#include <boost/static_assert.hpp>
+#include <nt2/sdk/config/details/cache.hpp>
 #include <nt2/sdk/config/arch.hpp>
 #include <cassert>
 
@@ -23,7 +24,7 @@ namespace nt2{ namespace config{ namespace details{
 
   void cache_infos::init()
   {
-    if(is_init_ == false)
+    if(!is_init_)
     {
 
 #ifdef NT2_ARCH_X86 
@@ -51,9 +52,9 @@ namespace nt2{ namespace config{ namespace details{
             
             switch(level)
             {
-            case 1  : cache_sizes_[0] = size/1024; cache_line_sizes_[0] = line_size+1; break; 
-            case 2  : cache_sizes_[1] = size/1024; cache_line_sizes_[1] = line_size+1; break;
-            case 3  : cache_sizes_[2] = size/1024; cache_line_sizes_[2] = line_size+1; break;
+            case 1  : cache_sizes_[level-1] = size/1024; cache_line_sizes_[level-1] = line_size+1; break; 
+            case 2  : cache_sizes_[level-1] = size/1024; cache_line_sizes_[level-1] = line_size+1; break;
+            case 3  : cache_sizes_[level-1] = size/1024; cache_line_sizes_[level-1] = line_size+1; break;
             default : break;
             }
           }
@@ -84,7 +85,7 @@ namespace nt2{ namespace config{ namespace details{
 #elif NT2_ARH_POWERPC
       // TODO : PowerPC cache detection version with auxvec (need some work in branch new_config)
 #else
-#warning "Unkown Architecture for cache detection"
+      BOOST_STATIC_ASSERT(false, "Unkown Architecture for cache detection")
 #endif
       is_init_ = true;
     }
