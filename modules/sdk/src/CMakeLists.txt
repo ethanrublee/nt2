@@ -16,6 +16,7 @@ set(SOURCES
     timing/now.cpp
     timing/timers.cpp
     config/version.cpp
+    config/cache/cache_exception.cpp
     config/cache/powerpc.cpp
     config/cache/x86.cpp
     config/cache/cache.cpp

@@ -10,9 +10,8 @@
 #define NT2_SDK_CONFIG_DETAILS_CACHE_HPP_INCLUDED
 
 #include <boost/array.hpp>
-#include <exception>
+#include <nt2/sdk/error/error.hpp>
 #include <vector>
-#include <exception>
 /*!
  *\file cache.hpp
  *\Runtime implementation for vendor oriented cache information detection.
@@ -51,15 +50,6 @@ namespace nt2{ namespace config{ namespace details{
     static std::vector<int> cache_sizes_;
     static std::vector<int> cache_line_sizes_;
 
-  };
-
-  class cache_exc : std::exception
-  {
-  public :
-    cache_exc(const char* message) : message(message){}
-    virtual const char* what()
-    { return message; }
-    const char* message;
   };
 
 } } }

@@ -8,9 +8,10 @@
 //==============================================================================
 #include <boost/simd/sdk/config/details/get_vendor.hpp>
 #include <boost/simd/sdk/config/details/cpuid.hpp>
-#include <boost/static_assert.hpp>
-#include <nt2/sdk/config/details/cache.hpp>
 #include <nt2/sdk/config/details/detect_cache.hpp>
+#include <nt2/sdk/config/details/cache_exception.hpp>
+#include <nt2/sdk/error/assert.hpp>
+#include <nt2/sdk/config/details/cache.hpp>
 #include <nt2/sdk/config/arch.hpp>
 #include <cassert>
 #include <vector>
@@ -32,48 +33,50 @@ namespace nt2{ namespace config{ namespace details{
 
   cache_infos::result_type cache_infos::cache_size(int const& level)
   {
-    assert(is_init_ == true);
-    if(level > cache_sizes_.size()) throw cache_exc("Cache Level not available.");
+    BOOST_ASSERT_MSG(is_init_ == true, "Objet needs to be initialized first.");
+    if(level > cache_sizes_.size())
+      throw cache_exc("This level of cache is not available on the current target.");
     else return cache_sizes_[level-1];
   }
 
   cache_infos::result_type cache_infos::cache_line_size(int const& level)
   {
-    assert(is_init_ == true);
-    if(level > cache_line_sizes_.size()) throw cache_exc("Cache Level not available.");
+    BOOST_ASSERT_MSG(is_init_ == true, "Objet needs to be initialized first.");
+    if(level > cache_line_sizes_.size())
+      throw cache_exc("This level of cache is not available on the current target.");
     else return cache_line_sizes_[level-1];
   }
 
   cache_infos::result_type cache_infos::get_max_level()
   {
-    assert(is_init_ == true);
+    BOOST_ASSERT_MSG(is_init_ == true, "Objet needs to be initialized first.");
     return cache_sizes_.size();
   }
 
   cache_infos::const_iterator cache_infos::cache_size_begin()
   {
-    assert(is_init_ == true);
+    BOOST_ASSERT_MSG(is_init_ == true, "Objet needs to be initialized first.");
     const_iterator it = cache_sizes_.begin();
     return it;
   }
 
   cache_infos::const_iterator cache_infos::cache_line_size_begin()
   {
-    assert(is_init_ == true);
+    BOOST_ASSERT_MSG(is_init_ == true, "Objet needs to be initialized first.");
     const_iterator it = cache_line_sizes_.begin();
     return it;
   }
 
   cache_infos::const_iterator cache_infos::cache_size_end()
   {
-    assert(is_init_ == true);
+    BOOST_ASSERT_MSG(is_init_ == true, "Objet needs to be initialized first.");
     const_iterator it = cache_sizes_.end();
     return it;
   }
 
   cache_infos::const_iterator cache_infos::cache_line_size_end()
   {
-    assert(is_init_ == true);
+    BOOST_ASSERT_MSG(is_init_ == true, "Objet needs to be initialized first.");
     const_iterator it = cache_line_sizes_.end();
     return it;
   }
