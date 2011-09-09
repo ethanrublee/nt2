@@ -6,26 +6,18 @@
 //                 See accompanying file LICENSE.txt or copy at
 //                     http://www.boost.org/LICENSE_1_0.txt
 //==============================================================================
-#include <boost/simd/sdk/config/details/get_vendor.hpp>
-#include <nt2/sdk/config/cache.hpp>
-#include <nt2/sdk/config/details/cache.hpp>
-#include <exception>
-/*!
- *\file cache.cpp
-*/
 
-namespace nt2{ namespace config{
+#ifdef NT2_ARCH_POWERPC
 
-  int cache_size(int const& cache_level)
+#include <nt2/sdk/config/details/detect_cache.hpp>
+
+namespace nt2{ namespace config{ namespace details{
+
+  void detect_cache(std::vector<int> &cache_sizes_, std::vector<int> &cache_line_sizes_)
   {
-    details::cache_infos::init();
-    return details::cache_infos::cache_size(cache_level);
-  }
+    
+  } 
+  
+} } }
 
-  int cache_line_size(int const& cache_level)
-  {
-    details::cache_infos::init();
-    return details::cache_infos::cache_line_size(cache_level);
-  }
-
-} }
+#endif

@@ -8,13 +8,15 @@
 //==============================================================================
 #define NT2_UNIT_MODULE "nt2::config::cache"
 
+#include <nt2/sdk/config/details/cache.hpp>
 #include <nt2/sdk/config/cache.hpp>
 #include <iostream>
-
+#include <vector>
 #include <nt2/sdk/unit/module.hpp>
 #include <nt2/sdk/unit/tests/relation.hpp>
 
 using namespace nt2::config;
+using namespace nt2::config::details;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Show the result of cache infos detected at runtime
@@ -25,12 +27,16 @@ NT2_TEST_CASE(cache_sizes)
   {
     std::cout << "Cache L" << i << " size : " << cache_size(i) << " KBytes" << std::endl;
   }
+
 }
 
 NT2_TEST_CASE(cache_line_sizes)
 {
-  for (int i = 1; i < 4; ++i)
+  cache_infos::const_iterator it = cache_infos::cache_line_size_begin();
+  int i = 1;
+  for (; it != cache_infos::cache_line_size_end(); ++it)
   {
-    std::cout << "Cache L" << i << " line size : " << cache_line_size(i) << " Bytes" << std::endl;
+    std::cout << "Cache L" << i << " line size : " << *it << " Bytes" << std::endl;
+    i++;
   }
 }

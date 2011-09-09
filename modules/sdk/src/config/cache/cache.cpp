@@ -10,97 +10,72 @@
 #include <boost/simd/sdk/config/details/cpuid.hpp>
 #include <boost/static_assert.hpp>
 #include <nt2/sdk/config/details/cache.hpp>
+#include <nt2/sdk/config/details/detect_cache.hpp>
 #include <nt2/sdk/config/arch.hpp>
 #include <cassert>
-
-namespace bsc = boost::simd::config::details;
+#include <vector>
 
 namespace nt2{ namespace config{ namespace details{
 
   bool cache_infos::is_init_=false;
-
-  boost::array<int, 3> cache_infos::cache_sizes_      = {-1,-1,-1};
-  boost::array<int, 3> cache_infos::cache_line_sizes_ = {-1,-1,-1};
+  std::vector<int> cache_infos::cache_sizes_;
+  std::vector<int> cache_infos::cache_line_sizes_;
 
   void cache_infos::init()
   {
     if(!is_init_)
     {
-
-#ifdef NT2_ARCH_X86 
-
-      int regs[4] = {0,0,0,0};
-      int byte0, byte1, byte2, byte3;
-      int cache_ecx = 0;
-      int cache_eax = 0;
-
-      switch(bsc::get_vendor())
-      {
-      case bsc::intel :
-
-        do{
-          bsc::cpuidex(regs, 0x00000004, cache_ecx);
-          cache_eax = regs[0] & 0x0000001F;
-          if(cache_eax == 1 || cache_eax == 3)
-          {
-            int level      = (regs[0] & 0x000000E0) >> 5; 
-            int ways       = (regs[1] & 0xFFC00000) >> 22; 
-            int partitions = (regs[1] & 0x003FF000) >> 12; 
-            int line_size  = (regs[1] & 0x00000FFF) >>  0; 
-            int sets       = (regs[2]);                   
-            int size       = (ways+1)*(partitions+1)*(line_size+1)*(sets+1);
-            
-            switch(level)
-            {
-            case 1  : cache_sizes_[level-1] = size/1024; cache_line_sizes_[level-1] = line_size+1; break; 
-            case 2  : cache_sizes_[level-1] = size/1024; cache_line_sizes_[level-1] = line_size+1; break;
-            case 3  : cache_sizes_[level-1] = size/1024; cache_line_sizes_[level-1] = line_size+1; break;
-            default : break;
-            }
-          }
-          cache_ecx++;
-        }while(cache_eax != 0x00000000);
-
-        break;
-
-      case bsc::amd : 
-
-        bsc::cpuidex(regs,0x80000005,0);
-        cache_line_sizes_[0] = regs[2] & 0x000000FF;
-        cache_sizes_[0]      = regs[2] >> 24; 
-
-        regs[0] = regs[1] = regs[2] = regs[3] = 0;
-        bsc::cpuidex(regs,0x80000006,0);
-
-        cache_line_sizes_[1] = regs[2] & 0x000000FF;
-        cache_sizes_[1]      = (regs[2] >> 16); 
-        cache_line_sizes_[2] = regs[3] & 0x000000FF;
-        cache_sizes_[2]      = ((regs[3] & 0xFFFC000) >> 18)*512; // D[31;18] = l3 cache size in 512KB
-
-        break;
-
-      default : break;
-
-      }
-#elif NT2_ARH_POWERPC
-      // TODO : PowerPC cache detection version with auxvec (need some work in branch new_config)
-#else
-      BOOST_STATIC_ASSERT(false, "Unkown Architecture for cache detection")
-#endif
+      detect_cache(cache_sizes_, cache_line_sizes_);
       is_init_ = true;
     }
   }
 
-  int cache_infos::cache_size(int const& level)
+  cache_infos::result_type cache_infos::cache_size(int const& level)
   {
     assert(is_init_ == true);
-    return cache_sizes_[level-1];
+    if(level > cache_sizes_.size()) throw cache_exc("Cache Level not available.");
+    else return cache_sizes_[level-1];
   }
 
-  int cache_infos::cache_line_size(int const& level)
+  cache_infos::result_type cache_infos::cache_line_size(int const& level)
   {
     assert(is_init_ == true);
-    return cache_line_sizes_[level-1];
+    if(level > cache_line_sizes_.size()) throw cache_exc("Cache Level not available.");
+    else return cache_line_sizes_[level-1];
+  }
+
+  cache_infos::result_type cache_infos::get_max_level()
+  {
+    assert(is_init_ == true);
+    return cache_sizes_.size();
+  }
+
+  cache_infos::const_iterator cache_infos::cache_size_begin()
+  {
+    assert(is_init_ == true);
+    const_iterator it = cache_sizes_.begin();
+    return it;
+  }
+
+  cache_infos::const_iterator cache_infos::cache_line_size_begin()
+  {
+    assert(is_init_ == true);
+    const_iterator it = cache_line_sizes_.begin();
+    return it;
+  }
+
+  cache_infos::const_iterator cache_infos::cache_size_end()
+  {
+    assert(is_init_ == true);
+    const_iterator it = cache_sizes_.end();
+    return it;
+  }
+
+  cache_infos::const_iterator cache_infos::cache_line_size_end()
+  {
+    assert(is_init_ == true);
+    const_iterator it = cache_line_sizes_.end();
+    return it;
   }
 
 } } } 

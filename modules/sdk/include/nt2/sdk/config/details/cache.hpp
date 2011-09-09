@@ -11,7 +11,8 @@
 
 #include <boost/array.hpp>
 #include <exception>
-
+#include <vector>
+#include <exception>
 /*!
  *\file cache.hpp
  *\Runtime implementation for vendor oriented cache information detection.
@@ -22,17 +23,43 @@ namespace nt2{ namespace config{ namespace details{
   struct cache_infos
   {
     typedef int result_type;
+    typedef std::vector<int>::const_iterator const_iterator;
+
     // Initialize the static members with the expected values
     static void init();
     // Return the cache size according to the level in KBytes
     static result_type cache_size(int const& level);
     // Return the cache line size according to the level in Bytes
     static result_type cache_line_size(int const& level);
+    //Returns the number of levels
+    static result_type get_max_level();
+    //Return an iterator that point to the first element of
+    //the vector that contains the cache size infos index by the level
+    static const_iterator cache_size_begin();
+    //Return an iterator that point to the first element of
+    //the vector that contains the cache line size infos index by the level
+    static const_iterator cache_line_size_begin();
+    //Return an iterator that point to the last element of
+    //the vector that contains the cache size infos index by the level
+    static const_iterator cache_size_end();
+    //Return an iterator that point to the last element of
+    //the vector that contains the cache line size infos index by the level
+    static const_iterator cache_line_size_end();
 
   private:
     static bool is_init_;
-    static boost::array<int,3> cache_sizes_;
-    static boost::array<int,3> cache_line_sizes_;
+    static std::vector<int> cache_sizes_;
+    static std::vector<int> cache_line_sizes_;
+
+  };
+
+  class cache_exc : std::exception
+  {
+  public :
+    cache_exc(const char* message) : message(message){}
+    virtual const char* what()
+    { return message; }
+    const char* message;
   };
 
 } } }
