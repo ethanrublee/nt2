@@ -22,7 +22,7 @@
 #if (defined(BOOST_NO_VARIADIC_TEMPLATES) && defined(BOOST_DISPATCH_DONT_USE_PREPROCESSED_FILES)) || defined(BOOST_DISPATCH_CREATE_PREPROCESSED_FILES)
 #include <boost/dispatch/details/parameters.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
-#include <boost/preprocessor/repetition/repeat_from_to.hpp>
+#include <boost/preprocessor/repetition/repeat.hpp>
 #endif
 
 namespace boost { namespace dispatch { namespace meta
@@ -80,7 +80,7 @@ struct call<Tag(BOOST_PP_ENUM_PARAMS(n,A)),Site> \
 {}; \
 /**/
 
-  BOOST_PP_REPEAT_FROM_TO(1,BOOST_PP_INC(BOOST_DISPATCH_MAX_ARITY),M0,~)
+  BOOST_PP_REPEAT(BOOST_PP_INC(BOOST_DISPATCH_MAX_ARITY),M0,~)
 #undef M0
 
 #if defined(__WAVE__) && defined(BOOST_DISPATCH_CREATE_PREPROCESSED_FILES)

@@ -73,6 +73,22 @@ namespace boost { namespace dispatch
   {
     template<class Sig> struct result;
 
+    template<class This>
+    struct result<This()>
+     : meta::
+       result_of< typename meta::
+                  dispatch_call< Tag(), EvalContext
+                               >::type()
+                >
+    {};
+    
+    BOOST_DISPATCH_FORCE_INLINE
+    typename result<functor()>::type
+    operator()() const
+    {
+      return meta::dispatch( Tag(), EvalContext() )();
+    }
+
     #if (   !defined(BOOST_NO_VARIADIC_TEMPLATES)   \
         &&  !defined(BOOST_NO_RVALUE_REFERENCES)    \
         &&  !defined(BOOST_DISPATCH_CREATE_PREPROCESSED_FILES) \
@@ -129,7 +145,7 @@ namespace boost { namespace dispatch
                  >                                                            \
     {};                                                                       \
                                                                               \
-    template<BOOST_PP_ENUM_PARAMS(n,class A)> BOOST_DISPATCH_FORCE_INLINE                \
+    template<BOOST_PP_ENUM_PARAMS(n,class A)> BOOST_DISPATCH_FORCE_INLINE     \
     typename result<functor(BOOST_PP_ENUM_PARAMS(n,A))>::type                 \
     operator()(BOOST_PP_ENUM_BINARY_PARAMS(n, A, && a)) const                 \
     {                                                                         \
