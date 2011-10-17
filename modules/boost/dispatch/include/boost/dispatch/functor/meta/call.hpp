@@ -23,6 +23,7 @@
 #include <boost/dispatch/details/parameters.hpp>
 #include <boost/preprocessor/repetition/enum_params.hpp>
 #include <boost/preprocessor/repetition/repeat.hpp>
+#include <boost/preprocessor/punctuation/comma_if.hpp>
 #endif
 
 namespace boost { namespace dispatch { namespace meta
@@ -74,7 +75,7 @@ namespace boost { namespace dispatch { namespace meta
 #endif
 
 #define M0(z,n,t) \
-template<class Tag, BOOST_PP_ENUM_PARAMS(n,class A), class Site> \
+template<class Tag BOOST_PP_COMMA_IF(n) BOOST_PP_ENUM_PARAMS(n,class A), class Site> \
 struct call<Tag(BOOST_PP_ENUM_PARAMS(n,A)),Site> \
 : meta::result_of<functor<Tag,Site>(BOOST_PP_ENUM_PARAMS(n,A))> \
 {}; \

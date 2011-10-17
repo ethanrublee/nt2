@@ -77,7 +77,7 @@ namespace boost { namespace dispatch
     struct result<This()>
      : meta::
        result_of< typename meta::
-                  dispatch_call< Tag(), EvalContext
+                  dispatch_call< Tag(), EvalContext, This
                                >::type()
                 >
     {};

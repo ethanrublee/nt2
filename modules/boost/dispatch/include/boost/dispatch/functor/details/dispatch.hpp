@@ -45,7 +45,8 @@
 #define M2(z,n,t) typename meta::hierarchy_of<A##n>::type
 
 #define BOOST_DISPATCH_DEFAULT_UNKNOWN_DISPATCH(z,n,t)                          \
-template<class Tag, class Site, BOOST_PP_ENUM_PARAMS(n,class A)>                \
+template<class Tag, class Site BOOST_PP_COMMA_IF(n)                             \
+         BOOST_PP_ENUM_PARAMS(n,class A)>                                       \
 BOOST_DISPATCH_FORCE_INLINE                                                     \
 boost::dispatch::meta::                                                         \
 implement<Tag(tag::unknown_),Site,tag::error_with(BOOST_PP_ENUM(n,M2,~))>       \
@@ -86,8 +87,9 @@ namespace boost { namespace dispatch { namespace meta
 /**/
 
 #define BOOST_DISPATCH_DISPATCH_CALL(z,n,t)                                 \
-template<class Tag, BOOST_PP_ENUM_PARAMS(n,class A), class Site>            \
-struct dispatch_call<Tag(BOOST_PP_ENUM_PARAMS(n,A)), Site>                  \
+template<class Tag, class Site, class Dummy BOOST_PP_COMMA_IF(n)            \
+         BOOST_PP_ENUM_PARAMS(n,class A)>                                   \
+struct dispatch_call<Tag(BOOST_PP_ENUM_PARAMS(n,A)), Site, Dummy>           \
 {                                                                           \
   BOOST_DISPATCH_DECLTYPE                                                   \
   ( dispatching ( Tag(), Site() BOOST_PP_COMMA_IF(n)                        \
@@ -97,7 +99,8 @@ struct dispatch_call<Tag(BOOST_PP_ENUM_PARAMS(n,A)), Site>                  \
   );                                                                        \
 };                                                                          \
                                                                             \
-template<class Tag, BOOST_PP_ENUM_PARAMS(n,class A), class Site>            \
+template<class Tag, class Site BOOST_PP_COMMA_IF(n)                         \
+         BOOST_PP_ENUM_PARAMS(n,class A)>                                   \
 BOOST_DISPATCH_FORCE_INLINE                                                 \
 typename boost::mpl::                                                       \
 identity< typename                                                          \
@@ -120,7 +123,7 @@ namespace boost { namespace dispatch { namespace meta
   // dispatch_call finds the proper call overload for evaluating a given
   // functor over a set of types on a given site
   //==============================================================================
-  template<class Sig, class Site> struct dispatch_call; 
+  template<class Sig, class Site, class Dummy = void> struct dispatch_call; 
   BOOST_PP_REPEAT(BOOST_PP_INC(BOOST_DISPATCH_MAX_ARITY),BOOST_DISPATCH_DISPATCH_CALL,~)
 
 } } }
