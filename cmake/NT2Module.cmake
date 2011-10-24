@@ -25,6 +25,8 @@ macro(nt2_module_source_setup module)
   
   set(NT2_CURRENT_MODULE ${module})
   set(LIBRARY_OUTPUT_PATH ${NT2_BINARY_DIR}/lib)
+  set(LIBRARY_OUTPUT_PATH_DEBUG ${NT2_BINARY_DIR}/lib)
+  set(LIBRARY_OUTPUT_PATH_RELEASE ${NT2_BINARY_DIR}/lib)
   
   include_directories(${NT2_${NT2_CURRENT_MODULE_U}_INCLUDE_DIR})
   link_directories(${NT2_${NT2_CURRENT_MODULE_U}_DEPENDENCIES_LIBRARY_DIR})
@@ -145,15 +147,19 @@ macro(nt2_module_dir dir)
       set_property(TARGET ${NT2_CURRENT_MODULE}.${dir} PROPERTY FOLDER ${dir})
       nt2_module_target_parent(${NT2_CURRENT_MODULE}.${dir})
       
+      set(OLD_BUILD_TYPE ${CMAKE_BUILD_TYPE})
       if(${dir} STREQUAL bench)
         set(FLAGS ${NT2_FLAGS_BENCH})
+        set(CMAKE_BUILD_TYPE Release)
       else()
         set(FLAGS ${NT2_FLAGS_TEST})
+        set(CMAKE_BUILD_TYPE Debug)
       endif()
       
       nt2_module_set_flags(${FLAGS})
       add_subdirectory(${dir})
       nt2_module_restore_flags()
+      set(CMAKE_BUILD_TYPE ${OLD_BUILD_TYPE})
     endif()
 endmacro()
 
@@ -205,6 +211,17 @@ endmacro()
 macro(nt2_module_add_library libname)
   string(TOUPPER ${NT2_CURRENT_MODULE} NT2_CURRENT_MODULE_U)
   
+  if(NOT CMAKE_CONFIGURATION_TYPES AND NOT ${libname} MATCHES "_d$")
+    set(OLD_BUILD_TYPE ${CMAKE_BUILD_TYPE})
+    set(CMAKE_BUILD_TYPE Debug)
+    nt2_module_add_library("${libname}_d" ${ARGN})
+    set(CMAKE_BUILD_TYPE Release)
+  endif()
+
+ message("Compiling ${libname} in ${CMAKE_BUILD_TYPE}")
+ string(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_U)
+ message("flags = ${CMAKE_CXX_FLAGS_${CMAKE_BUILD_TYPE_U}}")
+
   if(DEFINED NT2_USE_STATIC_LIBS AND NOT DEFINED NT2_${NT2_CURRENT_MODULE_U}_USE_STATIC_LIBS)
     set(NT2_${NT2_CURRENT_MODULE_U}_USE_STATIC_LIBS NT2_USE_STATIC_LIBS)
   endif()
@@ -235,12 +252,18 @@ macro(nt2_module_add_library libname)
     set(FLAGS "${FLAGS} -D${macro_name}_DYN_LINK")
   endif()
   set_property(TARGET ${libname} PROPERTY COMPILE_FLAGS ${FLAGS})
-  
+
+  if(CMAKE_CONFIGURATION_TYPES)
+    set_property(TARGET ${libname} PROPERTY OUTPUT_NAME_DEBUG "${libname}_d")
+  elseif(NOT ${libname} MATCHES "_d$")
+    set(CMAKE_BUILD_TYPE ${OLD_BUILD_TYPE})
+  endif()
+
   if(PROJECT_NAME STREQUAL NT2 OR PROJECT_NAME STREQUAL "NT2_${NT2_CURRENT_MODULE_U}")
     install( TARGETS ${libname}
-             LIBRARY DESTINATION lib COMPONENT ${NT2_CURRENT_MODULE} CONFIGURATIONS Release
-             ARCHIVE DESTINATION lib COMPONENT ${NT2_CURRENT_MODULE} CONFIGURATIONS Release
-             RUNTIME DESTINATION lib COMPONENT ${NT2_CURRENT_MODULE} CONFIGURATIONS Release
+             LIBRARY DESTINATION lib COMPONENT ${NT2_CURRENT_MODULE} CONFIGURATIONS Release Debug
+             ARCHIVE DESTINATION lib COMPONENT ${NT2_CURRENT_MODULE} CONFIGURATIONS Release Debug
+             RUNTIME DESTINATION lib COMPONENT ${NT2_CURRENT_MODULE} CONFIGURATIONS Release Debug
            )
   endif()
   
